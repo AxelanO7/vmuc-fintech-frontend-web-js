@@ -1,7 +1,9 @@
 import {
   CalendarDateRangeIcon,
+  DocumentArrowDownIcon,
   HomeIcon,
   PlusIcon,
+  TrashIcon,
 } from "@heroicons/react/16/solid";
 import DefaultLayout from "../layouts/default_layout";
 import {
@@ -11,102 +13,15 @@ import {
   DropdownMenu,
   DropdownTrigger,
   Input,
+  Table,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableHeader,
+  TableRow,
 } from "@nextui-org/react";
 
 export default function DashboardPage() {
-  // const [stocks, setStocks] = useState<StuffProps[]>([]);
-  // const [filteredStocks, setFilteredStocks] = useState<StuffProps[]>([]);
-  // const [search, setSearch] = useState("");
-  // const [date, setDate] = useState("");
-
-  // const getStocks = () => {
-  //   const role = localStorage.getItem("role");
-  //   axios
-  //     .get(
-  //       `${getBaseUrl()}/${
-  //         role === "supplier" ? "stock" : "stock_outlet"
-  //       }/private/stuff`
-  //     )
-  //     .then((res) => {
-  //       console.log(res.data);
-  //       const data: StuffProps[] = res.data.data;
-  //       setFilteredStocks(data);
-  //       setStocks(data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-
-  // const checkToken = () => {
-  //   const localToken = localStorage.getItem("token");
-  //   if (localToken === null) {
-  //     localStorage.clear();
-  //     window.location.href = "/login";
-  //   }
-  // };
-
-  // const handleTapSearch = () => {
-  //   const filtered = stocks.filter((stock) => {
-  //     return stock.name.toLowerCase().includes(search.toLowerCase());
-  //   });
-  //   setFilteredStocks(filtered);
-  // };
-
-  // const handleFilterDate = (
-  //   date: string = new Date().toISOString().split("T")[0]
-  // ) => {
-  //   setDate(date);
-  //   const filtered = stocks.filter((stock) => {
-  //     return (
-  //       stock.created_at && stock.created_at.toString().split("T")[0] === date
-  //     );
-  //   });
-  //   setFilteredStocks(filtered);
-  // };
-
-  // const handleTapEdit = (id: number) => {
-  //   window.location.href = `/stock/edit/${id}`;
-  // };
-
-  // const handleTapDelete = (id: number) => {
-  //   Swal.fire({
-  //     title: "Apakah Anda yakin?",
-  //     text: "Data yang dihapus tidak dapat dikembalikan!",
-  //     icon: "warning",
-  //     showCancelButton: true,
-  //     confirmButtonColor: "#3085d6",
-  //     cancelButtonColor: "#d33",
-  //     confirmButtonText: "Ya, hapus!",
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       deleteStock(id);
-  //     }
-  //   });
-  // };
-
-  // const deleteStock = (id: number) => {
-  //   axios
-  //     .delete(`${getBaseUrl()}/stock/private/stuff/${id}`)
-  //     .then((res) => {
-  //       Swal.fire("Berhasil!", "Data berhasil dihapus.", "success");
-  //       getStocks();
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       Swal.fire("Gagal!", "Data gagal dihapus.", "error");
-  //     });
-  // };
-
-  // const resetFilteredStocks = () => {
-  //   setFilteredStocks(stocks);
-  // };
-
-  // useEffect(() => {
-  //   checkToken();
-  //   getStocks();
-  // }, []);
-
   const dateNow = new Date().toLocaleDateString("id-ID", {
     weekday: "long",
     year: "numeric",
@@ -173,26 +88,12 @@ export default function DashboardPage() {
           <HomeIcon className="w-5 h-5" />
           <p className="ml-2 font-semibold">Dashboard</p>
         </div>
-        <div className="px-6">
+        <div className="mx-6">
           <div className="flex items-center mt-6 bg-gray-200 p-4">
             <CalendarDateRangeIcon className="w-10 h-10" />
             <p className="ml-4 font-semibold text-lg">{dateNow}</p>
-            {/* <Input
-              type="date"
-              className="border-2 border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-              onChange={(e) => {
-                handleFilterDate(e.target.value);
-              }}
-            />
-            <XMarkIcon
-              className="w-14 h-14 text-white bg-c-c-dark-blue rounded-md p-2 ml-2 cursor-pointer bg-red-500"
-              onClick={resetFilteredStocks}
-            /> */}
           </div>
-          <div className="mt-4 bg-gray-200 px-8 py-8 rounded-md shadow-md">
-            {/* <h3 className="text-3xl font-semibold text-gray-500">
-              Stok Barang
-            </h3> */}
+          <div className="mt-4 bg-gray-200 py-8 rounded-md shadow-md px-8">
             <div className="flex justify-between">
               <div className="flex space-x-4">
                 <Input type="date" />
@@ -207,89 +108,49 @@ export default function DashboardPage() {
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Static Actions">
                   {dropdownItem.map((item, index) => (
-                    <DropdownItem
-                      key={index}
-                      // onClick={() => console.log(item.label)}
-                    >
-                      {item.label}
-                    </DropdownItem>
+                    <DropdownItem key={index}>{item.label}</DropdownItem>
                   ))}
                 </DropdownMenu>
               </Dropdown>
-
-              {/* <input
-                type="search"
-                className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Cari barang"
-                onChange={(e) => setSearch(e.target.value)}
-              />
-              <MagnifyingGlassIcon
-                className="w-10 h-10 text-white bg-c-c-dark-blue rounded-md p-2 ml-2 cursor-pointer bg-blue-500"
-                onClick={handleTapSearch}
-              /> */}
             </div>
-            <table className="w-full mt-4">
-              <thead>
-                <tr>
-                  <th className="border-2 border-gray-300 p-2">ID Barang</th>
-                  <th className="border-2 border-gray-300 p-2">Nama</th>
-                  <th className="border-2 border-gray-300 p-2">Jenis</th>
-                  <th className="border-2 border-gray-300 p-2">Jumlah</th>
-                  <th className="border-2 border-gray-300 p-2">Satuan</th>
-                  <th className="border-2 border-gray-300 p-2">Harga</th>
-                </tr>
-              </thead>
-              <tbody className="text-center text-gray-700">
-                {[1, 2, 3, 4, 5].map((item, index) => {
-                  return (
-                    <tr key={index}>
-                      <td className="border-2 border-gray-300 p-2">{item}</td>
-                      <td className="border-2 border-gray-300 p-2">
-                        Barang {item}
-                      </td>
-                      <td className="border-2 border-gray-300 p-2">Barang</td>
-                      <td className="border-2 border-gray-300 p-2">10</td>
-                      <td className="border-2 border-gray-300 p-2">pcs</td>
-                      <td className="border-2 border-gray-300 p-2">Rp10.000</td>
-                    </tr>
-                  );
-                })}
+            <Table aria-label="Periode Table" className="mt-8">
+              <TableHeader>
+                <TableColumn className="w-12 text-center">#</TableColumn>
+                <TableColumn>Periode</TableColumn>
+                <TableColumn className="w-40 text-center">Aksi</TableColumn>
+              </TableHeader>
+              <TableBody>
+                <TableRow key="1" className="bg-gray-50">
+                  <TableCell>1</TableCell>
+                  <TableCell>Mei 2024</TableCell>
+                  <TableCell className="text-center flex justify-evenly">
+                    <DocumentArrowDownIcon className="text-secondary w-10 h-10" />
+                    <TrashIcon className="text-danger w-10 h-10" />
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
 
-                {/* {filteredStocks.length === 0 && (
-                  <tr>
-                    <td colSpan={6} className="border-2 border-gray-300 p-2">
-                      Data tidak ditemukan
-                    </td>
-                  </tr>
-                )}
-                {filteredStocks.map((stock) => (
-                  <tr key={stock.id}>
-                    <td className="border-2 border-gray-300 p-2">
-                      {stock.id_stuff}
-                    </td>
-                    <td className="border-2 border-gray-300 p-2">
-                      {stock.name}
-                    </td>
-                    <td className="border-2 border-gray-300 p-2">
-                      {stock.type}
-                    </td>
-                    <td className="border-2 border-gray-300 p-2">
-                      {stock.quantity}
-                    </td>
-                    <td className="border-2 border-gray-300 p-2">
-                      {stock.unit}
-                    </td>
-                    <td className="border-2 border-gray-300 p-2">
-                      {stock.price.toLocaleString("id-ID", {
-                        style: "currency",
-                        currency: "IDR",
-                      })}
-                    </td>
-                    
-                  </tr>
-                ))} */}
-              </tbody>
-            </table>
+            <Table aria-label="Periode Table" className="mt-8">
+              <TableHeader>
+                <TableColumn>Periode</TableColumn>
+                <TableColumn>Deskripsi</TableColumn>
+                <TableColumn>Status</TableColumn>
+              </TableHeader>
+              <TableBody>
+                <TableRow key="1" className="bg-gray-50">
+                  <TableCell>Mei 2024</TableCell>
+                  <TableCell>Jurnal Umum</TableCell>
+                  <TableCell>Done</TableCell>
+                </TableRow>
+
+                <TableRow key="2">
+                  <TableCell>Mei 2024</TableCell>
+                  <TableCell>Buku Besar</TableCell>
+                  <TableCell>Done</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
           </div>
         </div>
       </DefaultLayout>
