@@ -89,7 +89,8 @@ export default function ManipulateRefPostDialog({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Add Ref Post
+                {isEdit ? "Edit" : "Tambah"}
+                Ref Post
               </ModalHeader>
               <ModalBody>
                 <Input
