@@ -51,7 +51,7 @@ export default function Sidebar() {
             className={`${
               sidebarOpen ? "mx-8 h-16" : "mx-4 h-12"
             } flex items-center`}
-            onClick={() => handleSidebar("/ref_post")}
+            onClick={() => handleSidebar("/ref")}
           >
             <PencilIcon className="h-6 w-6 " />
             {sidebarOpen && <p className="ml-2">Ref Post</p>}
