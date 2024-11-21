@@ -9,6 +9,8 @@ import {
   UsersIcon,
 } from "@heroicons/react/16/solid";
 
+import { Accordion, AccordionItem } from "@nextui-org/react";
+
 export default function Sidebar() {
   const sidebarOpen = useRecoilValue(sidebarState);
 
@@ -23,6 +25,15 @@ export default function Sidebar() {
   //     setRole(localRole || "outlet");
   //   }),
   //     [];
+
+  const journalItems = [
+    "Jurnal Umum",
+    "Buku Besar",
+    "Neraca Saldo",
+    "Jurnal Penyesuaian",
+    "Neraca Lajur",
+    "Laba Rugi",
+  ];
 
   return (
     <div className="h-screen fixed top-16 left-0 z-10 select-none bg-gray-800 text-white">
@@ -57,23 +68,51 @@ export default function Sidebar() {
             {sidebarOpen && <p className="ml-2">Ref Post</p>}
           </div>
         </div>
-        <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
+
+        <div className="cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
+          {sidebarOpen ? (
+            <Accordion>
+              <AccordionItem
+                key="1"
+                aria-label="Jurnal"
+                title="Jurnal"
+                startContent={<DocumentTextIcon className="h-6 w-6" />}
+                indicator={<div />}
+                classNames={{
+                  title: "text-white",
+                  base: " pl-6",
+                }}
+              >
+                {journalItems.map((item, index) => (
+                  <div
+                    key={index}
+                    className="h-14 flex items-center"
+                    // onClick={() => handleSidebar("/journal")}
+                  >
+                    {sidebarOpen && <p className="ml-2">{item}</p>}
+                  </div>
+                ))}
+              </AccordionItem>
+            </Accordion>
+          ) : (
+            <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
+              <div
+                className={`${
+                  sidebarOpen ? "mx-8 h-16" : "mx-4 h-12"
+                } flex items-center`}
+                onClick={() => handleSidebar("/journal")}
+              >
+                <DocumentTextIcon className="h-6 w-6 " />
+                {sidebarOpen && <p className="ml-2">Jurnal</p>}
+              </div>
+            </div>
+          )}
+
           <div
             className={`${
               sidebarOpen ? "mx-8 h-16" : "mx-4 h-12"
             } flex items-center`}
-            onClick={() => handleSidebar("/journal")}
-          >
-            <DocumentTextIcon className="h-6 w-6 " />
-            {sidebarOpen && <p className="ml-2">Jurnal</p>}
-          </div>
-        </div>
-        <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
-          <div
-            className={`${
-              sidebarOpen ? "mx-8 h-16" : "mx-4 h-12"
-            } flex items-center`}
-            onClick={() => handleSidebar("/report")}
+            // onClick={() => handleSidebar("/report")}
           >
             <DocumentChartBarIcon className="h-6 w-6" />
             {sidebarOpen && <p className="ml-2">Laporan</p>}
