@@ -17,16 +17,7 @@ import {
 import ManipulateGeneralJournalDialog from "./manipulate_general_journal_modal";
 import { useState } from "react";
 import DefaultLayout from "../../../layouts/default_layout";
-
-// ~*~ // Interface // ~*~ //
-export interface generalJournaType {
-  id: number;
-  accountName: string;
-  accountCode: string;
-  accountType: string;
-}
-
-// ~*~ // End of Interface // ~*~ //
+import { generalJournaType } from "../../../core/interfaces/data";
 
 export default function GeneralJournalPage() {
   // ~*~ // Manipulate Modal // ~*~ //
@@ -47,12 +38,16 @@ export default function GeneralJournalPage() {
         isOpen={isOpen}
         onOpen={onOpen}
         onOpenChange={onOpenChange}
+        // ~*~ // ~*~ // ~*~ //
         accountName={accountName}
         setAccountName={setAccountName}
+        // ~*~ // ~*~ // ~*~ //
         accountCode={accountCode}
         setAccountCode={setAccountCode}
+        // ~*~ // ~*~ // ~*~ //
         accountType={accountType}
         setAccountType={setAccountType}
+        // ~*~ // ~*~ // ~*~ //
         dataEdit={dataEdit}
         action={action}
         onSave={() => handleOnSaveManipulate({ action })}
@@ -60,11 +55,7 @@ export default function GeneralJournalPage() {
     );
   };
 
-  const handleOnSaveManipulate = ({
-    action,
-  }: {
-    action: string;
-  }) => {
+  const handleOnSaveManipulate = ({ action }: { action: string }) => {
     if (action === "add") {
       console.log("Add General Journal");
     } else {
@@ -78,59 +69,33 @@ export default function GeneralJournalPage() {
   const tableItems: generalJournaType[] = [
     {
       id: 1,
-      accountName: "Kas",
-      accountCode: "110",
-      accountType: "Asset",
+      period: "Mei/2024",
+      description: "Jurnal Umum",
     },
     {
       id: 2,
-      accountName: "Piutang",
-      accountCode: "111",
-      accountType: "Asset",
-    },
-    {
-      id: 3,
-      accountName: "Perlengkapan",
-      accountCode: "112",
-      accountType: "Asset",
-    },
-    {
-      id: 4,
-      accountName: "Peralatan",
-      accountCode: "113",
-      accountType: "Asset",
-    },
-    {
-      id: 5,
-      accountName: "Hutang",
-      accountCode: "210",
-      accountType: "Liabilitas",
-    },
-    {
-      id: 6,
-      accountName: "Modal",
-      accountCode: "310",
-      accountType: "Modal",
-    },
-    {
-      id: 7,
-      accountName: "Pendapatan",
-      accountCode: "410",
-      accountType: "Pendapatan",
-    },
-    {
-      id: 8,
-      accountName: "Beban",
-      accountCode: "510",
-      accountType: "Beban",
+      period: "Juni/2024",
+      description: "Jurnal Umum",
     },
   ];
 
-  const tableHeaderItems: string[] = [
-    "Nama Akun",
-    "Kode Akun",
-    "Tipe Akun",
-    "Aksi",
+  const tableHeaderItems = [
+    {
+      name: "#",
+      className: "w-12",
+    },
+    {
+      name: "Periode",
+      className: "",
+    },
+    {
+      name: "Deskripsi",
+      className: "",
+    },
+    {
+      name: "Aksi",
+      className: "",
+    },
   ];
 
   // ~*~ // End of Table // ~*~ //
@@ -156,27 +121,26 @@ export default function GeneralJournalPage() {
         <Table aria-label="Periode Table" className="mt-8">
           <TableHeader>
             {tableHeaderItems.map((item) => (
-              <TableColumn key={item} className="text-center">
-                {item}
+              <TableColumn
+                key={item.name}
+                className={`text-center ${item.className}`}
+              >
+                {item.name}
               </TableColumn>
             ))}
           </TableHeader>
           <TableBody>
-            {tableItems.map((data) => (
-              <TableRow key={data.id} className="bg-gray-50">
+            {tableItems.map((item) => (
+              <TableRow key={item.id} className="bg-gray-50">
+                <TableCell className="text-center">{item.id}</TableCell>
+                <TableCell className="text-center">{item.period}</TableCell>
                 <TableCell className="text-center">
-                  {data.accountName}
-                </TableCell>
-                <TableCell className="text-center">
-                  {data.accountCode}
-                </TableCell>
-                <TableCell className="text-center">
-                  {data.accountType}
+                  {item.description}
                 </TableCell>
                 <TableCell className="text-center flex justify-evenly">
                   {renderManipulateComponent({
                     action: "edit",
-                    dataEdit: data,
+                    dataEdit: item,
                   })}
                   <TrashIcon className="text-danger w-10 h-10" />
                 </TableCell>

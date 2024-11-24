@@ -12,7 +12,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/react";
-import { generalJournaType } from "./general_journal_page";
+import { paramsManipulateGeneralJournal } from "../../../core/interfaces/params";
 
 export default function ManipulateGeneralJournalModal({
   isOpen,
@@ -27,20 +27,7 @@ export default function ManipulateGeneralJournalModal({
   dataEdit,
   action,
   onSave,
-}: {
-  isOpen: boolean;
-  onOpen: () => void;
-  onOpenChange: (open: boolean) => void;
-  accountName: string;
-  setAccountName: (name: string) => void;
-  accountCode: string;
-  setAccountCode: (code: string) => void;
-  accountType: string;
-  setAccountType: (type: string) => void;
-  dataEdit?: generalJournaType;
-  action: string;
-  onSave: ({ action }: { action: string }) => void;
-}) {
+}: paramsManipulateGeneralJournal) {
   const typeAccount = [
     {
       key: 1,
@@ -72,9 +59,8 @@ export default function ManipulateGeneralJournalModal({
         <PencilIcon
           className="text-secondary w-10 h-10"
           onClick={() => {
-            setAccountName(dataEdit?.accountName || "");
-            setAccountCode(dataEdit?.accountCode || "");
-            setAccountType(dataEdit?.accountType || "");
+            setAccountName(dataEdit?.period || "");
+            setAccountCode(dataEdit?.description || "");
             onOpen();
           }}
         />
@@ -89,7 +75,7 @@ export default function ManipulateGeneralJournalModal({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                {isEdit ? "Edit" : "Tambah"}
+                {isEdit ? "Edit " : "Tambah "}
                 Ref Post
               </ModalHeader>
               <ModalBody>
