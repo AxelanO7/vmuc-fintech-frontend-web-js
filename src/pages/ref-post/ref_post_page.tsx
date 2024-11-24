@@ -15,7 +15,7 @@ import {
   TableRow,
   useDisclosure,
 } from "@nextui-org/react";
-import ManipulateRefPostDialogComponent from "./manipulate_ref_post_page";
+import ManipulateRefPostDialogComponent from "./manipulate_ref_post_modal";
 import { useState } from "react";
 
 export interface RefPostData {

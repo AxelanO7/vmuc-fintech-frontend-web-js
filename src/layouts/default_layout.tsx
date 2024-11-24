@@ -19,7 +19,7 @@ export default function DefaultLayout({
         <Sidebar />
         <div
           className={`${
-            sidebarOpen ? "ml-[197px]" : "ml-[54px]"
+            sidebarOpen ? "ml-[205px]" : "ml-[54px]"
           } transition-all duration-300 mt-[59px] min-h-[calc(100vh-59px)]  flex flex-col h-full`}
         >
           {children}

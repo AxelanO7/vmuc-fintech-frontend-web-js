@@ -1,6 +1,7 @@
 import { useRecoilValue } from "recoil";
 import { sidebarState } from "../core/store";
 import {
+  ArrowsUpDownIcon,
   BanknotesIcon,
   DocumentChartBarIcon,
   DocumentTextIcon,
@@ -40,7 +41,7 @@ export default function Sidebar() {
       <p
         className={`${
           sidebarOpen ? "text-2xl py-4" : "text-xl py-3"
-        } font-bold text-center border-b-2 border-gray-700`}
+        } font-bold text-center border-b-2 border-gray-700 h-[66px] flex justify-center items-center`}
         onClick={() => handleSidebar("/dashboard")}
       >
         {sidebarOpen ? "Main Menu" : "V"}
@@ -71,25 +72,30 @@ export default function Sidebar() {
 
         <div className="cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
           {sidebarOpen ? (
+            // remove padding and margin
             <Accordion>
               <AccordionItem
                 key="1"
                 aria-label="Jurnal"
                 title="Jurnal"
-                startContent={<DocumentTextIcon className="h-6 w-6" />}
-                indicator={<div />}
+                startContent={<DocumentTextIcon />}
+                indicator={<ArrowsUpDownIcon />}
+                // className="bg-yellow-400 p-0 m-0 w-full flex flex-col"
                 classNames={{
                   title: "text-white",
-                  base: " pl-6",
+                  base: "border-b border-gray-700 hover:bg-gray-700 pl-6",
+                  startContent: "text-white h-6 w-6",
+                  indicator: "text-white h-5 w-5 me-4",
+                  content: "pl-2",
                 }}
               >
                 {journalItems.map((item, index) => (
                   <div
                     key={index}
-                    className="h-14 flex items-center"
+                    className="h-14 flex items-center w-full"
                     // onClick={() => handleSidebar("/journal")}
                   >
-                    {sidebarOpen && <p className="ml-2">{item}</p>}
+                    {sidebarOpen && <p>{item}</p>}
                   </div>
                 ))}
               </AccordionItem>
@@ -107,7 +113,9 @@ export default function Sidebar() {
               </div>
             </div>
           )}
+        </div>
 
+        <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
           <div
             className={`${
               sidebarOpen ? "mx-8 h-16" : "mx-4 h-12"
@@ -126,7 +134,7 @@ export default function Sidebar() {
             onClick={() => handleSidebar("/employee")}
           >
             <UsersIcon className="h-6 w-6" />
-            {sidebarOpen && <p className="ml-2">Karyawan</p>}
+            {sidebarOpen && <p className="ml-2">Data Karyawan</p>}
           </div>
         </div>
         <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">

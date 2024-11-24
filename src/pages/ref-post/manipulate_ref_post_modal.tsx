@@ -14,7 +14,7 @@ import {
 } from "@nextui-org/react";
 import { RefPostData } from "./ref_post_page";
 
-export default function ManipulateRefPostDialog({
+export default function ManipulateRefPostModal({
   isOpen,
   onOpen,
   onOpenChange,
