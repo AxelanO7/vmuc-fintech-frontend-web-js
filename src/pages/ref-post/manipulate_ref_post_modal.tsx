@@ -12,7 +12,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/react";
-import { RefPostData } from "./ref_post_page";
+import { RefPostType } from "./ref_post_page";
 
 export default function ManipulateRefPostModal({
   isOpen,
@@ -37,7 +37,7 @@ export default function ManipulateRefPostModal({
   setAccountCode: (code: string) => void;
   accountType: string;
   setAccountType: (type: string) => void;
-  dataEdit?: RefPostData;
+  dataEdit?: RefPostType;
   action: string;
   onSave: ({ action }: { action: string }) => void;
 }) {
@@ -81,7 +81,7 @@ export default function ManipulateRefPostModal({
       ) : (
         <Button className="w-max" color="primary" onPress={onOpen}>
           <PlusIcon className="w-5 h-5" />
-          Tambah Akun
+          Ref Post
         </Button>
       )}
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">

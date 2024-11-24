@@ -15,32 +15,35 @@ import {
   TableRow,
   useDisclosure,
 } from "@nextui-org/react";
-import ManipulateRefPostDialogComponent from "./manipulate_ref_post_modal";
+import ManipulateRefPostDialog from "./manipulate_ref_post_modal";
 import { useState } from "react";
 
-export interface RefPostData {
+// ~*~ // Interface // ~*~ //
+export interface RefPostType {
   id: number;
   accountName: string;
   accountCode: string;
   accountType: string;
 }
 
+// ~*~ // End of Interface // ~*~ //
+
 export default function RefPostPage() {
-  // Manipulate Modal
+  // ~*~ // Manipulate Modal // ~*~ //
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [accountName, setAccountName] = useState<string>("");
   const [accountCode, setAccountCode] = useState<string>("");
   const [accountType, setAccountType] = useState<string>("");
 
-  const renderManipulateRefPostDialog = ({
+  const renderManipulateComponent = ({
     action,
     dataEdit,
   }: {
     action: string;
-    dataEdit?: RefPostData;
+    dataEdit?: RefPostType;
   }) => {
     return (
-      <ManipulateRefPostDialogComponent
+      <ManipulateRefPostDialog
         isOpen={isOpen}
         onOpen={onOpen}
         onOpenChange={onOpenChange}
@@ -52,12 +55,12 @@ export default function RefPostPage() {
         setAccountType={setAccountType}
         dataEdit={dataEdit}
         action={action}
-        onSave={() => handleOnSaveManipulateRefPost({ action })}
+        onSave={() => handleOnSaveManipulate({ action })}
       />
     );
   };
 
-  const handleOnSaveManipulateRefPost = ({ action }: { action: string }) => {
+  const handleOnSaveManipulate = ({ action }: { action: string }) => {
     console.log("Account Name: ", accountName);
     console.log("Account Code: ", accountCode);
     console.log("Account Type: ", accountType);
@@ -68,16 +71,69 @@ export default function RefPostPage() {
       console.log("Edit Ref Post");
     }
   };
-  // End Manipulate Modal
 
-  const refPostData = [
+  // ~*~ // End of Manipulate Modal // ~*~ //
+
+  // ~*~ // Table // ~*~ //
+  const tableItems: RefPostType[] = [
     {
       id: 1,
       accountName: "Kas",
       accountCode: "110",
       accountType: "Asset",
     },
+    {
+      id: 2,
+      accountName: "Piutang",
+      accountCode: "111",
+      accountType: "Asset",
+    },
+    {
+      id: 3,
+      accountName: "Perlengkapan",
+      accountCode: "112",
+      accountType: "Asset",
+    },
+    {
+      id: 4,
+      accountName: "Peralatan",
+      accountCode: "113",
+      accountType: "Asset",
+    },
+    {
+      id: 5,
+      accountName: "Hutang",
+      accountCode: "210",
+      accountType: "Liabilitas",
+    },
+    {
+      id: 6,
+      accountName: "Modal",
+      accountCode: "310",
+      accountType: "Modal",
+    },
+    {
+      id: 7,
+      accountName: "Pendapatan",
+      accountCode: "410",
+      accountType: "Pendapatan",
+    },
+    {
+      id: 8,
+      accountName: "Beban",
+      accountCode: "510",
+      accountType: "Beban",
+    },
   ];
+
+  const tableHeaderItems: string[] = [
+    "Nama Akun",
+    "Kode Akun",
+    "Tipe Akun",
+    "Aksi",
+  ];
+
+  // ~*~ // End of Table // ~*~ //
 
   return (
     <DefaultLayout>
@@ -89,7 +145,7 @@ export default function RefPostPage() {
       <div className="bg-gray-200 m-4 p-8">
         <h1 className="text-3xl font-medium text-gray-600">Akun Ref Post</h1>
         <div className="flex justify-between mt-4">
-          {renderManipulateRefPostDialog({ action: "add" })}
+          {renderManipulateComponent({ action: "add" })}
           <div className="flex gap-2">
             <Input placeholder="Cari" />
             <Button color="primary" isIconOnly>
@@ -99,13 +155,14 @@ export default function RefPostPage() {
         </div>
         <Table aria-label="Periode Table" className="mt-8">
           <TableHeader>
-            <TableColumn className="text-center">Nama Akun</TableColumn>
-            <TableColumn className="text-center">Kode Akun</TableColumn>
-            <TableColumn className="text-center">Tipe Akun</TableColumn>
-            <TableColumn className="w-40 text-center">Aksi</TableColumn>
+            {tableHeaderItems.map((item, index) => (
+              <TableColumn key={index} className="text-center">
+                {item}
+              </TableColumn>
+            ))}
           </TableHeader>
           <TableBody>
-            {refPostData.map((data) => (
+            {tableItems.map((data) => (
               <TableRow key={data.id} className="bg-gray-50">
                 <TableCell className="text-center">
                   {data.accountName}
@@ -117,7 +174,7 @@ export default function RefPostPage() {
                   {data.accountType}
                 </TableCell>
                 <TableCell className="text-center flex justify-evenly">
-                  {renderManipulateRefPostDialog({
+                  {renderManipulateComponent({
                     action: "edit",
                     dataEdit: data,
                   })}
