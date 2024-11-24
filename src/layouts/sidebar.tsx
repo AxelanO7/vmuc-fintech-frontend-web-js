@@ -27,13 +27,40 @@ export default function Sidebar() {
   //   }),
   //     [];
 
+  // const journalItems = [
+  //   "Jurnal Umum",
+  //   "Buku Besar",
+  //   "Neraca Saldo",
+  //   "Jurnal Penyesuaian",
+  //   "Neraca Lajur",
+  //   "Laba Rugi",
+  // ];
+
   const journalItems = [
-    "Jurnal Umum",
-    "Buku Besar",
-    "Neraca Saldo",
-    "Jurnal Penyesuaian",
-    "Neraca Lajur",
-    "Laba Rugi",
+    {
+      title: "Jurnal Umum",
+      route: "/general-journal",
+    },
+    {
+      title: "Buku Besar",
+      route: "/journal",
+    },
+    {
+      title: "Neraca Saldo",
+      route: "/journal",
+    },
+    {
+      title: "Jurnal Penyesuaian",
+      route: "/journal",
+    },
+    {
+      title: "Neraca Lajur",
+      route: "/journal",
+    },
+    {
+      title: "Laba Rugi",
+      route: "/journal",
+    },
   ];
 
   return (
@@ -93,9 +120,9 @@ export default function Sidebar() {
                   <div
                     key={index}
                     className="h-14 flex items-center w-full"
-                    // onClick={() => handleSidebar("/journal")}
+                    onClick={() => handleSidebar(item.route)}
                   >
-                    {sidebarOpen && <p>{item}</p>}
+                    {sidebarOpen && <p>{item.title}</p>}
                   </div>
                 ))}
               </AccordionItem>
