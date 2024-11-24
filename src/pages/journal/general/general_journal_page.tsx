@@ -71,15 +71,28 @@ export default function GeneralJournalPage() {
       id: 1,
       period: "Mei/2024",
       description: "Jurnal Umum",
-    },
-    {
-      id: 2,
-      period: "Juni/2024",
-      description: "Jurnal Umum",
+      contents: [
+        {
+          id: 1,
+          date: "01/05/2024",
+          ref_post: "1",
+          information: "Pembelian Barang",
+          debit: 1000000,
+          credit: 0,
+        },
+        {
+          id: 2,
+          date: "01/05/2024",
+          ref_post: "2",
+          information: "Pembelian Barang",
+          debit: 0,
+          credit: 1000000,
+        },
+      ],
     },
   ];
 
-  const tableHeaderItems = [
+  const tableHeaderParentItems = [
     {
       name: "#",
       className: "w-12",
@@ -94,7 +107,38 @@ export default function GeneralJournalPage() {
     },
     {
       name: "Aksi",
+      className: "w-40",
+    },
+  ];
+
+  const tableHeaderChildItems = [
+    {
+      name: "#",
+      className: "w-12",
+    },
+    {
+      name: "Tanggal",
       className: "",
+    },
+    {
+      name: "Ref/Posting",
+      className: "",
+    },
+    {
+      name: "Keterangan",
+      className: "",
+    },
+    {
+      name: "Debit",
+      className: "",
+    },
+    {
+      name: "Kredit",
+      className: "",
+    },
+    {
+      name: "Aksi",
+      className: "w-40",
     },
   ];
 
@@ -118,9 +162,9 @@ export default function GeneralJournalPage() {
             </Button>
           </div>
         </div>
-        <Table aria-label="Periode Table" className="mt-8">
+        {/* <Table aria-label="Periode Table" className="mt-8">
           <TableHeader>
-            {tableHeaderItems.map((item) => (
+            {tableHeaderParentItems.map((item) => (
               <TableColumn
                 key={item.name}
                 className={`text-center ${item.className}`}
@@ -130,24 +174,29 @@ export default function GeneralJournalPage() {
             ))}
           </TableHeader>
           <TableBody>
-            {tableItems.map((item) => (
-              <TableRow key={item.id} className="bg-gray-50">
-                <TableCell className="text-center">{item.id}</TableCell>
-                <TableCell className="text-center">{item.period}</TableCell>
-                <TableCell className="text-center">
-                  {item.description}
-                </TableCell>
-                <TableCell className="text-center flex justify-evenly">
-                  {renderManipulateComponent({
-                    action: "edit",
-                    dataEdit: item,
-                  })}
-                  <TrashIcon className="text-danger w-10 h-10" />
-                </TableCell>
-              </TableRow>
-            ))}
+            {tableItems.flatMap((item) =>
+              item.contents.map((content) => (
+                <>
+                  <TableRow key={content.id} className="bg-gray-50">
+                    <TableCell className="text-center">{content.id}</TableCell>
+                    <TableCell className="text-center">{item.period}</TableCell>
+                    <TableCell className="text-center">
+                      {item.description}
+                    </TableCell>
+                    <TableCell className="text-center flex justify-evenly">
+                      {renderManipulateComponent({
+                        action: "edit",
+                        dataEdit: item,
+                      })}
+                      <TrashIcon className="text-danger w-10 h-10" />
+                    </TableCell>
+                  </TableRow>
+                </>
+              ))
+            )}
           </TableBody>
-        </Table>
+        </Table> */}
+        {/* TODO(axel) : Table */}
       </div>
     </DefaultLayout>
   );
