@@ -12,7 +12,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/react";
-import { RefPostData } from "./general_journal_page";
+import { generalJournaType } from "./general_journal_page";
 
 export default function ManipulateGeneralJournalModal({
   isOpen,
@@ -37,7 +37,7 @@ export default function ManipulateGeneralJournalModal({
   setAccountCode: (code: string) => void;
   accountType: string;
   setAccountType: (type: string) => void;
-  dataEdit?: RefPostData;
+  dataEdit?: generalJournaType;
   action: string;
   onSave: ({ action }: { action: string }) => void;
 }) {
@@ -81,7 +81,7 @@ export default function ManipulateGeneralJournalModal({
       ) : (
         <Button className="w-max" color="primary" onPress={onOpen}>
           <PlusIcon className="w-5 h-5" />
-          Tambah Akun
+          Jurnal Umum
         </Button>
       )}
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">

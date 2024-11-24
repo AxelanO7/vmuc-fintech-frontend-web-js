@@ -14,33 +14,36 @@ import {
   TableRow,
   useDisclosure,
 } from "@nextui-org/react";
-import ManipulateRefPostDialogComponent from "./manipulate_general_journal_modal";
+import ManipulateGeneralJournalDialog from "./manipulate_general_journal_modal";
 import { useState } from "react";
 import DefaultLayout from "../../../layouts/default_layout";
 
-export interface RefPostData {
+// ~*~ // Interface // ~*~ //
+export interface generalJournaType {
   id: number;
   accountName: string;
   accountCode: string;
   accountType: string;
 }
 
+// ~*~ // End of Interface // ~*~ //
+
 export default function GeneralJournalPage() {
-  // Manipulate Modal
+  // ~*~ // Manipulate Modal // ~*~ //
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [accountName, setAccountName] = useState<string>("");
   const [accountCode, setAccountCode] = useState<string>("");
   const [accountType, setAccountType] = useState<string>("");
 
-  const renderManipulateRefPostDialog = ({
+  const renderManipulateComponent = ({
     action,
     dataEdit,
   }: {
     action: string;
-    dataEdit?: RefPostData;
+    dataEdit?: generalJournaType;
   }) => {
     return (
-      <ManipulateRefPostDialogComponent
+      <ManipulateGeneralJournalDialog
         isOpen={isOpen}
         onOpen={onOpen}
         onOpenChange={onOpenChange}
@@ -52,44 +55,97 @@ export default function GeneralJournalPage() {
         setAccountType={setAccountType}
         dataEdit={dataEdit}
         action={action}
-        onSave={() => handleOnSaveManipulateRefPost({ action })}
+        onSave={() => handleOnSaveManipulate({ action })}
       />
     );
   };
 
-  const handleOnSaveManipulateRefPost = ({ action }: { action: string }) => {
-    console.log("Account Name: ", accountName);
-    console.log("Account Code: ", accountCode);
-    console.log("Account Type: ", accountType);
-
+  const handleOnSaveManipulate = ({
+    action,
+  }: {
+    action: string;
+  }) => {
     if (action === "add") {
-      console.log("Add Ref Post");
+      console.log("Add General Journal");
     } else {
-      console.log("Edit Ref Post");
+      console.log("Edit General Journal");
     }
   };
-  // End Manipulate Modal
 
-  const refPostData = [
+  // ~*~ // End of Manipulate Modal // ~*~ //
+
+  // ~*~ // Table // ~*~ //
+  const tableItems: generalJournaType[] = [
     {
       id: 1,
       accountName: "Kas",
       accountCode: "110",
       accountType: "Asset",
     },
+    {
+      id: 2,
+      accountName: "Piutang",
+      accountCode: "111",
+      accountType: "Asset",
+    },
+    {
+      id: 3,
+      accountName: "Perlengkapan",
+      accountCode: "112",
+      accountType: "Asset",
+    },
+    {
+      id: 4,
+      accountName: "Peralatan",
+      accountCode: "113",
+      accountType: "Asset",
+    },
+    {
+      id: 5,
+      accountName: "Hutang",
+      accountCode: "210",
+      accountType: "Liabilitas",
+    },
+    {
+      id: 6,
+      accountName: "Modal",
+      accountCode: "310",
+      accountType: "Modal",
+    },
+    {
+      id: 7,
+      accountName: "Pendapatan",
+      accountCode: "410",
+      accountType: "Pendapatan",
+    },
+    {
+      id: 8,
+      accountName: "Beban",
+      accountCode: "510",
+      accountType: "Beban",
+    },
   ];
+
+  const tableHeaderItems: string[] = [
+    "Nama Akun",
+    "Kode Akun",
+    "Tipe Akun",
+    "Aksi",
+  ];
+
+  // ~*~ // End of Table // ~*~ //
 
   return (
     <DefaultLayout>
-      <h1 className="text-3xl font-bold mx-6 pt-4">Akun Ref Post</h1>
+      <h1 className="text-3xl font-bold mx-6 pt-4">Jurnal Umum</h1>
       <div className="flex items-center bg-gray-300 px-6 py-2">
         <HomeIcon className="w-5 h-5" />
-        <p className="ml-2 font-semibold">Akun Ref Post</p>
+        <p className="ml-2 font-semibold">Jurnal Umum</p>
       </div>
       <div className="bg-gray-200 m-4 p-8">
-        <h1 className="text-3xl font-medium text-gray-600">Akun Ref Post</h1>
+        <h1 className="text-3xl font-medium text-gray-600">Jurnal Umum</h1>
         <div className="flex justify-between mt-4">
-          {renderManipulateRefPostDialog({ action: "add" })}
+          {renderManipulateComponent({ action: "add" })}
           <div className="flex gap-2">
             <Input placeholder="Cari" />
             <Button color="primary" isIconOnly>
@@ -99,13 +155,14 @@ export default function GeneralJournalPage() {
         </div>
         <Table aria-label="Periode Table" className="mt-8">
           <TableHeader>
-            <TableColumn className="text-center">Nama Akun</TableColumn>
-            <TableColumn className="text-center">Kode Akun</TableColumn>
-            <TableColumn className="text-center">Tipe Akun</TableColumn>
-            <TableColumn className="w-40 text-center">Aksi</TableColumn>
+            {tableHeaderItems.map((item) => (
+              <TableColumn key={item} className="text-center">
+                {item}
+              </TableColumn>
+            ))}
           </TableHeader>
           <TableBody>
-            {refPostData.map((data) => (
+            {tableItems.map((data) => (
               <TableRow key={data.id} className="bg-gray-50">
                 <TableCell className="text-center">
                   {data.accountName}
@@ -117,7 +174,7 @@ export default function GeneralJournalPage() {
                   {data.accountType}
                 </TableCell>
                 <TableCell className="text-center flex justify-evenly">
-                  {renderManipulateRefPostDialog({
+                  {renderManipulateComponent({
                     action: "edit",
                     dataEdit: data,
                   })}
