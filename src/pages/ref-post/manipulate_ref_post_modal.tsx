@@ -12,7 +12,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/react";
-import { RefPostType } from "./ref_post_page";
+import { paramsManipulateRefPost } from "../../core/interfaces/params";
 
 export default function ManipulateRefPostModal({
   isOpen,
@@ -27,20 +27,7 @@ export default function ManipulateRefPostModal({
   dataEdit,
   action,
   onSave,
-}: {
-  isOpen: boolean;
-  onOpen: () => void;
-  onOpenChange: (open: boolean) => void;
-  accountName: string;
-  setAccountName: (name: string) => void;
-  accountCode: string;
-  setAccountCode: (code: string) => void;
-  accountType: string;
-  setAccountType: (type: string) => void;
-  dataEdit?: RefPostType;
-  action: string;
-  onSave: ({ action }: { action: string }) => void;
-}) {
+}: paramsManipulateRefPost) {
   const typeAccount = [
     {
       key: 1,
@@ -89,7 +76,7 @@ export default function ManipulateRefPostModal({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                {isEdit ? "Edit" : "Tambah"}
+                {isEdit ? "Edit " : "Tambah "}
                 Ref Post
               </ModalHeader>
               <ModalBody>

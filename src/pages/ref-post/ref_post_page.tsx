@@ -17,16 +17,7 @@ import {
 } from "@nextui-org/react";
 import ManipulateRefPostDialog from "./manipulate_ref_post_modal";
 import { useState } from "react";
-
-// ~*~ // Interface // ~*~ //
-export interface RefPostType {
-  id: number;
-  accountName: string;
-  accountCode: string;
-  accountType: string;
-}
-
-// ~*~ // End of Interface // ~*~ //
+import { refPostType } from "../../core/interfaces/data";
 
 export default function RefPostPage() {
   // ~*~ // Manipulate Modal // ~*~ //
@@ -40,7 +31,7 @@ export default function RefPostPage() {
     dataEdit,
   }: {
     action: string;
-    dataEdit?: RefPostType;
+    dataEdit?: refPostType;
   }) => {
     return (
       <ManipulateRefPostDialog
@@ -75,7 +66,7 @@ export default function RefPostPage() {
   // ~*~ // End of Manipulate Modal // ~*~ //
 
   // ~*~ // Table // ~*~ //
-  const tableItems: RefPostType[] = [
+  const tableItems: refPostType[] = [
     {
       id: 1,
       accountName: "Kas",
