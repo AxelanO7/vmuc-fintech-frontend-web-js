@@ -137,18 +137,22 @@ export default function RefPostPage() {
   return (
     <DefaultLayout>
       <h1 className="text-3xl font-bold mx-6 pt-4">Akun Ref Post</h1>
+
       <Breadcrumb items={breadcrumbItems} />
+
       <div className="bg-gray-200 m-4 p-8">
         <h1 className="text-3xl font-medium text-gray-600">Akun Ref Post</h1>
+
         <div className="flex justify-between mt-4">
           {renderManipulateComponent({ action: "add" })}
           <div className="flex gap-2">
-            <Input placeholder="Cari" />
+            <Input placeholder="Cari" type="search" />
             <Button color="primary" isIconOnly>
               <MagnifyingGlassIcon className="w-5 h-5" />
             </Button>
           </div>
         </div>
+
         <Table aria-label="Periode Table" className="mt-8">
           <TableHeader>
             {tableHeaderItems.map((item, index) => (
@@ -174,12 +178,13 @@ export default function RefPostPage() {
                     action: "edit",
                     dataEdit: data,
                   })}
-                  <TrashIcon className="text-danger w-10 h-10" />
+                  <TrashIcon className="text-danger w-6 h-6" />
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
+        
       </div>
     </DefaultLayout>
   );

@@ -1,4 +1,4 @@
-import { generalJournaType, refPostType } from "./data";
+import { generalJournalType, refPostType } from "./data";
 
 export interface propsManipulateRefPost {
   isOpen: boolean;
@@ -25,7 +25,7 @@ export interface propsManipulateGeneralJournal {
   setAccountCode: (code: string) => void;
   accountType: string;
   setAccountType: (type: string) => void;
-  dataEdit?: generalJournaType;
+  dataEdit?: generalJournalType;
   action: string;
   onSave: ({ action }: { action: string }) => void;
 }

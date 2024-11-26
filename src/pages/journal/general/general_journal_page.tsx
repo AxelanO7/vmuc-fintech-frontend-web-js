@@ -1,5 +1,12 @@
-import { TrashIcon } from "@heroicons/react/16/solid";
 import {
+  MagnifyingGlassIcon,
+  PlusIcon,
+  PrinterIcon,
+  TrashIcon,
+} from "@heroicons/react/16/solid";
+import {
+  Button,
+  Input,
   Table,
   TableBody,
   TableCell,
@@ -8,13 +15,13 @@ import {
   TableRow,
 } from "@nextui-org/react";
 import DefaultLayout from "../../../layouts/default_layout";
-import { generalJournaType } from "../../../core/interfaces/data";
+import { generalJournalType } from "../../../core/interfaces/data";
 import { breadcrumsItem } from "../../../core/interfaces/props";
 import Breadcrumb from "../../../components/breadcrumb";
 
 export default function GeneralJournalPage() {
   // ~*~ // Table // ~*~ //
-  const tableItems: generalJournaType[] = [
+  const tableItems: generalJournalType[] = [
     {
       id: 1,
       period: "Mei/2024",
@@ -121,6 +128,10 @@ export default function GeneralJournalPage() {
 
   // ~*~ // End of Breadcrumb // ~*~ //
 
+  const handleAdd = () => {
+    window.location.replace("/" + "general-journal/add");
+  };
+
   return (
     <DefaultLayout>
       <h1 className="text-3xl font-bold mx-6 pt-4">Jurnal Umum</h1>
@@ -128,7 +139,16 @@ export default function GeneralJournalPage() {
       <div className="bg-gray-200 m-4 p-8">
         <h1 className="text-3xl font-medium text-gray-600">Jurnal Umum</h1>
         <div className="flex justify-between mt-4">
-          <p>test</p>
+          <Button className="w-max" color="primary" onPress={handleAdd}>
+            <PlusIcon className="w-5 h-5" />
+            Jurnal Umum
+          </Button>
+          <div className="flex gap-2">
+            <Input placeholder="Cari" type="search" />
+            <Button color="primary" isIconOnly>
+              <MagnifyingGlassIcon className="w-5 h-5" />
+            </Button>
+          </div>
         </div>
 
         <div className="mt-4">
@@ -153,8 +173,8 @@ export default function GeneralJournalPage() {
                       {item.description}
                     </TableCell>
                     <TableCell className="text-center flex justify-evenly">
-                      <p>test</p>
-                      <TrashIcon className="text-danger w-10 h-10" />
+                      <PrinterIcon className="text-primary w-6 h-6" />
+                      <TrashIcon className="text-danger w-6 h-6" />
                     </TableCell>
                   </TableRow>
                 </TableBody>
@@ -194,8 +214,7 @@ export default function GeneralJournalPage() {
                         {content.credit}
                       </TableCell>
                       <TableCell className="text-center flex justify-evenly">
-                        <p>test</p>
-                        <TrashIcon className="text-danger w-10 h-10" />
+                        <TrashIcon className="text-danger w-6 h-6" />
                       </TableCell>
                     </TableRow>
                   ))}

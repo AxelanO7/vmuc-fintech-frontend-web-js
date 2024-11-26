@@ -1,5 +1,6 @@
 import {
   CalendarDateRangeIcon,
+  ChevronDownIcon,
   DocumentArrowDownIcon,
   PlusIcon,
   TrashIcon,
@@ -21,6 +22,7 @@ import {
 } from "@nextui-org/react";
 import Breadcrumb from "../components/breadcrumb";
 import { breadcrumsItem } from "../core/interfaces/props";
+import { dashboardType } from "../core/interfaces/data";
 
 export default function DashboardPage() {
   // ~*~ // Date // ~*~ //
@@ -84,6 +86,65 @@ export default function DashboardPage() {
 
   // ~*~ // End of Date // ~*~ //
 
+  // ~*~ // Table // ~*~ //
+  const tableHeaderParentItems = [
+    {
+      name: "#",
+      className: "w-12",
+    },
+    {
+      name: "Periode",
+    },
+    {
+      name: "Aksi",
+      className: "w-40",
+    },
+  ];
+
+  const tableHeaderChildItems = [
+    {
+      name: "Periode",
+    },
+    {
+      name: "Deskripsi",
+    },
+    {
+      name: "Status",
+    },
+
+    {
+      name: "Aksi",
+      className: "w-40",
+    },
+  ];
+
+  const tableItems: dashboardType[] = [
+    {
+      dateContents: [
+        {
+          id: 1,
+          date: "Mei 2024",
+          contents: [
+            {
+              id: 1,
+              period: "Mei 2024",
+              description: "Jurnal Umum",
+              status: "Done",
+            },
+            {
+              id: 2,
+              period: "Mei 2024",
+              description: "Buku Besar",
+              status: "Done",
+            },
+          ],
+        },
+      ],
+    },
+  ];
+
+  // ~*~ // End of Table // ~*~ //
+
   // ~*~ // Breadcrumb // ~*~ //
   const breadcrumbItems: breadcrumsItem[] = [
     {
@@ -98,12 +159,15 @@ export default function DashboardPage() {
     <>
       <DefaultLayout>
         <h1 className="text-3xl font-bold mx-6 pt-4">Dashboard</h1>
+
         <Breadcrumb items={breadcrumbItems} />
+
         <div className="mx-6">
           <div className="flex items-center mt-6 bg-gray-200 p-4">
             <CalendarDateRangeIcon className="w-10 h-10" />
             <p className="ml-4 font-semibold text-lg">{dateNow}</p>
           </div>
+
           <div className="mt-4 bg-gray-200 py-8 rounded-md shadow-md px-8">
             <div className="flex justify-between">
               <div className="flex space-x-4">
@@ -115,7 +179,10 @@ export default function DashboardPage() {
               </div>
               <Dropdown>
                 <DropdownTrigger>
-                  <Button variant="bordered">Periode</Button>
+                  <Button variant="bordered">
+                    Periode
+                    <ChevronDownIcon className="w-5 h-5" />
+                  </Button>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Static Actions">
                   {dropdownItem.map((item, index) => (
@@ -124,44 +191,78 @@ export default function DashboardPage() {
                 </DropdownMenu>
               </Dropdown>
             </div>
-            <Table aria-label="Periode Table" className="mt-8">
-              <TableHeader>
-                <TableColumn className="w-12 text-center">#</TableColumn>
-                <TableColumn>Periode</TableColumn>
-                <TableColumn className="w-40 text-center">Aksi</TableColumn>
-              </TableHeader>
-              <TableBody>
-                <TableRow key="1" className="bg-gray-50">
-                  <TableCell>1</TableCell>
-                  <TableCell>Mei 2024</TableCell>
-                  <TableCell className="text-center flex justify-evenly">
-                    <DocumentArrowDownIcon className="text-secondary w-10 h-10" />
-                    <TrashIcon className="text-danger w-10 h-10" />
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
 
-            <Table aria-label="Periode Table" className="mt-8">
-              <TableHeader>
-                <TableColumn>Periode</TableColumn>
-                <TableColumn>Deskripsi</TableColumn>
-                <TableColumn>Status</TableColumn>
-              </TableHeader>
-              <TableBody>
-                <TableRow key="1" className="bg-gray-50">
-                  <TableCell>Mei 2024</TableCell>
-                  <TableCell>Jurnal Umum</TableCell>
-                  <TableCell>Done</TableCell>
-                </TableRow>
-
-                <TableRow key="2">
-                  <TableCell>Mei 2024</TableCell>
-                  <TableCell>Buku Besar</TableCell>
-                  <TableCell>Done</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
+            <div className="mt-4">
+              {tableItems.map((item, index) => (
+                <div key={item.dateContents[0].id}>
+                  <Table aria-label="Periode Table">
+                    <TableHeader>
+                      {tableHeaderParentItems.map((item) => (
+                        <TableColumn
+                          key={item.name}
+                          className={`text-center ${item.className}`}
+                        >
+                          {item.name}
+                        </TableColumn>
+                      ))}
+                    </TableHeader>
+                    <TableBody>
+                      <TableRow
+                        key={item.dateContents[0].id}
+                        className="bg-gray-50"
+                      >
+                        <TableCell className="text-center">
+                          {item.dateContents[0].id}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          {item.dateContents[0].date}
+                        </TableCell>
+                        <TableCell className="text-center flex justify-evenly">
+                          <DocumentArrowDownIcon className="text-secondary w-8 h-8" />
+                          <TrashIcon className="text-danger w-8 h-8" />
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                  <Table
+                    aria-label="Periode Table"
+                    className={`mt-2 ${
+                      index === tableItems.length - 1 ? "" : "mb-8"
+                    }`}
+                  >
+                    <TableHeader>
+                      {tableHeaderChildItems.map((item) => (
+                        <TableColumn
+                          key={item.name}
+                          className={`text-center ${item.className}`}
+                        >
+                          {item.name}
+                        </TableColumn>
+                      ))}
+                    </TableHeader>
+                    <TableBody>
+                      {item.dateContents[0].contents.map((content) => (
+                        <TableRow key={content.id} className="bg-gray-50">
+                          <TableCell className="text-center">
+                            {content.period}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {content.description}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {content.status}
+                          </TableCell>
+                          <TableCell className="text-center flex justify-evenly">
+                            <DocumentArrowDownIcon className="text-secondary w-8 h-8" />
+                            <TrashIcon className="text-danger w-8 h-8" />
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </DefaultLayout>

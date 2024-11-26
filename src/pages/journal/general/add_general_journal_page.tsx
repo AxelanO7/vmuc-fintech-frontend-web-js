@@ -8,13 +8,13 @@ import {
   TableRow,
 } from "@nextui-org/react";
 import DefaultLayout from "../../../layouts/default_layout";
-import { generalJournaType } from "../../../core/interfaces/data";
+import { generalJournalType } from "../../../core/interfaces/data";
 import { breadcrumsItem } from "../../../core/interfaces/props";
 import Breadcrumb from "../../../components/breadcrumb";
 
 export default function AddGeneralJournalPage() {
   // ~*~ // Table // ~*~ //
-  const tableItems: generalJournaType[] = [
+  const tableItems: generalJournalType[] = [
     {
       id: 1,
       period: "Mei/2024",
@@ -158,7 +158,7 @@ export default function AddGeneralJournalPage() {
                         dataEdit: item,
                       })} */}
                       <p>test</p>
-                      <TrashIcon className="text-danger w-10 h-10" />
+                      <TrashIcon className="text-danger w-6 h-6" />
                     </TableCell>
                   </TableRow>
                 </TableBody>
@@ -203,7 +203,7 @@ export default function AddGeneralJournalPage() {
                           action: "edit",
                           dataEdit: item,
                         })} */}
-                        <TrashIcon className="text-danger w-10 h-10" />
+                        <TrashIcon className="text-danger w-6 h-6" />
                       </TableCell>
                     </TableRow>
                   ))}

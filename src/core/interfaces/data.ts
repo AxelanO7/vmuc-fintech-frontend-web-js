@@ -5,7 +5,7 @@ export interface refPostType {
   accountType: string;
 }
 
-export interface generalJournaType {
+export interface generalJournalType {
   id: number;
   period: string;
   description: string;
@@ -19,4 +19,21 @@ export interface generalJournalContentType {
   information: string;
   debit: number;
   credit: number;
+}
+
+export interface dashboardType {
+  dateContents: dashboardDateContentsType[];
+}
+
+export interface dashboardDateContentsType {
+  id: number;
+  date: string;
+  contents: dashboardDateContentType[];
+}
+
+export interface dashboardDateContentType {
+  id: number;
+  period: string;
+  description: string;
+  status: string;
 }
