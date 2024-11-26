@@ -10,7 +10,7 @@ import {
 import DefaultLayout from "../../../layouts/default_layout";
 import { generalJournaType } from "../../../core/interfaces/data";
 
-export default function GeneralJournalPage() {
+export default function AddGeneralJournalPage() {
   // ~*~ // Table // ~*~ //
   const tableItems: generalJournaType[] = [
     {
@@ -118,9 +118,6 @@ export default function GeneralJournalPage() {
       </div>
       <div className="bg-gray-200 m-4 p-8">
         <h1 className="text-3xl font-medium text-gray-600">Jurnal Umum</h1>
-        <div className="flex justify-between mt-4">
-          <p>test</p>
-        </div>
 
         <div className="mt-4">
           {tableItems.map((item, index) => (
@@ -144,6 +141,10 @@ export default function GeneralJournalPage() {
                       {item.description}
                     </TableCell>
                     <TableCell className="text-center flex justify-evenly">
+                      {/* {renderManipulateComponent({
+                        action: "edit",
+                        dataEdit: item,
+                      })} */}
                       <p>test</p>
                       <TrashIcon className="text-danger w-10 h-10" />
                     </TableCell>
@@ -185,7 +186,11 @@ export default function GeneralJournalPage() {
                         {content.credit}
                       </TableCell>
                       <TableCell className="text-center flex justify-evenly">
-                        <p>test</p>
+                        <p>Test</p>
+                        {/* {renderManipulateComponent({
+                          action: "edit",
+                          dataEdit: item,
+                        })} */}
                         <TrashIcon className="text-danger w-10 h-10" />
                       </TableCell>
                     </TableRow>

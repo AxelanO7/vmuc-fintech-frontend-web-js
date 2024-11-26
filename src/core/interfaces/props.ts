@@ -29,3 +29,12 @@ export interface propsManipulateGeneralJournal {
   action: string;
   onSave: ({ action }: { action: string }) => void;
 }
+
+export interface propsBreadcrums {
+  items: breadcrumsItem[];
+}
+
+export interface breadcrumsItem {
+  label: string;
+  href: string;
+}

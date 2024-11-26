@@ -1,7 +1,6 @@
 import {
   CalendarDateRangeIcon,
   DocumentArrowDownIcon,
-  HomeIcon,
   PlusIcon,
   TrashIcon,
 } from "@heroicons/react/16/solid";
@@ -20,8 +19,11 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
+import Breadcrumb from "../components/breadcrumb";
+import { breadcrumsItem } from "../core/interfaces/props";
 
 export default function DashboardPage() {
+  // ~*~ // Date // ~*~ //
   const dateNow = new Date().toLocaleDateString("id-ID", {
     weekday: "long",
     year: "numeric",
@@ -80,14 +82,23 @@ export default function DashboardPage() {
     },
   ];
 
+  // ~*~ // End of Date // ~*~ //
+
+  // ~*~ // Breadcrumb // ~*~ //
+  const breadcrumbItems: breadcrumsItem[] = [
+    {
+      label: "Dashboard",
+      href: "#",
+    },
+  ];
+
+  // ~*~ // End of Breadcrumb // ~*~ //
+
   return (
     <>
       <DefaultLayout>
         <h1 className="text-3xl font-bold mx-6 pt-4">Dashboard</h1>
-        <div className="flex items-center bg-gray-300 px-6 py-2">
-          <HomeIcon className="w-5 h-5" />
-          <p className="ml-2 font-semibold">Dashboard</p>
-        </div>
+        <Breadcrumb items={breadcrumbItems} />
         <div className="mx-6">
           <div className="flex items-center mt-6 bg-gray-200 p-4">
             <CalendarDateRangeIcon className="w-10 h-10" />
