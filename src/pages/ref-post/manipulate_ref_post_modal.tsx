@@ -12,7 +12,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/react";
-import { paramsManipulateRefPost } from "../../core/interfaces/params";
+import { propsManipulateRefPost } from "../../core/interfaces/props";
 
 export default function ManipulateRefPostModal({
   isOpen,
@@ -27,7 +27,7 @@ export default function ManipulateRefPostModal({
   dataEdit,
   action,
   onSave,
-}: paramsManipulateRefPost) {
+}: propsManipulateRefPost) {
   const typeAccount = [
     {
       key: 1,

@@ -12,7 +12,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/react";
-import { paramsManipulateGeneralJournal } from "../../../core/interfaces/params";
+import { propsManipulateGeneralJournal } from "../../../core/interfaces/props";
 
 export default function ManipulateGeneralJournalModal({
   isOpen,
@@ -27,7 +27,7 @@ export default function ManipulateGeneralJournalModal({
   dataEdit,
   action,
   onSave,
-}: paramsManipulateGeneralJournal) {
+}: propsManipulateGeneralJournal) {
   const typeAccount = [
     {
       key: 1,

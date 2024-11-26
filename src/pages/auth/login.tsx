@@ -21,7 +21,7 @@ const LoginPage = () => {
   };
 
   const handleLogin = async () => {
-    if (!validateInput()) return;
+    // if (!validateInput()) return;
     window.location.href = "/dashboard";
 
     // axios

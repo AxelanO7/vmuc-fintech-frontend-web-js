@@ -16,6 +16,7 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/ref" element={<RefPostPage />} />
           <Route path="/general-journal" element={<GeneralJournalPage />} />
+          <Route path="/general-journal/add" element={<GeneralJournalPage />} />
         </Routes>
       </BrowserRouter>
     </RecoilRoot>

@@ -1,6 +1,6 @@
 import { generalJournaType, refPostType } from "./data";
 
-export interface paramsManipulateRefPost {
+export interface propsManipulateRefPost {
   isOpen: boolean;
   onOpen: () => void;
   onOpenChange: (open: boolean) => void;
@@ -15,7 +15,7 @@ export interface paramsManipulateRefPost {
   onSave: ({ action }: { action: string }) => void;
 }
 
-export interface paramsManipulateGeneralJournal {
+export interface propsManipulateGeneralJournal {
   isOpen: boolean;
   onOpen: () => void;
   onOpenChange: (open: boolean) => void;

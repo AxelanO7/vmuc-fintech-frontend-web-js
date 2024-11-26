@@ -90,6 +90,29 @@ export default function GeneralJournalPage() {
         },
       ],
     },
+    {
+      id: 2,
+      period: "Mei/2024",
+      description: "Jurnal Umum",
+      contents: [
+        {
+          id: 1,
+          date: "01/05/2024",
+          ref_post: "1",
+          information: "Pembelian Barang",
+          debit: 1000000,
+          credit: 0,
+        },
+        {
+          id: 2,
+          date: "01/05/2024",
+          ref_post: "2",
+          information: "Pembelian Barang",
+          debit: 0,
+          credit: 1000000,
+        },
+      ],
+    },
   ];
 
   const tableHeaderParentItems = [
@@ -113,15 +136,11 @@ export default function GeneralJournalPage() {
 
   const tableHeaderChildItems = [
     {
-      name: "#",
-      className: "w-12",
-    },
-    {
       name: "Tanggal",
       className: "",
     },
     {
-      name: "Ref/Posting",
+      name: "Ref Post",
       className: "",
     },
     {
@@ -162,23 +181,24 @@ export default function GeneralJournalPage() {
             </Button>
           </div>
         </div>
-        {/* <Table aria-label="Periode Table" className="mt-8">
-          <TableHeader>
-            {tableHeaderParentItems.map((item) => (
-              <TableColumn
-                key={item.name}
-                className={`text-center ${item.className}`}
-              >
-                {item.name}
-              </TableColumn>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {tableItems.flatMap((item) =>
-              item.contents.map((content) => (
-                <>
-                  <TableRow key={content.id} className="bg-gray-50">
-                    <TableCell className="text-center">{content.id}</TableCell>
+
+        <div className="mt-4">
+          {tableItems.map((item, index) => (
+            <div key={item.id}>
+              <Table aria-label="Periode Table">
+                <TableHeader>
+                  {tableHeaderParentItems.map((item) => (
+                    <TableColumn
+                      key={item.name}
+                      className={`text-center ${item.className}`}
+                    >
+                      {item.name}
+                    </TableColumn>
+                  ))}
+                </TableHeader>
+                <TableBody>
+                  <TableRow key={item.id} className="bg-gray-50">
+                    <TableCell className="text-center">{item.id}</TableCell>
                     <TableCell className="text-center">{item.period}</TableCell>
                     <TableCell className="text-center">
                       {item.description}
@@ -191,12 +211,56 @@ export default function GeneralJournalPage() {
                       <TrashIcon className="text-danger w-10 h-10" />
                     </TableCell>
                   </TableRow>
-                </>
-              ))
-            )}
-          </TableBody>
-        </Table> */}
-        {/* TODO(axel) : Table */}
+                </TableBody>
+              </Table>
+              <Table
+                aria-label="Periode Table"
+                className={`mt-2 ${
+                  index === tableItems.length - 1 ? "" : "mb-8"
+                }`}
+              >
+                <TableHeader>
+                  {tableHeaderChildItems.map((item) => (
+                    <TableColumn
+                      key={item.name}
+                      className={`text-center ${item.className}`}
+                    >
+                      {item.name}
+                    </TableColumn>
+                  ))}
+                </TableHeader>
+                <TableBody>
+                  {item.contents.map((content) => (
+                    <TableRow key={content.id} className="bg-gray-50">
+                      <TableCell className="text-center">
+                        {content.date}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {content.ref_post}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {content.information}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {content.debit}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {content.credit}
+                      </TableCell>
+                      <TableCell className="text-center flex justify-evenly">
+                        {renderManipulateComponent({
+                          action: "edit",
+                          dataEdit: item,
+                        })}
+                        <TrashIcon className="text-danger w-10 h-10" />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          ))}
+        </div>
       </div>
     </DefaultLayout>
   );
