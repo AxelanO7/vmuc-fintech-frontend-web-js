@@ -5,6 +5,7 @@ import NotFound from "./pages/common/not_found";
 import DashboardPage from "./pages/dashboard_page";
 import RefPostPage from "./pages/ref-post/ref_post_page";
 import GeneralJournalPage from "./pages/journal/general/general_journal_page";
+import AddGeneralJournalPage from "./pages/journal/general/add_general_journal_page";
 
 function App() {
   return (
@@ -16,7 +17,10 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/ref" element={<RefPostPage />} />
           <Route path="/general-journal" element={<GeneralJournalPage />} />
-          <Route path="/general-journal/add" element={<GeneralJournalPage />} />
+          <Route
+            path="/general-journal/add"
+            element={<AddGeneralJournalPage />}
+          />
         </Routes>
       </BrowserRouter>
     </RecoilRoot>

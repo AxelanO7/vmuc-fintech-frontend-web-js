@@ -1,4 +1,4 @@
-import { HomeIcon, TrashIcon } from "@heroicons/react/16/solid";
+import { TrashIcon } from "@heroicons/react/16/solid";
 import {
   Table,
   TableBody,
@@ -9,6 +9,8 @@ import {
 } from "@nextui-org/react";
 import DefaultLayout from "../../../layouts/default_layout";
 import { generalJournaType } from "../../../core/interfaces/data";
+import { breadcrumsItem } from "../../../core/interfaces/props";
+import Breadcrumb from "../../../components/breadcrumb";
 
 export default function GeneralJournalPage() {
   // ~*~ // Table // ~*~ //
@@ -109,13 +111,20 @@ export default function GeneralJournalPage() {
 
   // ~*~ // End of Table // ~*~ //
 
+  // ~*~ // Breadcrumb // ~*~ //
+  const breadcrumbItems: breadcrumsItem[] = [
+    {
+      label: "Jurnal Umum",
+      href: "general-journal",
+    },
+  ];
+
+  // ~*~ // End of Breadcrumb // ~*~ //
+
   return (
     <DefaultLayout>
       <h1 className="text-3xl font-bold mx-6 pt-4">Jurnal Umum</h1>
-      <div className="flex items-center bg-gray-300 px-6 py-2">
-        <HomeIcon className="w-5 h-5" />
-        <p className="ml-2 font-semibold">Jurnal Umum</p>
-      </div>
+      <Breadcrumb items={breadcrumbItems} />
       <div className="bg-gray-200 m-4 p-8">
         <h1 className="text-3xl font-medium text-gray-600">Jurnal Umum</h1>
         <div className="flex justify-between mt-4">

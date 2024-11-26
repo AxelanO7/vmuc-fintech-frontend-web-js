@@ -1,8 +1,4 @@
-import {
-  HomeIcon,
-  MagnifyingGlassIcon,
-  TrashIcon,
-} from "@heroicons/react/16/solid";
+import { MagnifyingGlassIcon, TrashIcon } from "@heroicons/react/16/solid";
 import DefaultLayout from "../../layouts/default_layout";
 import {
   Button,
@@ -18,6 +14,8 @@ import {
 import ManipulateRefPostDialog from "./manipulate_ref_post_modal";
 import { useState } from "react";
 import { refPostType } from "../../core/interfaces/data";
+import { breadcrumsItem } from "../../core/interfaces/props";
+import Breadcrumb from "../../components/breadcrumb";
 
 export default function RefPostPage() {
   // ~*~ // Manipulate Modal // ~*~ //
@@ -126,13 +124,20 @@ export default function RefPostPage() {
 
   // ~*~ // End of Table // ~*~ //
 
+  // ~*~ // Breadcrumb // ~*~ //
+  const breadcrumbItems: breadcrumsItem[] = [
+    {
+      label: "Akun Ref Post",
+      href: "ref",
+    },
+  ];
+
+  // ~*~ // End of Breadcrumb // ~*~ //
+
   return (
     <DefaultLayout>
       <h1 className="text-3xl font-bold mx-6 pt-4">Akun Ref Post</h1>
-      <div className="flex items-center bg-gray-300 px-6 py-2">
-        <HomeIcon className="w-5 h-5" />
-        <p className="ml-2 font-semibold">Akun Ref Post</p>
-      </div>
+      <Breadcrumb items={breadcrumbItems} />
       <div className="bg-gray-200 m-4 p-8">
         <h1 className="text-3xl font-medium text-gray-600">Akun Ref Post</h1>
         <div className="flex justify-between mt-4">
