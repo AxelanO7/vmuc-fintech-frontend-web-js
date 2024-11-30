@@ -1,7 +1,7 @@
 import {
+  DocumentArrowDownIcon,
   MagnifyingGlassIcon,
   PlusIcon,
-  PrinterIcon,
   TrashIcon,
 } from "@heroicons/react/16/solid";
 import {
@@ -200,7 +200,7 @@ export default function GeneralJournalPage() {
                       {item.description}
                     </TableCell>
                     <TableCell className="text-center flex justify-evenly">
-                      <PrinterIcon className="text-primary w-6 h-6" />
+                      <DocumentArrowDownIcon className="text-primary w-6 h-6" />
                       <TrashIcon className="text-danger w-6 h-6" />
                     </TableCell>
                   </TableRow>
