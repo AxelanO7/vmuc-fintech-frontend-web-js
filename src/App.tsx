@@ -6,6 +6,8 @@ import DashboardPage from "./pages/dashboard_page";
 import RefPostPage from "./pages/ref-post/ref_post_page";
 import GeneralJournalPage from "./pages/journal/general/general_journal_page";
 import AddGeneralJournalPage from "./pages/journal/general/add_general_journal_page";
+import LedgerPage from "./pages/journal/ledger/ledger_page";
+import TrialBalancePage from "./pages/journal/trial-balance/trial_balance_page";
 
 function App() {
   return (
@@ -16,11 +18,14 @@ function App() {
           <Route path="/" element={<LoginPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/ref" element={<RefPostPage />} />
+          // ~*~ // ~*~ // ~*~ //
           <Route path="/general-journal" element={<GeneralJournalPage />} />
           <Route
             path="/general-journal/add"
             element={<AddGeneralJournalPage />}
           />
+          <Route path="/ledger" element={<LedgerPage />} />
+          <Route path="/trial-balance" element={<TrialBalancePage />} />
         </Routes>
       </BrowserRouter>
     </RecoilRoot>

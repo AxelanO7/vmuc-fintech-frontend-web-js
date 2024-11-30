@@ -43,7 +43,7 @@ export default function Sidebar() {
     },
     {
       title: "Buku Besar",
-      route: "/journal",
+      route: "/ledger",
     },
     {
       title: "Neraca Saldo",
