@@ -51,7 +51,7 @@ export default function Sidebar() {
     },
     {
       title: "Jurnal Penyesuaian",
-      route: "/journal",
+      route: "/adjustment-entry",
     },
     {
       title: "Neraca Lajur",
