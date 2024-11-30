@@ -149,7 +149,7 @@ export default function GeneralJournalPage() {
   // ~*~ // End of Breadcrumb // ~*~ //
 
   const handleAdd = () => {
-    window.location.replace("/" + "general-journal/add");
+    window.location.replace("/" + "add-general-journal");
   };
 
   return (

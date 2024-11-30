@@ -103,7 +103,7 @@ export default function AddGeneralJournalPage() {
     },
     {
       label: "Tambah Jurnal Umum",
-      href: "general-journal/add",
+      href: "add-general-journal",
     },
   ];
 
