@@ -11,6 +11,7 @@ import LedgerPage from "./pages/journal/ledger/ledger_page";
 import TrialBalancePage from "./pages/journal/trial-balance/trial_balance_page";
 import AddTrialBalancePage from "./pages/journal/trial-balance/add_trial_balance_page";
 import AdjustmentEntryPage from "./pages/journal/adjustment-entry/adjustment_entry_page";
+import AddAdjustmentEntryPage from "./pages/journal/adjustment-entry/add_adjustment-entry_page";
 
 function App() {
   return (
@@ -31,6 +32,10 @@ function App() {
           <Route path="/trial-balance" element={<TrialBalancePage />} />
           <Route path="/add-trial-balance" element={<AddTrialBalancePage />} />
           <Route path="/adjustment-entry" element={<AdjustmentEntryPage />} />
+          <Route
+            path="/add-adjustment-entry"
+            element={<AddAdjustmentEntryPage />}
+          />
         </Routes>
       </BrowserRouter>
     </RecoilRoot>
