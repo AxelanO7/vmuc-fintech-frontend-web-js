@@ -15,7 +15,7 @@ export interface generalJournalType {
 export interface generalJournalContentType {
   id: number;
   date: string;
-  ref_post: string;
+  ref_post: refPostType;
   information: string;
   debit: number;
   credit: number;
