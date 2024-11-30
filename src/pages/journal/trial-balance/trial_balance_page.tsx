@@ -145,7 +145,7 @@ export default function TrialBalancePage() {
   // ~*~ // End of Breadcrumb // ~*~ //
 
   const handleAdd = () => {
-    window.location.replace("/" + "trial-balance/add");
+    window.location.replace("/" + "add-trial-balance");
   };
 
   return (
