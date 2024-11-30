@@ -30,7 +30,12 @@ export default function GeneralJournalPage() {
         {
           id: 1,
           date: "01/05/2024",
-          ref_post: "1",
+          ref_post: {
+            id: 1,
+            accountName: "test",
+            accountCode: "001",
+            accountType: "test",
+          },
           information: "Pembelian Barang",
           debit: 1000000,
           credit: 0,
@@ -38,7 +43,12 @@ export default function GeneralJournalPage() {
         {
           id: 2,
           date: "01/05/2024",
-          ref_post: "2",
+          ref_post: {
+            id: 1,
+            accountName: "test",
+            accountCode: "001",
+            accountType: "test",
+          },
           information: "Pembelian Barang",
           debit: 0,
           credit: 1000000,
@@ -53,7 +63,12 @@ export default function GeneralJournalPage() {
         {
           id: 1,
           date: "01/05/2024",
-          ref_post: "1",
+          ref_post: {
+            id: 1,
+            accountName: "test",
+            accountCode: "001",
+            accountType: "test",
+          },
           information: "Pembelian Barang",
           debit: 1000000,
           credit: 0,
@@ -61,7 +76,12 @@ export default function GeneralJournalPage() {
         {
           id: 2,
           date: "01/05/2024",
-          ref_post: "2",
+          ref_post: {
+            id: 1,
+            accountName: "test",
+            accountCode: "001",
+            accountType: "test",
+          },
           information: "Pembelian Barang",
           debit: 0,
           credit: 1000000,
@@ -135,12 +155,19 @@ export default function GeneralJournalPage() {
   return (
     <DefaultLayout>
       <h1 className="text-3xl font-bold mx-6 pt-4">Jurnal Umum</h1>
+
       <Breadcrumb items={breadcrumbItems} />
+
       <div className="bg-gray-200 m-4 p-8">
         <h1 className="text-3xl font-medium text-gray-600">Jurnal Umum</h1>
+
         <div className="flex justify-between mt-4">
-          <Button className="w-max" color="primary" onPress={handleAdd}>
-            <PlusIcon className="w-5 h-5" />
+          <Button
+            className="w-max"
+            color="primary"
+            onPress={handleAdd}
+            startContent={<PlusIcon className="w-5 h-5" />}
+          >
             Jurnal Umum
           </Button>
           <div className="flex gap-2">
@@ -202,7 +229,7 @@ export default function GeneralJournalPage() {
                         {content.date}
                       </TableCell>
                       <TableCell className="text-center">
-                        {content.ref_post}
+                        {content.ref_post.accountName}
                       </TableCell>
                       <TableCell className="text-center">
                         {content.information}

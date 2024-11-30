@@ -66,8 +66,12 @@ export default function ManipulateRefPostModal({
           }}
         />
       ) : (
-        <Button className="w-max" color="primary" onPress={onOpen}>
-          <PlusIcon className="w-5 h-5" />
+        <Button
+          className="w-max"
+          color="primary"
+          onPress={onOpen}
+          startContent={<PlusIcon className="w-5 h-5" />}
+        >
           Ref Post
         </Button>
       )}

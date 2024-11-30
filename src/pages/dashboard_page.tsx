@@ -172,16 +172,21 @@ export default function DashboardPage() {
             <div className="flex justify-between">
               <div className="flex space-x-4">
                 <Input type="date" />
-                <Button className="w-full" color="primary">
-                  <PlusIcon className="w-5 h-5" />
+                <Button
+                  className="w-full"
+                  color="primary"
+                  startContent={<PlusIcon className="w-5 h-5" />}
+                >
                   Tambah Periode
                 </Button>
               </div>
               <Dropdown>
                 <DropdownTrigger>
-                  <Button variant="bordered">
+                  <Button
+                    variant="bordered"
+                    endContent={<ChevronDownIcon className="w-5 h-5" />}
+                  >
                     Periode
-                    <ChevronDownIcon className="w-5 h-5" />
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Static Actions">
