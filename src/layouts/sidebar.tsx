@@ -47,7 +47,7 @@ export default function Sidebar() {
     },
     {
       title: "Neraca Saldo",
-      route: "/journal",
+      route: "/trial-balance",
     },
     {
       title: "Jurnal Penyesuaian",
