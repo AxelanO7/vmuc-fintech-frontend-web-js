@@ -45,3 +45,19 @@ export interface employeeType {
   address: string;
   position: string;
 }
+
+export interface payrollType {
+  id: number;
+  period: string;
+  description: string;
+  contents: payrollContentType[];
+}
+
+export interface payrollContentType {
+  id: number;
+  employee: employeeType;
+  salary: number;
+  bonus: number;
+  deduction: number;
+  total: number;
+}
