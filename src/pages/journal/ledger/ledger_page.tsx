@@ -136,7 +136,7 @@ export default function LedgerPage() {
                 <Dropdown>
                   <DropdownTrigger>
                     <Button
-                      variant="bordered"
+                      variant="faded"
                       endContent={<ChevronDownIcon className="w-5 h-5" />}
                     >
                       Periode
