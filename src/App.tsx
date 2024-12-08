@@ -16,6 +16,8 @@ import WorkSheetPage from "./pages/journal/work-sheet/work_sheet_page";
 import IncomeStatementPage from "./pages/journal/income-statement/income_statement_page";
 import PeriodReportPage from "./pages/period-report/period_report_page";
 import EmployeePage from "./pages/employee/employee_page";
+import PayrollPage from "./pages/payroll/payroll_page";
+import AddPayrollPage from "./pages/payroll/add_payroll_page";
 
 function App() {
   return (
@@ -51,6 +53,8 @@ function App() {
           {/* ~*~ // End of Journal // ~*~ */}
           <Route path="/period-report" element={<PeriodReportPage />} />
           <Route path="/employee" element={<EmployeePage />} />
+          <Route path="/payroll" element={<PayrollPage />} />
+          <Route path="/add-payroll" element={<AddPayrollPage />} />
         </Routes>
       </BrowserRouter>
     </RecoilRoot>
