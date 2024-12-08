@@ -94,11 +94,11 @@ export default function AddAdjustmentEntryPage() {
   // ~*~ // Breadcrumb // ~*~ //
   const breadcrumbItems: breadcrumsItem[] = [
     {
-      label: "Neraca Saldo",
+      label: "Jurnal Penyesuaian",
       href: "trial-balance",
     },
     {
-      label: "Tambah Neraca Saldo",
+      label: "Tambah Jurnal Penyesuaian",
       href: "add-trial-balance",
     },
   ];
@@ -107,12 +107,14 @@ export default function AddAdjustmentEntryPage() {
 
   return (
     <DefaultLayout>
-      <h1 className="text-3xl font-bold mx-6 pt-4">Neraca Saldo</h1>
+      <h1 className="text-3xl font-bold mx-6 pt-4">Jurnal Penyesuaian</h1>
 
       <Breadcrumb items={breadcrumbItems} />
 
       <div className="bg-gray-200 mt-4 mx-4 py-8 px-4">
-        <h1 className="text-3xl font-medium text-gray-600">Neraca Saldo</h1>
+        <h1 className="text-3xl font-medium text-gray-600">
+          Jurnal Penyesuaian
+        </h1>
 
         <div className="flex mt-8 gap-4 ml-8">
           <div>
