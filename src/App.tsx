@@ -12,6 +12,9 @@ import TrialBalancePage from "./pages/journal/trial-balance/trial_balance_page";
 import AddTrialBalancePage from "./pages/journal/trial-balance/add_trial_balance_page";
 import AdjustmentEntryPage from "./pages/journal/adjustment-entry/adjustment_entry_page";
 import AddAdjustmentEntryPage from "./pages/journal/adjustment-entry/add_adjustment-entry_page";
+import WorkSheetPage from "./pages/journal/work-sheet/work_sheet_page";
+import IncomeStatementPage from "./pages/journal/income-statement/income_statement_page";
+import PeriodReportPage from "./pages/period-report/period_report_page";
 
 function App() {
   return (
@@ -23,19 +26,29 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/ref" element={<RefPostPage />} />
           {/* ~*~ // Journal // ~*~ */}
+          {/* jurnal umum */}
           <Route path="/general-journal" element={<GeneralJournalPage />} />
           <Route
             path="/add-general-journal"
             element={<AddGeneralJournalPage />}
           />
+          {/* buku besar */}
           <Route path="/ledger" element={<LedgerPage />} />
+          {/* neraca saldo */}
           <Route path="/trial-balance" element={<TrialBalancePage />} />
           <Route path="/add-trial-balance" element={<AddTrialBalancePage />} />
+          {/* jurnal penyesuaian */}
           <Route path="/adjustment-entry" element={<AdjustmentEntryPage />} />
           <Route
             path="/add-adjustment-entry"
             element={<AddAdjustmentEntryPage />}
           />
+          {/* neraca lajur */}
+          <Route path="/work-sheet" element={<WorkSheetPage />} />
+          {/* laba rugi */}
+          <Route path="/income-statement" element={<IncomeStatementPage />} />
+          {/* ~*~ // End of Journal // ~*~ */}
+          <Route path="/period-report" element={<PeriodReportPage />} />
         </Routes>
       </BrowserRouter>
     </RecoilRoot>

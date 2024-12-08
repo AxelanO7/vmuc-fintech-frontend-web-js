@@ -33,7 +33,7 @@ export default function Sidebar() {
   //   "Neraca Saldo",
   //   "Jurnal Penyesuaian",
   //   "Neraca Lajur",
-  //   "Laba Rugi",
+  //   "Laba Rugi",a
   // ];
 
   const journalItems = [
@@ -55,11 +55,11 @@ export default function Sidebar() {
     },
     {
       title: "Neraca Lajur",
-      route: "/journal",
+      route: "/work-sheet",
     },
     {
       title: "Laba Rugi",
-      route: "/journal",
+      route: "/income-statement",
     },
   ];
 
@@ -147,7 +147,7 @@ export default function Sidebar() {
             className={`${
               sidebarOpen ? "mx-8 h-16" : "mx-4 h-12"
             } flex items-center`}
-            // onClick={() => handleSidebar("/report")}
+            onClick={() => handleSidebar("/period-report")}
           >
             <DocumentChartBarIcon className="h-6 w-6" />
             {sidebarOpen && <p className="ml-2">Laporan</p>}
