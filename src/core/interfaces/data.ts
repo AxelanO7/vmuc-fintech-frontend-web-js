@@ -37,3 +37,11 @@ export interface dashboardDateContentType {
   description: string;
   status: string;
 }
+
+export interface employeeType {
+  id: number;
+  name: string;
+  phoneNumber: string;
+  address: string;
+  position: string;
+}
