@@ -15,6 +15,7 @@ import AddAdjustmentEntryPage from "./pages/journal/adjustment-entry/add_adjustm
 import WorkSheetPage from "./pages/journal/work-sheet/work_sheet_page";
 import IncomeStatementPage from "./pages/journal/income-statement/income_statement_page";
 import PeriodReportPage from "./pages/period-report/period_report_page";
+import EmployeePage from "./pages/employee/employee_page";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
           <Route path="/income-statement" element={<IncomeStatementPage />} />
           {/* ~*~ // End of Journal // ~*~ */}
           <Route path="/period-report" element={<PeriodReportPage />} />
+          <Route path="/employee" element={<EmployeePage />} />
         </Routes>
       </BrowserRouter>
     </RecoilRoot>
