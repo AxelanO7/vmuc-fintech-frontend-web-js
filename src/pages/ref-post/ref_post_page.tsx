@@ -67,51 +67,51 @@ export default function RefPostPage() {
   const tableItems: refPostType[] = [
     {
       id: 1,
-      accountName: "Kas",
-      accountCode: "110",
-      accountType: "Asset",
+      name: "Kas",
+      phoneNumber: "110",
+      address: "Asset",
     },
     {
       id: 2,
-      accountName: "Piutang",
-      accountCode: "111",
-      accountType: "Asset",
+      name: "Piutang",
+      phoneNumber: "111",
+      address: "Asset",
     },
     {
       id: 3,
-      accountName: "Perlengkapan",
-      accountCode: "112",
-      accountType: "Asset",
+      name: "Perlengkapan",
+      phoneNumber: "112",
+      address: "Asset",
     },
     {
       id: 4,
-      accountName: "Peralatan",
-      accountCode: "113",
-      accountType: "Asset",
+      name: "Peralatan",
+      phoneNumber: "113",
+      address: "Asset",
     },
     {
       id: 5,
-      accountName: "Hutang",
-      accountCode: "210",
-      accountType: "Liabilitas",
+      name: "Hutang",
+      phoneNumber: "210",
+      address: "Liabilitas",
     },
     {
       id: 6,
-      accountName: "Modal",
-      accountCode: "310",
-      accountType: "Modal",
+      name: "Modal",
+      phoneNumber: "310",
+      address: "Modal",
     },
     {
       id: 7,
-      accountName: "Pendapatan",
-      accountCode: "410",
-      accountType: "Pendapatan",
+      name: "Pendapatan",
+      phoneNumber: "410",
+      address: "Pendapatan",
     },
     {
       id: 8,
-      accountName: "Beban",
-      accountCode: "510",
-      accountType: "Beban",
+      name: "Beban",
+      phoneNumber: "510",
+      address: "Beban",
     },
   ];
 
@@ -164,15 +164,11 @@ export default function RefPostPage() {
           <TableBody>
             {tableItems.map((data) => (
               <TableRow key={data.id} className="bg-gray-50">
+                <TableCell className="text-center">{data.name}</TableCell>
                 <TableCell className="text-center">
-                  {data.accountName}
+                  {data.phoneNumber}
                 </TableCell>
-                <TableCell className="text-center">
-                  {data.accountCode}
-                </TableCell>
-                <TableCell className="text-center">
-                  {data.accountType}
-                </TableCell>
+                <TableCell className="text-center">{data.address}</TableCell>
                 <TableCell className="text-center flex justify-evenly">
                   {renderManipulateComponent({
                     action: "edit",
@@ -184,7 +180,6 @@ export default function RefPostPage() {
             ))}
           </TableBody>
         </Table>
-        
       </div>
     </DefaultLayout>
   );

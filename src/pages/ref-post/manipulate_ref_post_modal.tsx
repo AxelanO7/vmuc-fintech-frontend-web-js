@@ -59,9 +59,9 @@ export default function ManipulateRefPostModal({
         <PencilIcon
           className="text-secondary w-10 h-10"
           onClick={() => {
-            setAccountName(dataEdit?.accountName || "");
-            setAccountCode(dataEdit?.accountCode || "");
-            setAccountType(dataEdit?.accountType || "");
+            setAccountName(dataEdit?.name || "");
+            setAccountCode(dataEdit?.phoneNumber || "");
+            setAccountType(dataEdit?.address || "");
             onOpen();
           }}
         />
@@ -80,7 +80,6 @@ export default function ManipulateRefPostModal({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                {isEdit ? "Edit " : "Tambah "}
                 Ref Post
               </ModalHeader>
               <ModalBody>
