@@ -164,7 +164,7 @@ export default function Sidebar() {
             {sidebarOpen && <p className="ml-2">Data Karyawan</p>}
           </div>
         </div>
-        <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
+        <div className="hover:bg-gray-700 cursor-pointesr transition-all duration-300 ease-in-out border-b border-gray-700">
           <div
             className={`${
               sidebarOpen ? "mx-8 h-16" : "mx-4 h-12"
