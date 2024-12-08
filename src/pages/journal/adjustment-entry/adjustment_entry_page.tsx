@@ -138,7 +138,7 @@ export default function AdjustmentEntryPage() {
   const breadcrumbItems: breadcrumsItem[] = [
     {
       label: "Jurnal Penyesuaian",
-      href: "add-adjustment-entry",
+      href: "adjustment-entry",
     },
   ];
 
