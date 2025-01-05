@@ -32,9 +32,9 @@ export default function TrialBalancePage() {
           date: "01/05/2024",
           ref_post: {
             id: 1,
-            accountName: "test",
-            accountCode: "001",
-            accountType: "test",
+            name: "test",
+            code: "001",
+            type: "test",
           },
           information: "Pembelian Barang",
           debit: 1000000,
@@ -45,9 +45,9 @@ export default function TrialBalancePage() {
           date: "01/05/2024",
           ref_post: {
             id: 1,
-            accountName: "test",
-            accountCode: "001",
-            accountType: "test",
+            name: "test",
+            code: "001",
+            type: "test",
           },
           information: "Pembelian Barang",
           debit: 0,
@@ -65,9 +65,9 @@ export default function TrialBalancePage() {
           date: "01/05/2024",
           ref_post: {
             id: 1,
-            accountName: "test",
-            accountCode: "001",
-            accountType: "test",
+            name: "test",
+            code: "001",
+            type: "test",
           },
           information: "Pembelian Barang",
           debit: 1000000,
@@ -78,9 +78,9 @@ export default function TrialBalancePage() {
           date: "01/05/2024",
           ref_post: {
             id: 1,
-            accountName: "test",
-            accountCode: "001",
-            accountType: "test",
+            name: "test",
+            code: "001",
+            type: "test",
           },
           information: "Pembelian Barang",
           debit: 0,
@@ -222,10 +222,10 @@ export default function TrialBalancePage() {
                   {item.contents.map((content) => (
                     <TableRow key={content.id} className="bg-gray-50">
                       <TableCell className="text-center">
-                        {content.ref_post.accountCode}
+                        {content.ref_post.code}
                       </TableCell>
                       <TableCell className="text-center">
-                        {content.ref_post.accountName}
+                        {content.ref_post.name}
                       </TableCell>
                       <TableCell className="text-center">
                         {content.debit}

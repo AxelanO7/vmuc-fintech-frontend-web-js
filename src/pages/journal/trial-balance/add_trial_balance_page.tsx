@@ -39,9 +39,9 @@ export default function AddTrialBalancePage() {
       id: 1,
       date: "01-01-2021",
       ref_post: {
-        accountCode: "001",
-        accountName: "test",
-        accountType: "test",
+        code: "001",
+        name: "test",
+        type: "test",
         id: 1,
       },
     },
@@ -49,15 +49,15 @@ export default function AddTrialBalancePage() {
 
   const refPostItems: refPostType[] = [
     {
-      accountCode: "001",
-      accountName: "test",
-      accountType: "test",
+      code: "001",
+      name: "test",
+      type: "test",
       id: 1,
     },
     {
-      accountCode: "002",
-      accountName: "test",
-      accountType: "test",
+      code: "002",
+      name: "test",
+      type: "test",
       id: 2,
     },
   ];
@@ -150,7 +150,7 @@ export default function AddTrialBalancePage() {
                       <Input
                         placeholder="Pilih nama akun"
                         variant="bordered"
-                        value={item.ref_post.accountName}
+                        value={item.ref_post.name}
                         className="cursor-pointer"
                         onChange={(e) =>
                           setTableItems(
@@ -160,7 +160,7 @@ export default function AddTrialBalancePage() {
                                     ...tableItem,
                                     ref_post: {
                                       ...tableItem.ref_post,
-                                      accountName: e.target.value,
+                                      name: e.target.value,
                                     },
                                   }
                                 : tableItem
@@ -178,7 +178,7 @@ export default function AddTrialBalancePage() {
                             label="Nama Akun"
                             placeholder="Pilih nama akun"
                             variant="bordered"
-                            value={refPostItem.accountName}
+                            value={refPostItem.name}
                             className="cursor-pointer"
                             readOnly
                           />
@@ -190,7 +190,7 @@ export default function AddTrialBalancePage() {
                 <TableCell className="text-center">
                   <Input
                     placeholder="Ref Post"
-                    value={item.ref_post.accountCode}
+                    value={item.ref_post.code}
                     readOnly
                   />
                 </TableCell>
@@ -263,9 +263,9 @@ export default function AddTrialBalancePage() {
                 id: tableItems.length + 1,
                 date: "01-01-2021",
                 ref_post: {
-                  accountCode: "001",
-                  accountName: "test",
-                  accountType: "test",
+                  code: "001",
+                  name: "test",
+                  type: "test",
                   id: 1,
                 },
               },
