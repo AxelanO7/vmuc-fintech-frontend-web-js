@@ -39,7 +39,7 @@ export interface dashboardDateContentType {
 }
 
 export interface employeeType {
-  id: number;
+  id?: number;
   name: string;
   phoneNumber: string;
   address: string;
