@@ -17,7 +17,7 @@ import { refPostType } from "../../core/interfaces/data";
 import { breadcrumsItem } from "../../core/interfaces/props";
 import Breadcrumb from "../../components/breadcrumb";
 import axios from "axios";
-import { getBaseUrl } from "../../helpers/api";
+import { baseUrl } from "../../helpers/api";
 import Swal from "sweetalert2";
 
 export default function RefPostPage() {
@@ -39,10 +39,10 @@ export default function RefPostPage() {
         onOpen={onOpen}
         onOpenChange={onOpenChange}
         currentData={currentData}
+        setCurrentData={setCurrentData}
         setIsEdit={setIsEdit}
         dataEdit={dataEdit}
         staticEdit={staticEdit}
-        setCurrentData={setCurrentData}
         onSave={handleOnSaveManipulate}
       />
     );
@@ -84,13 +84,13 @@ export default function RefPostPage() {
     setCurrentData(null);
   };
 
-  const getRefPostData = async () => {
+  const getRefPosts = async () => {
     try {
-      const res = await axios.get(`${getBaseUrl()}/ref/private/post`);
+      const res = await axios.get(`${baseUrl()}/ref/private/post`);
       setTableItems(res.data.data);
-      console.log("getRefPostData", res);
+      console.log("getRefPosts", res);
     } catch (error) {
-      console.log("getRefPostData error", error);
+      console.log("getRefPosts error", error);
     }
   };
 
@@ -101,12 +101,9 @@ export default function RefPostPage() {
         code: parseInt(currentData?.code?.toString() || ""),
         type: currentData?.type || "",
       };
-      const res = await axios.post(
-        `${getBaseUrl()}/ref/private/post`,
-        postBody
-      );
+      const res = await axios.post(`${baseUrl()}/ref/private/post`, postBody);
       Swal.fire("Berhasil", "Data berhasil ditambahkan", "success");
-      getRefPostData();
+      getRefPosts();
       clearCurrentData();
       console.log("addRefPost", res);
     } catch (error) {
@@ -122,9 +119,9 @@ export default function RefPostPage() {
         code: parseInt(currentData?.code?.toString() || ""),
         type: currentData?.type || "",
       };
-      const res = await axios.put(`${getBaseUrl()}/ref/private/post`, postBody);
+      const res = await axios.put(`${baseUrl()}/ref/private/post`, postBody);
       Swal.fire("Berhasil", "Data berhasil diubah", "success");
-      getRefPostData();
+      getRefPosts();
       clearCurrentData();
       console.log("editRefPost", res);
     } catch (error) {
@@ -134,9 +131,9 @@ export default function RefPostPage() {
 
   const deleteRefPost = async (id: number) => {
     try {
-      const res = await axios.delete(`${getBaseUrl()}/ref/private/post/${id}`);
+      const res = await axios.delete(`${baseUrl()}/ref/private/post/${id}`);
       Swal.fire("Berhasil", "Data berhasil dihapus", "success");
-      getRefPostData();
+      getRefPosts();
       console.log("deleteRefPost", res);
     } catch (error) {
       console.log("deleteRefPost error", error);
@@ -144,7 +141,7 @@ export default function RefPostPage() {
   };
 
   useEffect(() => {
-    getRefPostData();
+    getRefPosts();
   }, []);
 
   return (
