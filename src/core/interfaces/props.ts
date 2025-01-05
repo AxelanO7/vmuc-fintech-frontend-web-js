@@ -23,7 +23,7 @@ export interface propsManipulateGeneralJournal {
   accountType: string;
   setAccountType: (type: string) => void;
   dataEdit?: generalJournalType;
-  action: string;
+  action: actionType;
   onSave: ({ action }: { action: string }) => void;
 }
 
@@ -31,17 +31,12 @@ export interface propsManipulateEmployee {
   isOpen: boolean;
   onOpen: () => void;
   onOpenChange: (open: boolean) => void;
-  employeeName: string;
-  setEmployeeName: (name: string) => void;
-  employeePhoneNumber: string;
-  setEmployeePhoneNumber: (code: string) => void;
-  employeeAddress: string;
-  setEmployeeAddress: (type: string) => void;
-  employeePosition: string;
-  setEmployeePosition: (position: string) => void;
+  setIsEdit: (edit: boolean) => void;
   dataEdit?: employeeType;
-  action: string;
-  onSave: ({ action }: { action: string }) => void;
+  currentData: employeeType | null;
+  setCurrentData: (data: employeeType | null) => void;
+  action: actionType;
+  onSave: () => void;
 }
 
 export interface propsBreadcrums {
@@ -51,4 +46,9 @@ export interface propsBreadcrums {
 export interface breadcrumsItem {
   label: string;
   href: string;
+}
+
+export enum actionType {
+  ADD = "add",
+  EDIT = "edit",
 }
