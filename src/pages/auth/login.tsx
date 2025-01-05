@@ -1,11 +1,15 @@
 import { Button, Input } from "@nextui-org/react";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import swal from "sweetalert2";
+import { getBaseUrl } from "../../helpers/api";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/16/solid";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isRemember, setIsRemember] = useState(false);
+  const [isShowPassword, setIsShowPassword] = useState(false);
 
   const validateInput = () => {
     if (!username) {
@@ -21,33 +25,27 @@ const LoginPage = () => {
   };
 
   const handleLogin = async () => {
-    // if (!validateInput()) return;
-    window.location.href = "/dashboard";
+    if (!validateInput()) return;
 
-    // axios
-    //   .post(
-    //     `
-    //     ${getBaseUrl()}/user/public/login`,
-    //     {
-    //       username: username,
-    //       password: password,
-    //     }
-    //   )
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     localStorage.setItem("token", res.data.token);
-    //     localStorage.setItem("role", res.data.data.role);
-    //     swal.fire("Berhasil!", "Anda berhasil masuk", "success").then(() => {
-    //       window.location.href = "/";
-    //     });
-    //   })
-    //   .catch(() => {
-    //     swal.fire(
-    //       "Gagal!",
-    //       "Kredensial yang Anda masukkan salah. Silakan coba lagi.",
-    //       "error"
-    //     );
-    //   });
+    const payload = {
+      username: username,
+      password: password,
+    };
+
+    try {
+      await axios.post(`${getBaseUrl()}/user/public/login`, payload);
+      localStorage.setItem("token", "token");
+      localStorage.setItem("role", "admin");
+      await swal.fire("Berhasil!", "Anda berhasil masuk", "success");
+      window.location.href = "/dashboard";
+    } catch (error) {
+      console.log(`error login: ${error}`);
+      swal.fire(
+        "Gagal!",
+        "Kredensial yang Anda masukkan salah. Silakan coba lagi.",
+        "error"
+      );
+    }
   };
 
   useEffect(() => {
@@ -66,8 +64,21 @@ const LoginPage = () => {
         <div className="h-4" />
         <Input
           placeholder="Password"
-          type="password"
+          type={isShowPassword ? "text" : "password"}
           onChange={(e) => setPassword(e.target.value)}
+          endContent={
+            !isShowPassword ? (
+              <EyeIcon
+                className="cursor-pointer text-gray-500 w-6 h-6"
+                onClick={() => setIsShowPassword(false)}
+              />
+            ) : (
+              <EyeSlashIcon
+                className="cursor-pointer text-gray-500 w-6 h-6"
+                onClick={() => setIsShowPassword(true)}
+              />
+            )
+          }
         />
         <div className="flex justify-between items-center mt-4">
           <div className="flex">
