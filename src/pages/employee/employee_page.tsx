@@ -132,7 +132,10 @@ export default function EmployeePage() {
         position: currentData?.position || "",
         id_user: 1,
       };
-      const res = await axios.put(`${baseUrlEmployee()}`, postBody);
+      const res = await axios.put(
+        `${baseUrlEmployee()}${currentData?.id}`,
+        postBody
+      );
       Swal.fire("Berhasil", "Data berhasil diubah", "success");
       getEmployees();
       console.log("editEmployee", res);
