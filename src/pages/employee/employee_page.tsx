@@ -180,7 +180,7 @@ export default function EmployeePage() {
               </TableColumn>
             ))}
           </TableHeader>
-          <TableBody>
+          <TableBody emptyContent="Data tidak ditemukan">
             {tableItems.map((data) => (
               <TableRow key={data.id} className="bg-gray-50">
                 <TableCell>{data.name}</TableCell>
