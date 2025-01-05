@@ -133,7 +133,7 @@ export default function EmployeePage() {
         id_user: 1,
       };
       const res = await axios.put(
-        `${baseUrlEmployee()}${currentData?.id}`,
+        `${baseUrlEmployee()}/${currentData?.id}`,
         postBody
       );
       Swal.fire("Berhasil", "Data berhasil diubah", "success");
