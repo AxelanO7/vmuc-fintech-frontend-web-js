@@ -39,9 +39,9 @@ export default function AddAdjustmentEntryPage() {
       id: 1,
       date: "01-01-2021",
       ref_post: {
-        accountCode: "001",
-        accountName: "test",
-        accountType: "test",
+        code: "001",
+        name: "test",
+        type: "test",
         id: 1,
       },
     },
@@ -49,15 +49,15 @@ export default function AddAdjustmentEntryPage() {
 
   const refPostItems: refPostType[] = [
     {
-      accountCode: "001",
-      accountName: "test",
-      accountType: "test",
+      code: "001",
+      name: "test",
+      type: "test",
       id: 1,
     },
     {
-      accountCode: "002",
-      accountName: "test",
-      accountType: "test",
+      code: "002",
+      name: "test",
+      type: "test",
       id: 2,
     },
   ];
@@ -193,7 +193,7 @@ export default function AddAdjustmentEntryPage() {
                       <Input
                         placeholder="Pilih nama akun"
                         variant="bordered"
-                        value={item.ref_post.accountName}
+                        value={item.ref_post.name}
                         className="cursor-pointer"
                         onChange={(e) =>
                           setTableItems(
@@ -203,7 +203,7 @@ export default function AddAdjustmentEntryPage() {
                                     ...tableItem,
                                     ref_post: {
                                       ...tableItem.ref_post,
-                                      accountName: e.target.value,
+                                      name: e.target.value,
                                     },
                                   }
                                 : tableItem
@@ -221,7 +221,7 @@ export default function AddAdjustmentEntryPage() {
                             label="Nama Akun"
                             placeholder="Pilih nama akun"
                             variant="bordered"
-                            value={refPostItem.accountName}
+                            value={refPostItem.name}
                             className="cursor-pointer"
                             readOnly
                           />
@@ -299,9 +299,9 @@ export default function AddAdjustmentEntryPage() {
                 id: tableItems.length + 1,
                 date: "01-01-2021",
                 ref_post: {
-                  accountCode: "001",
-                  accountName: "test",
-                  accountType: "test",
+                  code: "001",
+                  name: "test",
+                  type: "test",
                   id: 1,
                 },
               },
