@@ -12,20 +12,18 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/react";
-import { propsManipulateEmployee } from "../../core/interfaces/props";
+import {
+  actionType,
+  propsManipulateEmployee,
+} from "../../core/interfaces/props";
 
 export default function ManipulateEmployeeModal({
   isOpen,
   onOpen,
   onOpenChange,
-  employeeName,
-  setEmployeeName,
-  employeePhoneNumber,
-  setEmployeePhoneNumber,
-  employeeAddress,
-  setEmployeeAddress,
-  employeePosition,
-  setEmployeePosition,
+  currentData,
+  setCurrentData,
+  setIsEdit,
   dataEdit,
   action,
   onSave,
@@ -41,7 +39,7 @@ export default function ManipulateEmployeeModal({
     },
   ];
 
-  const isEdit = action === "edit";
+  const isEdit = action === actionType.EDIT;
 
   return (
     <>
@@ -49,10 +47,8 @@ export default function ManipulateEmployeeModal({
         <PencilIcon
           className="text-secondary w-10 h-10"
           onClick={() => {
-            setEmployeeName(dataEdit?.name || "");
-            setEmployeePhoneNumber(dataEdit?.phoneNumber || "");
-            setEmployeeAddress(dataEdit?.address || "");
-            setEmployeePosition(dataEdit?.position || "");
+            setCurrentData(dataEdit!);
+            setIsEdit(true);
             onOpen();
           }}
         />
@@ -60,7 +56,11 @@ export default function ManipulateEmployeeModal({
         <Button
           className="w-max"
           color="primary"
-          onPress={onOpen}
+          onPress={() => {
+            setCurrentData(null);
+            setIsEdit(false);
+            onOpen();
+          }}
           startContent={<PlusIcon className="w-5 h-5" />}
         >
           Karyawan
@@ -79,8 +79,16 @@ export default function ManipulateEmployeeModal({
                   label="Nama Karyawan"
                   placeholder="Masukkan nama Karyawan"
                   variant="bordered"
-                  defaultValue={isEdit ? employeeName : ""}
-                  onChange={(e) => setEmployeeName(e.target.value)}
+                  defaultValue={isEdit ? currentData?.name : ""}
+                  onChange={(e) =>
+                    setCurrentData({
+                      ...currentData!,
+                      name: e.target.value,
+                      address: currentData?.address || "",
+                      phoneNumber: currentData?.phoneNumber || "",
+                      position: currentData?.position || "",
+                    })
+                  }
                 />
                 <Dropdown>
                   <DropdownTrigger>
@@ -89,10 +97,10 @@ export default function ManipulateEmployeeModal({
                         label="Jabatan"
                         placeholder="Pilih jabatan"
                         variant="bordered"
-                        value={employeePosition}
+                        value={currentData?.position}
                         className="cursor-pointer"
                         defaultValue={
-                          isEdit ? employeePosition : "Pilih jabatan"
+                          isEdit ? currentData?.position : "Pilih jabatan"
                         }
                         readOnly
                       />
@@ -103,7 +111,13 @@ export default function ManipulateEmployeeModal({
                       <DropdownItem
                         key={index}
                         onClick={() => {
-                          setEmployeePosition(item.label);
+                          setCurrentData({
+                            ...currentData!,
+                            position: item.label,
+                            name: currentData?.name || "",
+                            address: currentData?.address || "",
+                            phoneNumber: currentData?.phoneNumber || "",
+                          });
                         }}
                       >
                         {item.label}
@@ -115,15 +129,31 @@ export default function ManipulateEmployeeModal({
                   label="No Telepon"
                   placeholder="Masukkan no telepon"
                   variant="bordered"
-                  defaultValue={isEdit ? employeePhoneNumber : ""}
-                  onChange={(e) => setEmployeePhoneNumber(e.target.value)}
+                  defaultValue={isEdit ? currentData?.phoneNumber : ""}
+                  onChange={(e) =>
+                    setCurrentData({
+                      ...currentData!,
+                      phoneNumber: e.target.value,
+                      name: currentData?.name || "",
+                      address: currentData?.address || "",
+                      position: currentData?.position || "",
+                    })
+                  }
                 />
                 <Input
                   label="Alamat"
                   placeholder="Masukkan alamat"
                   variant="bordered"
-                  defaultValue={isEdit ? employeeAddress : ""}
-                  onChange={(e) => setEmployeeAddress(e.target.value)}
+                  defaultValue={isEdit ? currentData?.address : ""}
+                  onChange={(e) =>
+                    setCurrentData({
+                      ...currentData!,
+                      address: e.target.value,
+                      name: currentData?.name || "",
+                      phoneNumber: currentData?.phoneNumber || "",
+                      position: currentData?.position || "",
+                    })
+                  }
                 />
               </ModalBody>
               <ModalFooter>
@@ -133,7 +163,7 @@ export default function ManipulateEmployeeModal({
                 <Button
                   color="primary"
                   onPress={() => {
-                    onSave({ action });
+                    onSave();
                     onClose();
                   }}
                 >

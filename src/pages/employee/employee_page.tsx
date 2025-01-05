@@ -12,24 +12,25 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import ManipulateEmployeeDialog from "./manipulate_employee_modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { employeeType } from "../../core/interfaces/data";
-import { breadcrumsItem } from "../../core/interfaces/props";
+import { actionType, breadcrumsItem } from "../../core/interfaces/props";
 import Breadcrumb from "../../components/breadcrumb";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { baseUrlEmployee } from "../../helpers/api";
 
 export default function EmployeePage() {
   // ~*~ // Manipulate Modal // ~*~ //
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [employeeName, setEmployeeName] = useState<string>("");
-  const [employeePhoneNumber, setEmployeePhoneNumber] = useState<string>("");
-  const [employeeAddress, setEmployeeAddress] = useState<string>("");
-  const [employeePosition, setEmployeePosition] = useState<string>("");
+  const [currentData, setCurrentData] = useState<employeeType | null>(null);
+  const [isEdit, setIsEdit] = useState(false);
 
   const renderManipulateComponent = ({
     action,
     dataEdit,
   }: {
-    action: string;
+    action: actionType;
     dataEdit?: employeeType;
   }) => {
     return (
@@ -37,52 +38,28 @@ export default function EmployeePage() {
         isOpen={isOpen}
         onOpen={onOpen}
         onOpenChange={onOpenChange}
-        employeeName={employeeName}
-        setEmployeeName={setEmployeeName}
-        employeePhoneNumber={employeePhoneNumber}
-        setEmployeePhoneNumber={setEmployeePhoneNumber}
-        employeeAddress={employeeAddress}
-        setEmployeeAddress={setEmployeeAddress}
-        employeePosition={employeePosition}
-        setEmployeePosition={setEmployeePosition}
+        currentData={currentData}
+        setCurrentData={setCurrentData}
+        setIsEdit={setIsEdit}
         dataEdit={dataEdit}
         action={action}
-        onSave={() => handleOnSaveManipulate({ action })}
+        onSave={() => handleOnSaveManipulate()}
       />
     );
   };
 
-  const handleOnSaveManipulate = ({ action }: { action: string }) => {
-    console.log("Account Name: ", employeeName);
-    console.log("Account Code: ", employeePhoneNumber);
-    console.log("Account Type: ", employeeAddress);
-
-    if (action === "add") {
-      console.log("Add Karyawan");
+  const handleOnSaveManipulate = () => {
+    if (!isEdit) {
+      addEmployee();
     } else {
-      console.log("Edit Karyawan");
+      editEmployee();
     }
   };
 
   // ~*~ // End of Manipulate Modal // ~*~ //
 
   // ~*~ // Table // ~*~ //
-  const tableItems: employeeType[] = [
-    {
-      id: 1,
-      name: "Agus",
-      phoneNumber: "08123456789",
-      address: "Panjer",
-      position: "Karyawan",
-    },
-    {
-      id: 2,
-      name: "Hendrawan",
-      phoneNumber: "08123456789",
-      address: "Panjer",
-      position: "FO",
-    },
-  ];
+  const [tableItems, setTableItems] = useState<employeeType[]>([]);
 
   const tableHeaderItems = [
     { name: "Nama Pegawai", className: "" },
@@ -116,6 +93,66 @@ export default function EmployeePage() {
 
   // ~*~ // End of Breadcrumb // ~*~ //
 
+  const getEmployees = async () => {
+    try {
+      const res = await axios.get(`${baseUrlEmployee()}`);
+      setTableItems(res.data.data);
+      console.log("getRefPostData", res);
+    } catch (error) {
+      console.log("getRefPostData error", error);
+    }
+  };
+
+  const addEmployee = async () => {
+    try {
+      const postBody: employeeType = {
+        name: currentData?.name || "",
+        phoneNumber: currentData?.phoneNumber || "",
+        address: currentData?.address || "",
+        position: currentData?.position || "",
+      };
+      const res = await axios.post(`${baseUrlEmployee()}`, postBody);
+      Swal.fire("Berhasil", "Data berhasil ditambahkan", "success");
+      getEmployees();
+      console.log("addEmployee", res);
+    } catch (error) {
+      console.log("addEmployee error", error);
+    }
+  };
+
+  const editEmployee = async () => {
+    try {
+      const postBody: employeeType = {
+        id: currentData?.id,
+        name: currentData?.name || "",
+        phoneNumber: currentData?.phoneNumber || "",
+        address: currentData?.address || "",
+        position: currentData?.position || "",
+      };
+      const res = await axios.put(`${baseUrlEmployee()}`, postBody);
+      Swal.fire("Berhasil", "Data berhasil diubah", "success");
+      getEmployees();
+      console.log("editEmployee", res);
+    } catch (error) {
+      console.log("editEmployee error", error);
+    }
+  };
+
+  const deleteEmployee = async (id: number) => {
+    try {
+      const res = await axios.delete(`${baseUrlEmployee()}/${id}`);
+      Swal.fire("Berhasil", "Data berhasil dihapus", "success");
+      getEmployees();
+      console.log("deleteEmployee", res);
+    } catch (error) {
+      console.log("deleteEmployee error", error);
+    }
+  };
+
+  useEffect(() => {
+    getEmployees();
+  }, []);
+
   return (
     <DefaultLayout>
       <h1 className="text-3xl font-bold mx-6 pt-4">Karyawan</h1>
@@ -126,7 +163,7 @@ export default function EmployeePage() {
         <h1 className="text-3xl font-medium text-gray-600">Karyawan</h1>
 
         <div className="flex justify-between mt-4">
-          {renderManipulateComponent({ action: "add" })}
+          {renderManipulateComponent({ action: actionType.ADD })}
           <div className="flex gap-2">
             <Input placeholder="Cari" type="search" />
             <Button color="primary" isIconOnly>
@@ -152,10 +189,15 @@ export default function EmployeePage() {
                 <TableCell>{data.position}</TableCell>
                 <TableCell className="text-center flex justify-evenly">
                   {renderManipulateComponent({
-                    action: "edit",
+                    action: actionType.EDIT,
                     dataEdit: data,
                   })}
-                  <TrashIcon className="text-danger w-6 h-6" />
+                  <TrashIcon
+                    className="text-danger w-6 h-6"
+                    onClick={() => {
+                      deleteEmployee(data.id!);
+                    }}
+                  />
                 </TableCell>
               </TableRow>
             ))}
