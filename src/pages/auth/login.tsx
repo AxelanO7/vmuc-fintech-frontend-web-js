@@ -2,7 +2,7 @@ import { Button, Input } from "@nextui-org/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import swal from "sweetalert2";
-import { getBaseUrl } from "../../helpers/api";
+import { baseUrl } from "../../helpers/api";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/16/solid";
 
 const LoginPage = () => {
@@ -33,7 +33,7 @@ const LoginPage = () => {
     };
 
     try {
-      await axios.post(`${getBaseUrl()}/user/public/login`, payload);
+      await axios.post(`${baseUrl()}/user/public/login`, payload);
       localStorage.setItem("token", "token");
       localStorage.setItem("role", "admin");
       await swal.fire("Berhasil!", "Anda berhasil masuk", "success");
