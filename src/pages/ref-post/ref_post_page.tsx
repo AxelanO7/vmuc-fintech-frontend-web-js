@@ -12,23 +12,25 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import ManipulateRefPostDialog from "./manipulate_ref_post_modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { refPostType } from "../../core/interfaces/data";
 import { breadcrumsItem } from "../../core/interfaces/props";
 import Breadcrumb from "../../components/breadcrumb";
+import axios from "axios";
+import { getBaseUrl } from "../../helpers/api";
+import Swal from "sweetalert2";
 
 export default function RefPostPage() {
   // ~*~ // Manipulate Modal // ~*~ //
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [accountName, setAccountName] = useState<string>("");
-  const [accountCode, setAccountCode] = useState<string>("");
-  const [accountType, setAccountType] = useState<string>("");
+  const [currentData, setCurrentData] = useState<refPostType | null>(null);
+  const [isEdit, setIsEdit] = useState(false);
 
   const renderManipulateComponent = ({
-    action,
+    staticEdit,
     dataEdit,
   }: {
-    action: string;
+    staticEdit: boolean;
     dataEdit?: refPostType;
   }) => {
     return (
@@ -36,84 +38,28 @@ export default function RefPostPage() {
         isOpen={isOpen}
         onOpen={onOpen}
         onOpenChange={onOpenChange}
-        accountName={accountName}
-        setAccountName={setAccountName}
-        accountCode={accountCode}
-        setAccountCode={setAccountCode}
-        accountType={accountType}
-        setAccountType={setAccountType}
+        currentData={currentData}
+        setIsEdit={setIsEdit}
         dataEdit={dataEdit}
-        action={action}
-        onSave={() => handleOnSaveManipulate({ action })}
+        staticEdit={staticEdit}
+        setCurrentData={setCurrentData}
+        onSave={handleOnSaveManipulate}
       />
     );
   };
 
-  const handleOnSaveManipulate = ({ action }: { action: string }) => {
-    console.log("Account Name: ", accountName);
-    console.log("Account Code: ", accountCode);
-    console.log("Account Type: ", accountType);
-
-    if (action === "add") {
-      console.log("Add Ref Post");
+  const handleOnSaveManipulate = () => {
+    if (!isEdit) {
+      addRefPost();
     } else {
-      console.log("Edit Ref Post");
+      editRefPost();
     }
   };
 
   // ~*~ // End of Manipulate Modal // ~*~ //
 
   // ~*~ // Table // ~*~ //
-  const tableItems: refPostType[] = [
-    {
-      id: 1,
-      name: "Kas",
-      phoneNumber: "110",
-      address: "Asset",
-    },
-    {
-      id: 2,
-      name: "Piutang",
-      phoneNumber: "111",
-      address: "Asset",
-    },
-    {
-      id: 3,
-      name: "Perlengkapan",
-      phoneNumber: "112",
-      address: "Asset",
-    },
-    {
-      id: 4,
-      name: "Peralatan",
-      phoneNumber: "113",
-      address: "Asset",
-    },
-    {
-      id: 5,
-      name: "Hutang",
-      phoneNumber: "210",
-      address: "Liabilitas",
-    },
-    {
-      id: 6,
-      name: "Modal",
-      phoneNumber: "310",
-      address: "Modal",
-    },
-    {
-      id: 7,
-      name: "Pendapatan",
-      phoneNumber: "410",
-      address: "Pendapatan",
-    },
-    {
-      id: 8,
-      name: "Beban",
-      phoneNumber: "510",
-      address: "Beban",
-    },
-  ];
+  const [tableItems, setTableItems] = useState<refPostType[]>([]);
 
   const tableHeaderItems: string[] = [
     "Nama Akun",
@@ -134,6 +80,73 @@ export default function RefPostPage() {
 
   // ~*~ // End of Breadcrumb // ~*~ //
 
+  const clearCurrentData = () => {
+    setCurrentData(null);
+  };
+
+  const getRefPostData = async () => {
+    try {
+      const res = await axios.get(`${getBaseUrl()}/ref/private/post`);
+      setTableItems(res.data.data);
+      console.log("getRefPostData", res);
+    } catch (error) {
+      console.log("getRefPostData error", error);
+    }
+  };
+
+  const addRefPost = async () => {
+    try {
+      const postBody: refPostType = {
+        name: currentData?.name || "",
+        code: parseInt(currentData?.code?.toString() || ""),
+        type: currentData?.type || "",
+      };
+      const res = await axios.post(
+        `${getBaseUrl()}/ref/private/post`,
+        postBody
+      );
+      Swal.fire("Berhasil", "Data berhasil ditambahkan", "success");
+      getRefPostData();
+      clearCurrentData();
+      console.log("addRefPost", res);
+    } catch (error) {
+      console.log("addRefPost error", error);
+    }
+  };
+
+  const editRefPost = async () => {
+    try {
+      const postBody: refPostType = {
+        id: currentData?.id,
+        name: currentData?.name || "",
+        code: parseInt(currentData?.code?.toString() || ""),
+        type: currentData?.type || "",
+      };
+      const res = await axios.put(`${getBaseUrl()}/ref/private/post`, postBody);
+      Swal.fire("Berhasil", "Data berhasil diubah", "success");
+      getRefPostData();
+      clearCurrentData();
+      console.log("editRefPost", res);
+    } catch (error) {
+      console.log("editRefPost error", error);
+    }
+  };
+
+  const deleteRefPost = async (id: number) => {
+    try {
+      const res = await axios.delete(`${getBaseUrl()}/ref/private/post/${id}`);
+      Swal.fire("Berhasil", "Data berhasil dihapus", "success");
+      getRefPostData();
+      console.log("deleteRefPost", res);
+    } catch (error) {
+      console.log("deleteRefPost error", error);
+    }
+  };
+
+  useEffect(() => {
+    getRefPostData();
+  }, []);
+
   return (
     <DefaultLayout>
       <h1 className="text-3xl font-bold mx-6 pt-4">Akun Ref Post</h1>
@@ -144,7 +157,7 @@ export default function RefPostPage() {
         <h1 className="text-3xl font-medium text-gray-600">Akun Ref Post</h1>
 
         <div className="flex justify-between mt-4">
-          {renderManipulateComponent({ action: "add" })}
+          {renderManipulateComponent({ staticEdit: false })}
           <div className="flex gap-2">
             <Input placeholder="Cari" type="search" />
             <Button color="primary" isIconOnly>
@@ -161,20 +174,26 @@ export default function RefPostPage() {
               </TableColumn>
             ))}
           </TableHeader>
-          <TableBody>
+          <TableBody emptyContent="Data tidak ditemukan">
             {tableItems.map((data) => (
               <TableRow key={data.id} className="bg-gray-50">
                 <TableCell className="text-center">{data.name}</TableCell>
-                <TableCell className="text-center">
-                  {data.phoneNumber}
-                </TableCell>
-                <TableCell className="text-center">{data.address}</TableCell>
+                <TableCell className="text-center">{data.code}</TableCell>
+                <TableCell className="text-center">{data.type}</TableCell>
                 <TableCell className="text-center flex justify-evenly">
                   {renderManipulateComponent({
-                    action: "edit",
-                    dataEdit: data,
+                    staticEdit: true,
+                    dataEdit: {
+                      id: data.id,
+                      name: data.name,
+                      code: data.code,
+                      type: data.type,
+                    },
                   })}
-                  <TrashIcon className="text-danger w-6 h-6" />
+                  <TrashIcon
+                    className="text-danger w-6 h-6"
+                    onClick={() => deleteRefPost(data?.id || 0)}
+                  />
                 </TableCell>
               </TableRow>
             ))}

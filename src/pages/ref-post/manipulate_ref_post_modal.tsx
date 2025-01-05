@@ -18,14 +18,11 @@ export default function ManipulateRefPostModal({
   isOpen,
   onOpen,
   onOpenChange,
-  accountName,
-  setAccountName,
-  accountCode,
-  setAccountCode,
-  accountType,
-  setAccountType,
+  currentData,
+  setCurrentData,
+  setIsEdit,
   dataEdit,
-  action,
+  staticEdit,
   onSave,
 }: propsManipulateRefPost) {
   const typeAccount = [
@@ -51,17 +48,14 @@ export default function ManipulateRefPostModal({
     },
   ];
 
-  const isEdit = action === "edit";
-
   return (
     <>
-      {isEdit ? (
+      {staticEdit ? (
         <PencilIcon
           className="text-secondary w-10 h-10"
           onClick={() => {
-            setAccountName(dataEdit?.name || "");
-            setAccountCode(dataEdit?.phoneNumber || "");
-            setAccountType(dataEdit?.address || "");
+            setIsEdit(true);
+            setCurrentData(dataEdit!);
             onOpen();
           }}
         />
@@ -69,7 +63,10 @@ export default function ManipulateRefPostModal({
         <Button
           className="w-max"
           color="primary"
-          onPress={onOpen}
+          onPress={() => {
+            setIsEdit(false);
+            onOpen();
+          }}
           startContent={<PlusIcon className="w-5 h-5" />}
         >
           Ref Post
@@ -88,8 +85,16 @@ export default function ManipulateRefPostModal({
                   label="Nama Akun"
                   placeholder="Masukkan nama akun"
                   variant="bordered"
-                  defaultValue={isEdit ? accountName : ""}
-                  onChange={(e) => setAccountName(e.target.value)}
+                  defaultValue={currentData?.name || ""}
+                  onChange={(e) => {
+                    setCurrentData({
+                      ...currentData,
+                      name: e.target.value,
+                      id: currentData?.id || 0,
+                      code: parseInt(currentData?.code?.toString() || "0"),
+                      type: currentData?.type || "",
+                    });
+                  }}
                 />
                 <Dropdown>
                   <DropdownTrigger>
@@ -98,9 +103,9 @@ export default function ManipulateRefPostModal({
                         label="Tipe Akun"
                         placeholder="Pilih tipe akun"
                         variant="bordered"
-                        value={accountType}
                         className="cursor-pointer"
-                        defaultValue={isEdit ? accountType : "Pilih tipe akun"}
+                        value={currentData?.type || ""}
+                        defaultValue={currentData?.type || "Pilih tipe akun"}
                         readOnly
                       />
                     </div>
@@ -110,7 +115,15 @@ export default function ManipulateRefPostModal({
                       <DropdownItem
                         key={index}
                         onClick={() => {
-                          setAccountType(item.label);
+                          setCurrentData({
+                            ...currentData,
+                            type: item.label,
+                            id: currentData?.id || 0,
+                            name: currentData?.name || "",
+                            code: parseInt(
+                              currentData?.code?.toString() || "0"
+                            ),
+                          });
                         }}
                       >
                         {item.label}
@@ -122,8 +135,17 @@ export default function ManipulateRefPostModal({
                   label="Kode Akun"
                   placeholder="Masukkan kode akun"
                   variant="bordered"
-                  defaultValue={isEdit ? accountCode : ""}
-                  onChange={(e) => setAccountCode(e.target.value)}
+                  type="number"
+                  defaultValue={currentData?.code?.toString() || ""}
+                  onChange={(e) => {
+                    setCurrentData({
+                      ...currentData,
+                      code: parseInt(e.target.value),
+                      id: currentData?.id || 0,
+                      name: currentData?.name || "",
+                      type: currentData?.type || "",
+                    });
+                  }}
                 />
               </ModalBody>
               <ModalFooter>
@@ -133,7 +155,7 @@ export default function ManipulateRefPostModal({
                 <Button
                   color="primary"
                   onPress={() => {
-                    onSave({ action });
+                    onSave();
                     onClose();
                   }}
                 >
