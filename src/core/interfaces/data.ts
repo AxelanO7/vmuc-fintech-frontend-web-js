@@ -41,9 +41,10 @@ export interface dashboardDateContentType {
 export interface employeeType {
   id?: number;
   name: string;
-  phoneNumber: string;
+  phone: string;
   address: string;
   position: string;
+  id_user?: number;
 }
 
 export interface payrollType {

@@ -85,7 +85,7 @@ export default function ManipulateEmployeeModal({
                       ...currentData!,
                       name: e.target.value,
                       address: currentData?.address || "",
-                      phoneNumber: currentData?.phoneNumber || "",
+                      phone: currentData?.phone || "",
                       position: currentData?.position || "",
                     })
                   }
@@ -116,7 +116,7 @@ export default function ManipulateEmployeeModal({
                             position: item.label,
                             name: currentData?.name || "",
                             address: currentData?.address || "",
-                            phoneNumber: currentData?.phoneNumber || "",
+                            phone: currentData?.phone || "",
                           });
                         }}
                       >
@@ -129,11 +129,11 @@ export default function ManipulateEmployeeModal({
                   label="No Telepon"
                   placeholder="Masukkan no telepon"
                   variant="bordered"
-                  defaultValue={isEdit ? currentData?.phoneNumber : ""}
+                  defaultValue={isEdit ? currentData?.phone : ""}
                   onChange={(e) =>
                     setCurrentData({
                       ...currentData!,
-                      phoneNumber: e.target.value,
+                      phone: e.target.value,
                       name: currentData?.name || "",
                       address: currentData?.address || "",
                       position: currentData?.position || "",
@@ -150,7 +150,7 @@ export default function ManipulateEmployeeModal({
                       ...currentData!,
                       address: e.target.value,
                       name: currentData?.name || "",
-                      phoneNumber: currentData?.phoneNumber || "",
+                      phone: currentData?.phone || "",
                       position: currentData?.position || "",
                     })
                   }

@@ -35,7 +35,7 @@ export default function AddPayrollPage() {
       employee: {
         id: 1,
         name: "John Doe",
-        phoneNumber: "08123456789",
+        phone: "08123456789",
         address: "Jl. Raya No. 1",
         position: "Direktur",
       },
@@ -82,14 +82,14 @@ export default function AddPayrollPage() {
     {
       id: 1,
       name: "John Doe",
-      phoneNumber: "08123456789",
+      phone: "08123456789",
       address: "Jl. Raya No. 1",
       position: "Direktur",
     },
     {
       id: 2,
       name: "Jane Doe",
-      phoneNumber: "08123456789",
+      phone: "08123456789",
       address: "Jl. Raya No. 1",
       position: "Manager",
     },
@@ -307,7 +307,7 @@ export default function AddPayrollPage() {
                 employee: {
                   id: 0,
                   name: "",
-                  phoneNumber: "",
+                  phone: "",
                   address: "",
                   position: "",
                 },

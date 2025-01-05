@@ -105,11 +105,13 @@ export default function EmployeePage() {
 
   const addEmployee = async () => {
     try {
+      // TODO: Change id_user to dynamic
       const postBody: employeeType = {
         name: currentData?.name || "",
-        phoneNumber: currentData?.phoneNumber || "",
+        phone: currentData?.phone || "",
         address: currentData?.address || "",
         position: currentData?.position || "",
+        id_user: 1,
       };
       const res = await axios.post(`${baseUrlEmployee()}`, postBody);
       Swal.fire("Berhasil", "Data berhasil ditambahkan", "success");
@@ -125,9 +127,10 @@ export default function EmployeePage() {
       const postBody: employeeType = {
         id: currentData?.id,
         name: currentData?.name || "",
-        phoneNumber: currentData?.phoneNumber || "",
+        phone: currentData?.phone || "",
         address: currentData?.address || "",
         position: currentData?.position || "",
+        id_user: 1,
       };
       const res = await axios.put(`${baseUrlEmployee()}`, postBody);
       Swal.fire("Berhasil", "Data berhasil diubah", "success");
@@ -184,7 +187,7 @@ export default function EmployeePage() {
             {tableItems.map((data) => (
               <TableRow key={data.id} className="bg-gray-50">
                 <TableCell>{data.name}</TableCell>
-                <TableCell>{data.phoneNumber}</TableCell>
+                <TableCell>{data.phone}</TableCell>
                 <TableCell>{data.address}</TableCell>
                 <TableCell>{data.position}</TableCell>
                 <TableCell className="text-center flex justify-evenly">
