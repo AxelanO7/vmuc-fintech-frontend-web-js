@@ -1,8 +1,8 @@
 export interface refPostType {
-  id: number;
-  accountName: string;
-  accountCode: string;
-  accountType: string;
+  id?: number;
+  name: string;
+  type: string;
+  code: number;
 }
 
 export interface generalJournalType {
