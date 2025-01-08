@@ -20,7 +20,7 @@ import {
   TrashIcon,
 } from "@heroicons/react/16/solid";
 import Breadcrumb from "../../components/breadcrumb";
-import { employeeType, payrollContentType } from "../../core/interfaces/data";
+import { payrollContentType, payrollType } from "../../core/interfaces/data";
 import { breadcrumsItem } from "../../core/interfaces/props";
 import DefaultLayout from "../../layouts/default_layout";
 
@@ -78,22 +78,7 @@ export default function AddPayrollPage() {
     },
   ];
 
-  const employeeItems: employeeType[] = [
-    {
-      id: 1,
-      name: "John Doe",
-      phone: "08123456789",
-      address: "Jl. Raya No. 1",
-      position: "Direktur",
-    },
-    {
-      id: 2,
-      name: "Jane Doe",
-      phone: "08123456789",
-      address: "Jl. Raya No. 1",
-      position: "Manager",
-    },
-  ];
+  const employeeItems: payrollType[] = [];
 
   // ~*~ // End of Table // ~*~ //
 
@@ -186,18 +171,18 @@ export default function AddPayrollPage() {
                         {employeeItems.map((employeeItem) => (
                           <DropdownItem
                             key={employeeItem.id}
-                            onClick={() =>
-                              setTableItems(
-                                tableItems.map((tableItem) =>
-                                  tableItem.id === item.id
-                                    ? {
-                                        ...tableItem,
-                                        employee: employeeItem,
-                                      }
-                                    : tableItem
-                                )
-                              )
-                            }
+                            // onClick={() =>
+                            //   setTableItems(
+                            //     tableItems.map((tableItem) =>
+                            //       tableItem.id === item.id
+                            //         ? {
+                            //             ...tableItem,
+                            //             employee: employeeItem,
+                            //           }
+                            //         : tableItem
+                            //     )
+                            //   )
+                            // }
                             className="cursor-pointer"
                           >
                             {employeeItem.name}
