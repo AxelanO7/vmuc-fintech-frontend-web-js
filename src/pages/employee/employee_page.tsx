@@ -105,7 +105,6 @@ export default function EmployeePage() {
 
   const addEmployee = async () => {
     try {
-      // TODO: Change id_user to dynamic
       const postBody: employeeType = {
         name: currentData?.name || "",
         phone: currentData?.phone || "",
