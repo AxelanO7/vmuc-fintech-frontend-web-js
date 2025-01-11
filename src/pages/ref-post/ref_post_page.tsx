@@ -16,9 +16,8 @@ import { useEffect, useState } from "react";
 import { refPostType } from "../../core/interfaces/data";
 import { breadcrumsItem } from "../../core/interfaces/props";
 import Breadcrumb from "../../components/breadcrumb";
-import axios from "axios";
-import { baseUrl } from "../../helpers/api";
-import Swal from "sweetalert2";
+import { ApiHelpers } from "../../helpers/api";
+import { baseUrlRefPost } from "../../helpers/url";
 
 export default function RefPostPage() {
   // ~*~ // Manipulate Modal // ~*~ //
@@ -85,59 +84,67 @@ export default function RefPostPage() {
   };
 
   const getRefPosts = async () => {
-    try {
-      const res = await axios.get(`${baseUrl()}/ref/private/post`);
-      setTableItems(res.data.data);
-      console.log("getRefPosts", res);
-    } catch (error) {
-      console.log("getRefPosts error", error);
-    }
+    ApiHelpers.get({
+      url: baseUrlRefPost(),
+      successCallback: (response) => {
+        setTableItems(response.data.data);
+      },
+      errorCallback: (error) => {
+        console.log("getRefPosts error", error);
+      },
+    });
   };
 
   const addRefPost = async () => {
-    try {
-      const postBody: refPostType = {
-        name: currentData?.name || "",
-        code: parseInt(currentData?.code?.toString() || ""),
-        type: currentData?.type || "",
-      };
-      const res = await axios.post(`${baseUrl()}/ref/private/post`, postBody);
-      Swal.fire("Berhasil", "Data berhasil ditambahkan", "success");
-      getRefPosts();
-      clearCurrentData();
-      console.log("addRefPost", res);
-    } catch (error) {
-      console.log("addRefPost error", error);
-    }
+    const postBody: refPostType = {
+      name: currentData?.name || "",
+      code: parseInt(currentData?.code?.toString() || ""),
+      type: currentData?.type || "",
+    };
+    ApiHelpers.post({
+      url: baseUrlRefPost(),
+      data: postBody,
+      successCallback: () => {
+        getRefPosts();
+        clearCurrentData();
+      },
+      errorCallback: (error) => {
+        console.log("addRefPost error", error);
+      },
+    });
   };
 
   const editRefPost = async () => {
-    try {
-      const postBody: refPostType = {
-        id: currentData?.id,
-        name: currentData?.name || "",
-        code: parseInt(currentData?.code?.toString() || ""),
-        type: currentData?.type || "",
-      };
-      const res = await axios.put(`${baseUrl()}/ref/private/post`, postBody);
-      Swal.fire("Berhasil", "Data berhasil diubah", "success");
-      getRefPosts();
-      clearCurrentData();
-      console.log("editRefPost", res);
-    } catch (error) {
-      console.log("editRefPost error", error);
-    }
+    const postBody: refPostType = {
+      id: currentData?.id,
+      name: currentData?.name || "",
+      code: parseInt(currentData?.code?.toString() || ""),
+      type: currentData?.type || "",
+    };
+    ApiHelpers.put({
+      url: baseUrlRefPost(),
+      data: postBody,
+      successCallback: () => {
+        getRefPosts();
+        clearCurrentData();
+      },
+      errorCallback: (error) => {
+        console.log("editRefPost error", error);
+      },
+    });
   };
 
   const deleteRefPost = async (id: number) => {
-    try {
-      const res = await axios.delete(`${baseUrl()}/ref/private/post/${id}`);
-      Swal.fire("Berhasil", "Data berhasil dihapus", "success");
-      getRefPosts();
-      console.log("deleteRefPost", res);
-    } catch (error) {
-      console.log("deleteRefPost error", error);
-    }
+    ApiHelpers.delete({
+      url: `${baseUrlRefPost()}/${id}`,
+      successCallback: () => {
+        getRefPosts();
+        clearCurrentData();
+      },
+      errorCallback: (error) => {
+        console.log("deleteRefPost error", error);
+      },
+    });
   };
 
   useEffect(() => {
