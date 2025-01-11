@@ -1,9 +1,8 @@
 import { Button, Input } from "@nextui-org/react";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import swal from "sweetalert2";
-import { baseUrl } from "../../helpers/api";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/16/solid";
+import { ApiHelpers } from "../../helpers/api";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -32,20 +31,23 @@ const LoginPage = () => {
       password: password,
     };
 
-    try {
-      await axios.post(`${baseUrl()}/user/public/login`, payload);
-      localStorage.setItem("token", "token");
-      localStorage.setItem("role", "admin");
-      await swal.fire("Berhasil!", "Anda berhasil masuk", "success");
-      window.location.href = "/dashboard";
-    } catch (error) {
-      console.log(`error login: ${error}`);
-      swal.fire(
-        "Gagal!",
-        "Kredensial yang Anda masukkan salah. Silakan coba lagi.",
-        "error"
-      );
-    }
+    ApiHelpers.post({
+      url: "/user/public/login",
+      data: payload,
+      successCallback: () => {
+        localStorage.setItem("token", "token");
+        localStorage.setItem("role", "admin");
+        swal.fire("Berhasil!", "Anda berhasil masuk", "success");
+        window.location.href = "/dashboard";
+      },
+      errorCallback: () => {
+        swal.fire(
+          "Gagal!",
+          "Kredensial yang Anda masukkan salah. Silakan coba lagi.",
+          "error"
+        );
+      },
+    });
   };
 
   useEffect(() => {
