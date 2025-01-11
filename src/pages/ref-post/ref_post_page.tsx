@@ -18,6 +18,7 @@ import { breadcrumsItem } from "../../core/interfaces/props";
 import Breadcrumb from "../../components/breadcrumb";
 import { ApiHelpers } from "../../helpers/api";
 import { baseUrlRefPost } from "../../helpers/url";
+import Swal from "sweetalert2";
 
 export default function RefPostPage() {
   // ~*~ // Manipulate Modal // ~*~ //
@@ -79,6 +80,7 @@ export default function RefPostPage() {
 
   // ~*~ // End of Breadcrumb // ~*~ //
 
+  // ~*~ // Functions // ~*~ //
   const clearCurrentData = () => {
     setCurrentData(null);
   };
@@ -89,9 +91,7 @@ export default function RefPostPage() {
       successCallback: (response) => {
         setTableItems(response.data.data);
       },
-      errorCallback: (error) => {
-        console.log("getRefPosts error", error);
-      },
+      errorCallback: () => {},
     });
   };
 
@@ -105,11 +105,12 @@ export default function RefPostPage() {
       url: baseUrlRefPost(),
       data: postBody,
       successCallback: () => {
+        Swal.fire("Berhasil", "Data berhasil ditambahkan", "success");
         getRefPosts();
         clearCurrentData();
       },
-      errorCallback: (error) => {
-        console.log("addRefPost error", error);
+      errorCallback: () => {
+        Swal.fire("Gagal", "Data gagal ditambahkan", "error");
       },
     });
   };
@@ -125,11 +126,12 @@ export default function RefPostPage() {
       url: baseUrlRefPost(),
       data: postBody,
       successCallback: () => {
+        Swal.fire("Berhasil", "Data berhasil diubah", "success");
         getRefPosts();
         clearCurrentData();
       },
-      errorCallback: (error) => {
-        console.log("editRefPost error", error);
+      errorCallback: () => {
+        Swal.fire("Gagal", "Data gagal diubah", "error");
       },
     });
   };
@@ -138,14 +140,17 @@ export default function RefPostPage() {
     ApiHelpers.delete({
       url: `${baseUrlRefPost()}/${id}`,
       successCallback: () => {
+        Swal.fire("Berhasil", "Data berhasil dihapus", "success");
         getRefPosts();
         clearCurrentData();
       },
-      errorCallback: (error) => {
-        console.log("deleteRefPost error", error);
+      errorCallback: () => {
+        Swal.fire("Gagal", "Data gagal dihapus", "error");
       },
     });
   };
+
+  // ~*~ // End of Functions // ~*~ //
 
   useEffect(() => {
     getRefPosts();
