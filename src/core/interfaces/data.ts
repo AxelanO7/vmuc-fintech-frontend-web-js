@@ -56,9 +56,10 @@ export interface payrollType {
 
 export interface payrollContentType {
   id: number;
+  id_employee: number;
   employee: employeeType;
   salary: number;
   bonus: number;
-  deduction: number;
+  penalty: number;
   total: number;
 }
