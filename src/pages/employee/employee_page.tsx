@@ -16,9 +16,9 @@ import { useEffect, useState } from "react";
 import { employeeType } from "../../core/interfaces/data";
 import { actionType, breadcrumsItem } from "../../core/interfaces/props";
 import Breadcrumb from "../../components/breadcrumb";
-import axios from "axios";
 import Swal from "sweetalert2";
-import { baseUrlEmployee } from "../../helpers/api";
+import { baseUrlEmployeeAccount } from "../../helpers/url";
+import { ApiHelpers } from "../../helpers/api";
 
 export default function EmployeePage() {
   // ~*~ // Manipulate Modal // ~*~ //
@@ -93,66 +93,76 @@ export default function EmployeePage() {
 
   // ~*~ // End of Breadcrumb // ~*~ //
 
+  // ~*~ // Functions // ~*~ //
   const getEmployees = async () => {
-    try {
-      const res = await axios.get(`${baseUrlEmployee()}`);
-      setTableItems(res.data.data);
-      console.log("getRefPostData", res);
-    } catch (error) {
-      console.log("getRefPostData error", error);
-    }
+    ApiHelpers.get({
+      url: baseUrlEmployeeAccount(),
+      successCallback: (response) => {
+        setTableItems(response.data.data);
+      },
+      errorCallback: () => {},
+    });
   };
 
   const addEmployee = async () => {
-    try {
-      const postBody: employeeType = {
-        name: currentData?.name || "",
-        phone: currentData?.phone || "",
-        address: currentData?.address || "",
-        position: currentData?.position || "",
-        id_user: 1,
-      };
-      const res = await axios.post(`${baseUrlEmployee()}`, postBody);
-      Swal.fire("Berhasil", "Data berhasil ditambahkan", "success");
-      getEmployees();
-      console.log("addEmployee", res);
-    } catch (error) {
-      console.log("addEmployee error", error);
-    }
+    const postBody: employeeType = {
+      name: currentData?.name || "",
+      phone: currentData?.phone || "",
+      address: currentData?.address || "",
+      position: currentData?.position || "",
+      id_user: 1,
+    };
+    ApiHelpers.post({
+      url: baseUrlEmployeeAccount(),
+      data: postBody,
+      successCallback: () => {
+        Swal.fire("Berhasil", "Data berhasil ditambahkan", "success");
+        getEmployees();
+        onOpenChange();
+      },
+      errorCallback: () => {
+        Swal.fire("Gagal", "Data gagal ditambahkan", "error");
+      },
+    });
   };
 
   const editEmployee = async () => {
-    try {
-      const postBody: employeeType = {
-        id: currentData?.id,
-        name: currentData?.name || "",
-        phone: currentData?.phone || "",
-        address: currentData?.address || "",
-        position: currentData?.position || "",
-        id_user: 1,
-      };
-      const res = await axios.put(
-        `${baseUrlEmployee()}/${currentData?.id}`,
-        postBody
-      );
-      Swal.fire("Berhasil", "Data berhasil diubah", "success");
-      getEmployees();
-      console.log("editEmployee", res);
-    } catch (error) {
-      console.log("editEmployee error", error);
-    }
+    const postBody: employeeType = {
+      id: currentData?.id,
+      name: currentData?.name || "",
+      phone: currentData?.phone || "",
+      address: currentData?.address || "",
+      position: currentData?.position || "",
+      id_user: 1,
+    };
+    ApiHelpers.put({
+      url: `${baseUrlEmployeeAccount()}/${currentData?.id}`,
+      data: postBody,
+      successCallback: () => {
+        Swal.fire("Berhasil", "Data berhasil diubah", "success");
+        getEmployees();
+        onOpenChange();
+      },
+      errorCallback: () => {
+        Swal.fire("Gagal", "Data gagal diubah", "error");
+      },
+    });
   };
 
   const deleteEmployee = async (id: number) => {
-    try {
-      const res = await axios.delete(`${baseUrlEmployee()}/${id}`);
-      Swal.fire("Berhasil", "Data berhasil dihapus", "success");
-      getEmployees();
-      console.log("deleteEmployee", res);
-    } catch (error) {
-      console.log("deleteEmployee error", error);
-    }
+    ApiHelpers.delete({
+      url: `${baseUrlEmployeeAccount()}/${id}`,
+      successCallback: () => {
+        Swal.fire("Berhasil", "Data berhasil dihapus", "success");
+        getEmployees();
+      },
+      errorCallback: () => {
+        Swal.fire("Gagal", "Data gagal dihapus", "error");
+      },
+    });
   };
+
+  // ~*~ // End of Functions // ~*~ //
 
   useEffect(() => {
     getEmployees();

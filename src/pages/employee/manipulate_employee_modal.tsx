@@ -45,7 +45,7 @@ export default function ManipulateEmployeeModal({
     <>
       {isEdit ? (
         <PencilIcon
-          className="text-secondary w-10 h-10"
+          className="text-secondary w-8 h-8"
           onClick={() => {
             setCurrentData(dataEdit!);
             setIsEdit(true);
@@ -61,7 +61,7 @@ export default function ManipulateEmployeeModal({
             setIsEdit(false);
             onOpen();
           }}
-          startContent={<PlusIcon className="w-5 h-5" />}
+          startContent={<PlusIcon className="w-8 h-8" />}
         >
           Karyawan
         </Button>
