@@ -52,7 +52,7 @@ export default function ManipulateRefPostModal({
     <>
       {staticEdit ? (
         <PencilIcon
-          className="text-secondary w-10 h-10"
+          className="text-secondary w-8 h-8"
           onClick={() => {
             setIsEdit(true);
             setCurrentData(dataEdit!);
@@ -67,7 +67,7 @@ export default function ManipulateRefPostModal({
             setIsEdit(false);
             onOpen();
           }}
-          startContent={<PlusIcon className="w-5 h-5" />}
+          startContent={<PlusIcon className="w-8 h-8" />}
         >
           Ref Post
         </Button>
