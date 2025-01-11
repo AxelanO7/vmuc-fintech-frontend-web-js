@@ -10,6 +10,7 @@ const LoginPage = () => {
   const [isRemember, setIsRemember] = useState(false);
   const [isShowPassword, setIsShowPassword] = useState(false);
 
+  // ~*~ // Functions // ~*~ //
   const validateInput = () => {
     if (!username) {
       swal.fire("Gagal!", "Nama tidak boleh kosong", "error");
@@ -49,6 +50,8 @@ const LoginPage = () => {
       },
     });
   };
+
+  // ~*~ // End of Functions // ~*~ //
 
   useEffect(() => {
     localStorage.clear();
