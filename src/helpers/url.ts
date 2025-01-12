@@ -9,3 +9,7 @@ export const baseUrlRefPost = () => {
 export const baseUrlEmployeeAccount = () => {
   return `/employee/private/account`;
 };
+
+export const baseUrlPayrollEmployee = () => {
+  return `/payroll/private/employee`;
+};
