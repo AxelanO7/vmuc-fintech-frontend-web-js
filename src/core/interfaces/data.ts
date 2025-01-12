@@ -48,18 +48,16 @@ export interface employeeType {
 }
 
 export interface payrollType {
-  id: number;
+  id?: number;
   period: string;
   description: string;
-  contents: payrollContentType[];
-}
-
-export interface payrollContentType {
-  id: number;
-  id_employee: number;
-  employee: employeeType;
   salary: number;
   bonus: number;
   penalty: number;
   total: number;
+  id_employee: number;
+  employee?: employeeType;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string | null;
 }

@@ -13,38 +13,30 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ChevronDownIcon,
   PlusIcon,
   TrashIcon,
 } from "@heroicons/react/16/solid";
 import Breadcrumb from "../../components/breadcrumb";
-import { payrollContentType, payrollType } from "../../core/interfaces/data";
+import { employeeType, payrollType } from "../../core/interfaces/data";
 import { breadcrumsItem } from "../../core/interfaces/props";
 import DefaultLayout from "../../layouts/default_layout";
+import {
+  baseUrlEmployeeAccount,
+  baseUrlPayrollEmployee,
+} from "../../helpers/url";
+import { ApiHelpers } from "../../helpers/api";
+import Swal from "sweetalert2";
 
 export default function AddPayrollPage() {
-  const [, setPeriode] = useState("");
-  const [, setDescription] = useState("");
+  const [employees, setEmployees] = useState<employeeType[]>([]);
+  const [description, setDescription] = useState("");
+  const [period, setPeriod] = useState("");
 
   // ~*~ // Table // ~*~ //
-  const [tableItems, setTableItems] = useState<payrollContentType[]>([
-    {
-      id: 1,
-      employee: {
-        id: 1,
-        name: "John Doe",
-        phone: "08123456789",
-        address: "Jl. Raya No. 1",
-        position: "Direktur",
-      },
-      salary: 0,
-      bonus: 0,
-      deduction: 0,
-      total: 0,
-    },
-  ]);
+  const [tableItems, setTableItems] = useState<payrollType[]>([]);
 
   const tableHeaderItems = [
     {
@@ -78,8 +70,6 @@ export default function AddPayrollPage() {
     },
   ];
 
-  const employeeItems: payrollType[] = [];
-
   // ~*~ // End of Table // ~*~ //
 
   // ~*~ // Breadcrumb // ~*~ //
@@ -96,6 +86,44 @@ export default function AddPayrollPage() {
 
   // ~*~ // End of Breadcrumb // ~*~ //
 
+  // ~*~ // Functions // ~*~ //
+  const getEmployees = async () => {
+    ApiHelpers.get({
+      url: baseUrlEmployeeAccount(),
+      successCallback: (response) => {
+        setEmployees(response.data.data);
+      },
+      errorCallback: () => {},
+    });
+  };
+
+  const handleSave = () => {
+    const data = tableItems.map((item) => {
+      return {
+        ...item,
+        period: period,
+        description: description,
+        total: item.salary + item.bonus - item.penalty,
+      };
+    });
+
+    ApiHelpers.post({
+      url: `${baseUrlPayrollEmployee()}s`,
+      data: data,
+      successCallback: () => {
+        Swal.fire("Berhasil", "Data berhasil ditambahkan", "success");
+        window.location.href = "/payroll";
+      },
+      errorCallback: () => {},
+    });
+  };
+
+  // ~*~ // End of Functions // ~*~ //
+
+  useEffect(() => {
+    getEmployees();
+  }, []);
+
   return (
     <DefaultLayout>
       <h1 className="text-3xl font-bold mx-6 pt-4">Gaji Karyawan</h1>
@@ -111,14 +139,18 @@ export default function AddPayrollPage() {
             <Input
               type="date"
               className="w-max"
-              onChange={(e) => setPeriode(e.target.value)}
+              onChange={(e) => {
+                setPeriod(e.target.value);
+              }}
             />
           </div>
           <div>
             <p className="ml-2 font-normal">Deskripsi</p>
             <Input
               className="w-96"
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={(e) => {
+                setDescription(e.target.value);
+              }}
             />
           </div>
         </div>
@@ -146,46 +178,33 @@ export default function AddPayrollPage() {
                         placeholder="Pilih nama karyawan"
                         variant="bordered"
                         className="cursor-pointer"
-                        defaultValue={item.employee.name}
-                        onChange={(e) =>
-                          setTableItems(
-                            tableItems.map((tableItem) =>
-                              tableItem.id === item.id
-                                ? {
-                                    ...tableItem,
-                                    employee: {
-                                      ...tableItem.employee,
-                                      name: e.target.value,
-                                    },
-                                  }
-                                : tableItem
-                            )
-                          )
-                        }
-                        readOnly
+                        defaultValue={item.employee?.name}
+                        value={item.employee?.name}
                         endContent={<ChevronDownIcon className="w-5 h-5" />}
+                        readOnly
                       />
                     </DropdownTrigger>
                     <DropdownMenu>
                       <DropdownSection>
-                        {employeeItems.map((employeeItem) => (
+                        {employees.map((employee) => (
                           <DropdownItem
-                            key={employeeItem.id}
-                            // onClick={() =>
-                            //   setTableItems(
-                            //     tableItems.map((tableItem) =>
-                            //       tableItem.id === item.id
-                            //         ? {
-                            //             ...tableItem,
-                            //             employee: employeeItem,
-                            //           }
-                            //         : tableItem
-                            //     )
-                            //   )
-                            // }
+                            key={employee.id}
+                            onClick={() =>
+                              setTableItems(
+                                tableItems.map((tableItem) =>
+                                  tableItem.id === item.id
+                                    ? {
+                                        ...tableItem,
+                                        id_employee: employee.id || 0,
+                                        employee: employee,
+                                      }
+                                    : tableItem
+                                )
+                              )
+                            }
                             className="cursor-pointer"
                           >
-                            {employeeItem.name}
+                            {employee.name}
                           </DropdownItem>
                         ))}
                       </DropdownSection>
@@ -194,7 +213,7 @@ export default function AddPayrollPage() {
                 </TableCell>
                 <TableCell className="text-center">
                   <Input
-                    value={item.employee.position}
+                    value={item.employee?.position}
                     readOnly
                     className="cursor-not-allowed"
                   />
@@ -242,7 +261,7 @@ export default function AddPayrollPage() {
                           tableItem.id === item.id
                             ? {
                                 ...tableItem,
-                                deduction: parseInt(e.target.value),
+                                penalty: parseInt(e.target.value),
                               }
                             : tableItem
                         )
@@ -252,11 +271,7 @@ export default function AddPayrollPage() {
                 </TableCell>
                 <TableCell className="text-center">
                   <Input
-                    value={(
-                      item.salary +
-                      item.bonus -
-                      item.deduction
-                    ).toString()}
+                    value={(item.salary + item.bonus - item.penalty).toString()}
                     readOnly
                     className="cursor-not-allowed"
                   />
@@ -288,18 +303,14 @@ export default function AddPayrollPage() {
             setTableItems([
               ...tableItems,
               {
-                id: tableItems.length + 1,
-                employee: {
-                  id: 0,
-                  name: "",
-                  phone: "",
-                  address: "",
-                  position: "",
-                },
                 salary: 0,
                 bonus: 0,
-                deduction: 0,
+                penalty: 0,
                 total: 0,
+                description: "",
+                period: "",
+                id_employee: 0,
+                employee: undefined,
               },
             ])
           }
@@ -312,10 +323,14 @@ export default function AddPayrollPage() {
         <div className="flex w-1/2 pl-12 mt-4 font-medium">
           <p className="w-1/3">Total</p>
           <p className="w-1/3">
-            Rp. {tableItems.reduce((acc, item) => acc + item.salary, 0) ?? 0}
+            Rp.{" "}
+            {tableItems.reduce(
+              (acc, item) => acc + item.salary + item.bonus,
+              0
+            )}
           </p>
           <p className="w-1/3">
-            Rp. {tableItems.reduce((acc, item) => acc + item.bonus, 0) ?? 0}
+            Rp. {tableItems.reduce((acc, item) => acc + item.penalty, 0)}
           </p>
         </div>
         <div className="flex w-1/2 mt-4 pl-12 font-medium">
@@ -323,12 +338,15 @@ export default function AddPayrollPage() {
           <div className="w-1/3" />
           <p className="w-1/3">
             Rp.{" "}
-            {tableItems.reduce((acc, item) => acc + item.salary, 0) -
-              tableItems.reduce((acc, item) => acc + item.bonus, 0)}
+            {tableItems.reduce((acc, item) => acc + item.salary, 0) +
+              tableItems.reduce((acc, item) => acc + item.bonus, 0) -
+              tableItems.reduce((acc, item) => acc + item.penalty, 0)}
           </p>
         </div>
         <div className="w-full flex justify-end mt-4">
-          <Button color="primary">Simpan</Button>
+          <Button color="primary" onClick={handleSave}>
+            Simpan
+          </Button>
         </div>
       </div>
     </DefaultLayout>
