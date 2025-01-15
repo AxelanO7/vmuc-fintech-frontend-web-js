@@ -17,8 +17,8 @@ import { refPostType } from "../../core/interfaces/data";
 import { breadcrumsItem } from "../../core/interfaces/props";
 import Breadcrumb from "../../components/breadcrumb";
 import { ApiHelpers } from "../../helpers/api";
-import { baseUrlRefPost } from "../../helpers/url";
 import Swal from "sweetalert2";
+import { Urls } from "../../helpers/url";
 
 export default function RefPostPage() {
   // ~*~ // Manipulate Modal // ~*~ //
@@ -102,7 +102,7 @@ export default function RefPostPage() {
       type: currentData?.type || "",
     };
     ApiHelpers.post({
-      url: baseUrlRefPost(),
+      url: Urls.refPost,
       data: postBody,
       successCallback: () => {
         Swal.fire("Berhasil", "Data berhasil ditambahkan", "success");
@@ -123,7 +123,7 @@ export default function RefPostPage() {
       type: currentData?.type || "",
     };
     ApiHelpers.put({
-      url: baseUrlRefPost(),
+      url: Urls.refPost,
       data: postBody,
       successCallback: () => {
         Swal.fire("Berhasil", "Data berhasil diubah", "success");
@@ -138,7 +138,7 @@ export default function RefPostPage() {
 
   const deleteRefPost = async (id: number) => {
     ApiHelpers.delete({
-      url: `${baseUrlRefPost()}/${id}`,
+      url: `${Urls.refPost}/${id}`,
       successCallback: () => {
         Swal.fire("Berhasil", "Data berhasil dihapus", "success");
         getRefPosts();
