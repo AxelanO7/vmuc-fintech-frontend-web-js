@@ -18,62 +18,12 @@ import { payrollType } from "../../core/interfaces/data";
 import { breadcrumsItem } from "../../core/interfaces/props";
 import DefaultLayout from "../../layouts/default_layout";
 import Breadcrumb from "../../components/breadcrumb";
+import { useEffect, useState } from "react";
+import { ApiHelpers } from "../../helpers/api";
+import { Urls } from "../../helpers/url";
 
 export default function PayrollPage() {
   // ~*~ // Table // ~*~ //
-  const tableItems: payrollType[] = [
-    {
-      id: 1,
-      period: "Mei/2024",
-      description: "Gaji Bulan Mei",
-      contents: [
-        {
-          id: 1,
-          name: "John Doe",
-          position: "Direktur",
-          salary: 10000000,
-          bonus: 5000000,
-          deduction: 0,
-          total: 15000000,
-        },
-        {
-          id: 2,
-          name: "Jane Doe",
-          position: "Manager",
-          salary: 8000000,
-          bonus: 4000000,
-          deduction: 0,
-          total: 12000000,
-        },
-      ],
-    },
-    {
-      id: 2,
-      period: "Juni/2024",
-      description: "Gaji Bulan Juni",
-      contents: [
-        {
-          id: 1,
-          name: "John Doe",
-          position: "Direktur",
-          salary: 10000000,
-          bonus: 5000000,
-          deduction: 0,
-          total: 15000000,
-        },
-        {
-          id: 2,
-          name: "Jane Doe",
-          position: "Manager",
-          salary: 8000000,
-          bonus: 4000000,
-          deduction: 0,
-          total: 12000000,
-        },
-      ],
-    },
-  ];
-
   const tableHeaderParentItems = [
     {
       name: "#",
@@ -124,6 +74,8 @@ export default function PayrollPage() {
     },
   ];
 
+  const [tableItems, setTableItems] = useState<payrollType[]>([]);
+
   // ~*~ // End of Table // ~*~ //
 
   // ~*~ // Breadcrumb // ~*~ //
@@ -136,9 +88,26 @@ export default function PayrollPage() {
 
   // ~*~ // End of Breadcrumb // ~*~ //
 
+  // ~*~ // Functions // ~*~ //
+  const getPayrolls = () => {
+    ApiHelpers.get({
+      url: Urls.payrollPeriodEmployee,
+      successCallback(response) {
+        setTableItems(response.data.data);
+      },
+      errorCallback() {},
+    });
+  };
+
   const handleAdd = () => {
     window.location.replace("/" + "add-payroll");
   };
+
+  // ~*~ // End of Functions // ~*~ //
+
+  useEffect(() => {
+    getPayrolls();
+  }, []);
 
   return (
     <DefaultLayout>
@@ -167,79 +136,97 @@ export default function PayrollPage() {
         </div>
 
         <div className="mt-4">
-          {tableItems.map((item, index) => (
-            <div key={item.id}>
-              <Table aria-label="Periode Table">
-                <TableHeader>
-                  {tableHeaderParentItems.map((item) => (
-                    <TableColumn
-                      key={item.name}
-                      className={`text-center ${item.className}`}
-                    >
-                      {item.name}
-                    </TableColumn>
-                  ))}
-                </TableHeader>
-                <TableBody>
-                  <TableRow key={item.id} className="bg-gray-50">
-                    <TableCell className="text-center">{item.id}</TableCell>
-                    <TableCell className="text-center">{item.period}</TableCell>
-                    <TableCell className="text-center">
-                      {item.description}
-                    </TableCell>
-                    <TableCell className="text-center flex justify-evenly">
-                      <DocumentArrowDownIcon className="text-primary w-6 h-6" />
-                      <TrashIcon className="text-danger w-6 h-6" />
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-              <Table
-                aria-label="Periode Table"
-                className={`mt-2 ${
-                  index === tableItems.length - 1 ? "" : "mb-8"
-                }`}
-              >
-                <TableHeader>
-                  {tableHeaderChildItems.map((item) => (
-                    <TableColumn
-                      key={item.name}
-                      className={`text-center ${item.className}`}
-                    >
-                      {item.name}
-                    </TableColumn>
-                  ))}
-                </TableHeader>
-                <TableBody>
-                  {item.contents.map((content) => (
-                    <TableRow key={content.id} className="bg-gray-50">
+          {tableItems.length === 0 ? (
+            <Table aria-label="Periode Table">
+              <TableHeader>
+                {tableHeaderParentItems.map((item) => (
+                  <TableColumn
+                    key={item.name}
+                    className={`text-center ${item.className}`}
+                  >
+                    {item.name}
+                  </TableColumn>
+                ))}
+              </TableHeader>
+              <TableBody emptyContent="Data tidak ditemukan"></TableBody>
+            </Table>
+          ) : (
+            tableItems.map((item, index) => (
+              <div key={item.id}>
+                <Table aria-label="Periode Table">
+                  <TableHeader>
+                    {tableHeaderParentItems.map((item) => (
+                      <TableColumn
+                        key={item.name}
+                        className={`text-center ${item.className}`}
+                      >
+                        {item.name}
+                      </TableColumn>
+                    ))}
+                  </TableHeader>
+                  <TableBody>
+                    <TableRow key={item.id} className="bg-gray-50">
+                      <TableCell className="text-center">{item.id}</TableCell>
                       <TableCell className="text-center">
-                        {content.name}
+                        {item.period}
                       </TableCell>
                       <TableCell className="text-center">
-                        {content.position}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        {content.salary}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        {content.bonus}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        {content.deduction}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        {content.total}
+                        {item.description}
                       </TableCell>
                       <TableCell className="text-center flex justify-evenly">
+                        <DocumentArrowDownIcon className="text-primary w-6 h-6" />
                         <TrashIcon className="text-danger w-6 h-6" />
                       </TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          ))}
+                  </TableBody>
+                </Table>
+                <Table
+                  aria-label="Periode Table"
+                  className={`mt-2 ${
+                    index === tableItems.length - 1 ? "" : "mb-8"
+                  }`}
+                >
+                  <TableHeader>
+                    {tableHeaderChildItems.map((item) => (
+                      <TableColumn
+                        key={item.name}
+                        className={`text-center ${item.className}`}
+                      >
+                        {item.name}
+                      </TableColumn>
+                    ))}
+                  </TableHeader>
+                  <TableBody emptyContent="Data tidak ditemukan">
+                    {item.payroll.map((item) => (
+                      <TableRow key={item.id} className="bg-gray-50">
+                        <TableCell className="text-center">
+                          {item.employee?.name ?? "-"}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          {item.employee?.position ?? "-"}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          {item.salary}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          {item.bonus}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          {item.penalty}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          {item.total}
+                        </TableCell>
+                        <TableCell className="text-center flex justify-evenly">
+                          <TrashIcon className="text-danger w-6 h-6" />
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </DefaultLayout>
