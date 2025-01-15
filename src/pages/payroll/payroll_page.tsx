@@ -1,5 +1,4 @@
 import {
-  DocumentArrowDownIcon,
   MagnifyingGlassIcon,
   PlusIcon,
   TrashIcon,
@@ -13,6 +12,7 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
+  useDisclosure,
 } from "@nextui-org/react";
 import { payrollType } from "../../core/interfaces/data";
 import { breadcrumsItem } from "../../core/interfaces/props";
@@ -21,8 +21,12 @@ import Breadcrumb from "../../components/breadcrumb";
 import { useEffect, useState } from "react";
 import { ApiHelpers } from "../../helpers/api";
 import { Urls } from "../../helpers/url";
+import DetailPeriodDialog from "./detail_period_dialog";
 
 export default function PayrollPage() {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [tableItems, setTableItems] = useState<payrollType[]>([]);
+
   // ~*~ // Table // ~*~ //
   const tableHeaderParentItems = [
     {
@@ -74,8 +78,6 @@ export default function PayrollPage() {
     },
   ];
 
-  const [tableItems, setTableItems] = useState<payrollType[]>([]);
-
   // ~*~ // End of Table // ~*~ //
 
   // ~*~ // Breadcrumb // ~*~ //
@@ -87,6 +89,20 @@ export default function PayrollPage() {
   ];
 
   // ~*~ // End of Breadcrumb // ~*~ //
+
+  // ~*~ // Modal // ~*~ //
+  const renderModalComponent = ({ data }: { data: payrollType }) => {
+    return (
+      <DetailPeriodDialog
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onOpenChange={onOpenChange}
+        data={data}
+      />
+    );
+  };
+
+  // ~*~ // End of Modal // ~*~ //
 
   // ~*~ // Functions // ~*~ //
   const getPayrolls = () => {
@@ -174,7 +190,7 @@ export default function PayrollPage() {
                         {item.description}
                       </TableCell>
                       <TableCell className="text-center flex justify-evenly">
-                        <DocumentArrowDownIcon className="text-primary w-6 h-6" />
+                        {renderModalComponent({ data: item })}
                         <TrashIcon className="text-danger w-6 h-6" />
                       </TableCell>
                     </TableRow>
