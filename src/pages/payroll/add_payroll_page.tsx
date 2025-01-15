@@ -20,13 +20,14 @@ import {
   TrashIcon,
 } from "@heroicons/react/16/solid";
 import Breadcrumb from "../../components/breadcrumb";
-import { employeeType, payrollType } from "../../core/interfaces/data";
+import {
+  employeeType,
+  payrollContentType,
+  payrollType,
+} from "../../core/interfaces/data";
 import { breadcrumsItem } from "../../core/interfaces/props";
 import DefaultLayout from "../../layouts/default_layout";
-import {
-  baseUrlEmployeeAccount,
-  baseUrlPayrollEmployee,
-} from "../../helpers/url";
+import { Urls } from "../../helpers/url";
 import { ApiHelpers } from "../../helpers/api";
 import Swal from "sweetalert2";
 
@@ -36,7 +37,7 @@ export default function AddPayrollPage() {
   const [period, setPeriod] = useState("");
 
   // ~*~ // Table // ~*~ //
-  const [tableItems, setTableItems] = useState<payrollType[]>([]);
+  const [tableItems, setTableItems] = useState<payrollContentType[]>([]);
 
   const tableHeaderItems = [
     {
@@ -89,7 +90,7 @@ export default function AddPayrollPage() {
   // ~*~ // Functions // ~*~ //
   const getEmployees = async () => {
     ApiHelpers.get({
-      url: baseUrlEmployeeAccount(),
+      url: Urls.employeeAccount,
       successCallback: (response) => {
         setEmployees(response.data.data);
       },
@@ -98,24 +99,55 @@ export default function AddPayrollPage() {
   };
 
   const handleSave = () => {
-    const data = tableItems.map((item) => {
-      return {
-        ...item,
-        period: period,
-        description: description,
-        total: item.salary + item.bonus - item.penalty,
-      };
+    tableItems.forEach((item) => {
+      item.id_payroll_periode = tableItems.indexOf(item) + 1;
     });
 
+    const dataParent: payrollType = {
+      period: period,
+      description: description,
+      payroll: tableItems.map((item) => ({
+        salary: parseInt(item.salary.toString()),
+        bonus: parseInt(item.bonus.toString()),
+        penalty: parseInt(item.penalty.toString()),
+        total: item.salary + item.bonus - item.penalty,
+        id_employee: item.employee?.id || 0,
+        employee: item.employee,
+        id_payroll_periode: item.id_payroll_periode,
+      })),
+    };
+
     ApiHelpers.post({
-      url: `${baseUrlPayrollEmployee()}s`,
-      data: data,
+      url: Urls.payrollPeriodEmployee,
+      data: dataParent,
       successCallback: () => {
         Swal.fire("Berhasil", "Data berhasil ditambahkan", "success");
         window.location.href = "/payroll";
       },
-      errorCallback: () => {},
+      errorCallback: () => {
+        Swal.fire("Gagal", "Data gagal ditambahkan", "error");
+      },
     });
+  };
+
+  const handleChangeTableItems = (
+    index: number,
+    key: string,
+    value: any,
+    isNumber: boolean = false
+  ) => {
+    setTableItems(
+      tableItems.map((item, i) => {
+        if (i === index) {
+          return {
+            ...item,
+            [key]: isNumber ? parseInt(value) : value,
+          };
+        } else {
+          return item;
+        }
+      })
+    );
   };
 
   // ~*~ // End of Functions // ~*~ //
@@ -170,7 +202,7 @@ export default function AddPayrollPage() {
           </TableHeader>
           <TableBody>
             {tableItems.map((item) => (
-              <TableRow key={item.id}>
+              <TableRow>
                 <TableCell className="text-center">
                   <Dropdown>
                     <DropdownTrigger>
@@ -190,16 +222,10 @@ export default function AddPayrollPage() {
                           <DropdownItem
                             key={employee.id}
                             onClick={() =>
-                              setTableItems(
-                                tableItems.map((tableItem) =>
-                                  tableItem.id === item.id
-                                    ? {
-                                        ...tableItem,
-                                        id_employee: employee.id || 0,
-                                        employee: employee,
-                                      }
-                                    : tableItem
-                                )
+                              handleChangeTableItems(
+                                item.id || 0,
+                                "employee",
+                                employee
                               )
                             }
                             className="cursor-pointer"
@@ -222,15 +248,11 @@ export default function AddPayrollPage() {
                   <Input
                     placeholder="0"
                     onChange={(e) =>
-                      setTableItems(
-                        tableItems.map((tableItem) =>
-                          tableItem.id === item.id
-                            ? {
-                                ...tableItem,
-                                salary: parseInt(e.target.value),
-                              }
-                            : tableItem
-                        )
+                      handleChangeTableItems(
+                        item.id || 0,
+                        "salary",
+                        e.target.value,
+                        true
                       )
                     }
                   />
@@ -239,15 +261,11 @@ export default function AddPayrollPage() {
                   <Input
                     placeholder="0"
                     onChange={(e) =>
-                      setTableItems(
-                        tableItems.map((tableItem) =>
-                          tableItem.id === item.id
-                            ? {
-                                ...tableItem,
-                                bonus: parseInt(e.target.value),
-                              }
-                            : tableItem
-                        )
+                      handleChangeTableItems(
+                        item.id || 0,
+                        "bonus",
+                        e.target.value,
+                        true
                       )
                     }
                   />
@@ -256,15 +274,11 @@ export default function AddPayrollPage() {
                   <Input
                     placeholder="0"
                     onChange={(e) =>
-                      setTableItems(
-                        tableItems.map((tableItem) =>
-                          tableItem.id === item.id
-                            ? {
-                                ...tableItem,
-                                penalty: parseInt(e.target.value),
-                              }
-                            : tableItem
-                        )
+                      handleChangeTableItems(
+                        item.id || 0,
+                        "penalty",
+                        e.target.value,
+                        true
                       )
                     }
                   />
@@ -307,10 +321,8 @@ export default function AddPayrollPage() {
                 bonus: 0,
                 penalty: 0,
                 total: 0,
-                description: "",
-                period: "",
                 id_employee: 0,
-                employee: undefined,
+                id_payroll_periode: tableItems.length + 1,
               },
             ])
           }
