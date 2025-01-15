@@ -1,5 +1,5 @@
 import axios from "axios";
-import { baseUrl } from "./url";
+import { Urls } from "./url";
 
 export const ApiHelpers = {
   get: async ({
@@ -14,7 +14,7 @@ export const ApiHelpers = {
     errorCallback: (error: any) => void;
   }) => {
     try {
-      const res = await axios.get(`${baseUrl()}${url}`, { params });
+      const res = await axios.get(`${Urls.base}${url}`, { params });
       console.log("GET request success", res);
       successCallback(res);
     } catch (error) {
@@ -34,7 +34,7 @@ export const ApiHelpers = {
     errorCallback: (error: any) => void;
   }) => {
     try {
-      const res = await axios.post(`${baseUrl()}${url}`, data);
+      const res = await axios.post(`${Urls.base}${url}`, data);
       console.log("POST request success", res);
       successCallback(res);
     } catch (error) {
@@ -54,7 +54,7 @@ export const ApiHelpers = {
     errorCallback: (error: any) => void;
   }) => {
     try {
-      const res = await axios.put(`${baseUrl()}${url}`, data);
+      const res = await axios.put(`${Urls.base}${url}`, data);
       console.log("PUT request success", res);
       successCallback(res);
     } catch (error) {
@@ -72,7 +72,7 @@ export const ApiHelpers = {
     errorCallback: (error: any) => void;
   }) => {
     try {
-      const res = await axios.delete(`${baseUrl()}${url}`);
+      const res = await axios.delete(`${Urls.base}${url}`);
       console.log("DELETE request success", res);
       successCallback(res);
     } catch (error) {
