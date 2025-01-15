@@ -1,15 +1,7 @@
-export const baseUrl = () => {
-  return "http://localhost:4000";
-};
-
-export const baseUrlRefPost = () => {
-  return `/ref/private/post`;
-};
-
-export const baseUrlEmployeeAccount = () => {
-  return `/employee/private/account`;
-};
-
-export const baseUrlPayrollEmployee = () => {
-  return `/payroll/private/employee`;
+export const Urls = {
+  base: "http://localhost:4000",
+  refPost: "/ref/private/post",
+  employeeAccount: "/employee/private/account",
+  payrollEmployee: "/payroll/private/employee",
+  payrollPeriodEmployee: "/payroll-periode/private/employee",
 };
