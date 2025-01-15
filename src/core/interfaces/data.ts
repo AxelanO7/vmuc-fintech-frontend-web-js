@@ -51,12 +51,22 @@ export interface payrollType {
   id?: number;
   period: string;
   description: string;
+  payroll: payrollContentType[];
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string | null;
+}
+
+export interface payrollContentType {
+  id?: number;
   salary: number;
   bonus: number;
   penalty: number;
   total: number;
+  id_payroll_periode: number;
   id_employee: number;
   employee?: employeeType;
+  payroll_periode?: payrollType;
   created_at?: string;
   updated_at?: string;
   deleted_at?: string | null;
