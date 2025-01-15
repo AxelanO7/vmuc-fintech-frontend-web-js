@@ -1,9 +1,21 @@
-import { employeeType, generalJournalType, refPostType } from "./data";
+import {
+  employeeType,
+  generalJournalType,
+  payrollType,
+  refPostType,
+} from "./data";
 
-export interface propsManipulateRefPost {
+export interface propsModal {
   isOpen: boolean;
   onOpen: () => void;
   onOpenChange: (open: boolean) => void;
+}
+
+export interface propsDetailPayroll extends propsModal {
+  data: payrollType;
+}
+
+export interface propsManipulateRefPost extends propsModal {
   setIsEdit: (edit: boolean) => void;
   dataEdit?: refPostType;
   staticEdit: boolean;
@@ -12,10 +24,7 @@ export interface propsManipulateRefPost {
   onSave: () => void;
 }
 
-export interface propsManipulateGeneralJournal {
-  isOpen: boolean;
-  onOpen: () => void;
-  onOpenChange: (open: boolean) => void;
+export interface propsManipulateGeneralJournal extends propsModal {
   accountName: string;
   setAccountName: (name: string) => void;
   accountCode: string;
@@ -27,10 +36,7 @@ export interface propsManipulateGeneralJournal {
   onSave: ({ action }: { action: string }) => void;
 }
 
-export interface propsManipulateEmployee {
-  isOpen: boolean;
-  onOpen: () => void;
-  onOpenChange: (open: boolean) => void;
+export interface propsManipulateEmployee extends propsModal {
   setIsEdit: (edit: boolean) => void;
   dataEdit?: employeeType;
   currentData: employeeType | null;
