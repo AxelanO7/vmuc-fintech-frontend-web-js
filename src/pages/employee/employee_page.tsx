@@ -17,8 +17,8 @@ import { employeeType } from "../../core/interfaces/data";
 import { actionType, breadcrumsItem } from "../../core/interfaces/props";
 import Breadcrumb from "../../components/breadcrumb";
 import Swal from "sweetalert2";
-import { baseUrlEmployeeAccount } from "../../helpers/url";
 import { ApiHelpers } from "../../helpers/api";
+import { Urls } from "../../helpers/url";
 
 export default function EmployeePage() {
   // ~*~ // Manipulate Modal // ~*~ //
@@ -96,7 +96,7 @@ export default function EmployeePage() {
   // ~*~ // Functions // ~*~ //
   const getEmployees = async () => {
     ApiHelpers.get({
-      url: baseUrlEmployeeAccount(),
+      url: Urls.employeeAccount,
       successCallback: (response) => {
         setTableItems(response.data.data);
       },
@@ -113,7 +113,7 @@ export default function EmployeePage() {
       id_user: 1,
     };
     ApiHelpers.post({
-      url: baseUrlEmployeeAccount(),
+      url: Urls.employeeAccount,
       data: postBody,
       successCallback: () => {
         Swal.fire("Berhasil", "Data berhasil ditambahkan", "success");
@@ -136,7 +136,7 @@ export default function EmployeePage() {
       id_user: 1,
     };
     ApiHelpers.put({
-      url: `${baseUrlEmployeeAccount()}/${currentData?.id}`,
+      url: `${Urls.employeeAccount}/${currentData?.id}`,
       data: postBody,
       successCallback: () => {
         Swal.fire("Berhasil", "Data berhasil diubah", "success");
@@ -151,7 +151,7 @@ export default function EmployeePage() {
 
   const deleteEmployee = async (id: number) => {
     ApiHelpers.delete({
-      url: `${baseUrlEmployeeAccount()}/${id}`,
+      url: `${Urls.employeeAccount}/${id}`,
       successCallback: () => {
         Swal.fire("Berhasil", "Data berhasil dihapus", "success");
         getEmployees();
