@@ -87,7 +87,7 @@ export default function RefPostPage() {
 
   const getRefPosts = async () => {
     ApiHelpers.get({
-      url: baseUrlRefPost(),
+      url: Urls.refPost,
       successCallback: (response) => {
         setTableItems(response.data.data);
       },
