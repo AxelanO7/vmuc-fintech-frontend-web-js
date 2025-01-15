@@ -57,10 +57,10 @@ export default function Sidebar() {
       title: "Neraca Lajur",
       route: "/work-sheet",
     },
-    {
-      title: "Laba Rugi",
-      route: "/income-statement",
-    },
+    // {
+    //   title: "Laba Rugi",
+    //   route: "/income-statement",
+    // },
   ];
 
   return (
