@@ -116,7 +116,7 @@ export default function DetailPeriodDialog({
                 ))}
               </TableHeader>
               <TableBody emptyContent="Data tidak ditemukan">
-                {data.payroll.map((item) => (
+                {data.payrolls.map((item) => (
                   <TableRow key={item.id} className="bg-gray-50">
                     <TableCell className="text-center">
                       {item.employee?.name ?? "-"}
