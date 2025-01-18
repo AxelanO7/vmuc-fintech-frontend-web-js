@@ -18,78 +18,12 @@ import DefaultLayout from "../../../layouts/default_layout";
 import { generalJournalType } from "../../../core/interfaces/data";
 import { breadcrumsItem } from "../../../core/interfaces/props";
 import Breadcrumb from "../../../components/breadcrumb";
+import { useState } from "react";
 
 export default function GeneralJournalPage() {
+  const [tableItems, setTableItems] = useState<generalJournalType[]>([]);
+  
   // ~*~ // Table // ~*~ //
-  const tableItems: generalJournalType[] = [
-    {
-      id: 1,
-      period: "Mei/2024",
-      description: "Jurnal Umum",
-      contents: [
-        {
-          id: 1,
-          date: "01/05/2024",
-          ref_post: {
-            id: 1,
-            name: "test",
-            code: "001",
-            type: "test",
-          },
-          information: "Pembelian Barang",
-          debit: 1000000,
-          credit: 0,
-        },
-        {
-          id: 2,
-          date: "01/05/2024",
-          ref_post: {
-            id: 1,
-            name: "test",
-            code: "001",
-            type: "test",
-          },
-          information: "Pembelian Barang",
-          debit: 0,
-          credit: 1000000,
-        },
-      ],
-    },
-    {
-      id: 2,
-      period: "Mei/2024",
-      description: "Jurnal Umum",
-      contents: [
-        {
-          id: 1,
-          date: "01/05/2024",
-          ref_post: {
-            id: 1,
-            name: "test",
-            code: "001",
-            type: "test",
-          },
-          information: "Pembelian Barang",
-          debit: 1000000,
-          credit: 0,
-        },
-        {
-          id: 2,
-          date: "01/05/2024",
-          ref_post: {
-            id: 1,
-            name: "test",
-            code: "001",
-            type: "test",
-          },
-          information: "Pembelian Barang",
-          debit: 0,
-          credit: 1000000,
-        },
-      ],
-    },
-  ];
-
   const tableHeaderParentItems = [
     {
       name: "#",
