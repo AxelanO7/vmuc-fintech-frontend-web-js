@@ -20,11 +20,7 @@ import {
   TrashIcon,
 } from "@heroicons/react/16/solid";
 import Breadcrumb from "../../components/breadcrumb";
-import {
-  employeeType,
-  payrollContentType,
-  payrollType,
-} from "../../core/interfaces/data";
+import { employeeType, payrollType } from "../../core/interfaces/data";
 import { breadcrumsItem } from "../../core/interfaces/props";
 import DefaultLayout from "../../layouts/default_layout";
 import { Urls } from "../../helpers/url";
@@ -37,7 +33,8 @@ export default function AddPayrollPage() {
   const [period, setPeriod] = useState("");
 
   // ~*~ // Table // ~*~ //
-  const [tableItems, setTableItems] = useState<payrollContentType[]>([]);
+  const [tableItems, setTableItems] = useState<
+  []>([]);
 
   const tableHeaderItems = [
     {
