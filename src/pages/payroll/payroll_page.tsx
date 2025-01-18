@@ -14,7 +14,7 @@ import {
   TableRow,
   useDisclosure,
 } from "@nextui-org/react";
-import { payrollType } from "../../core/interfaces/data";
+import { periodeType } from "../../core/interfaces/data";
 import { breadcrumsItem } from "../../core/interfaces/props";
 import DefaultLayout from "../../layouts/default_layout";
 import Breadcrumb from "../../components/breadcrumb";
@@ -25,7 +25,7 @@ import DetailPeriodDialog from "./detail_period_dialog";
 
 export default function PayrollPage() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [tableItems, setTableItems] = useState<payrollType[]>([]);
+  const [tableItems, setTableItems] = useState<periodeType[]>([]);
 
   // ~*~ // Table // ~*~ //
   const tableHeaderParentItems = [
@@ -91,7 +91,7 @@ export default function PayrollPage() {
   // ~*~ // End of Breadcrumb // ~*~ //
 
   // ~*~ // Modal // ~*~ //
-  const renderModalComponent = ({ data }: { data: payrollType }) => {
+  const renderModalComponent = ({ data }: { data: periodeType }) => {
     return (
       <DetailPeriodDialog
         isOpen={isOpen}
@@ -107,7 +107,7 @@ export default function PayrollPage() {
   // ~*~ // Functions // ~*~ //
   const getPayrolls = () => {
     ApiHelpers.get({
-      url: Urls.payrollPeriodEmployee,
+      url: Urls.periodPayrollEmployee,
       successCallback(response) {
         setTableItems(response.data.data);
       },
@@ -213,7 +213,7 @@ export default function PayrollPage() {
                     ))}
                   </TableHeader>
                   <TableBody emptyContent="Data tidak ditemukan">
-                    {item.payroll.map((item) => (
+                    {item.payrolls.map((item) => (
                       <TableRow key={item.id} className="bg-gray-50">
                         <TableCell className="text-center">
                           {item.employee?.name ?? "-"}
