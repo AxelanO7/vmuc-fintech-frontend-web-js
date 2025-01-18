@@ -1,7 +1,7 @@
 import {
   employeeType,
   generalJournalType,
-  payrollType,
+  periodeType,
   refPostType,
 } from "./data";
 
@@ -12,7 +12,7 @@ export interface propsModal {
 }
 
 export interface propsDetailPayroll extends propsModal {
-  data: payrollType;
+  data: periodeType;
 }
 
 export interface propsManipulateRefPost extends propsModal {
