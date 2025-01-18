@@ -5,22 +5,6 @@ export interface refPostType {
   code: number;
 }
 
-export interface generalJournalType {
-  id: number;
-  period: string;
-  description: string;
-  contents: generalJournalContentType[];
-}
-
-export interface generalJournalContentType {
-  id: number;
-  date: string;
-  ref_post: refPostType;
-  information: string;
-  debit: number;
-  credit: number;
-}
-
 export interface dashboardType {
   dateContents: dashboardDateContentsType[];
 }
@@ -47,26 +31,75 @@ export interface employeeType {
   id_user?: number;
 }
 
-export interface payrollType {
+export interface periodeType {
   id?: number;
   period: string;
   description: string;
-  payroll: payrollContentType[];
+  payrolls: payrollType[];
+  adjusmentEntries: adjusmentEntriesType[];
+  generalJournal: generalJournalType[];
+  trialBalance: trialBalanceType[];
   created_at?: string;
   updated_at?: string;
   deleted_at?: string | null;
 }
 
-export interface payrollContentType {
+export interface payrollType {
   id?: number;
   salary: number;
   bonus: number;
   penalty: number;
   total: number;
-  id_payroll_periode: number;
+  id_periode: number;
   id_employee: number;
   employee?: employeeType;
-  payroll_periode?: payrollType;
+  payroll_periode?: periodeType;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string | null;
+}
+
+export interface adjusmentEntriesType {
+  id?: number;
+  name_account: string;
+  date: string;
+  id_ref: number;
+  information: string;
+  debit: number;
+  kredit: number;
+  id_periode: number;
+  periode?: periodeType;
+  ref?: refPostType;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string | null;
+}
+
+export interface trialBalanceType {
+  id?: number;
+  name_account: string;
+  id_ref: number;
+  debit: number;
+  kredit: number;
+  id_periode: number;
+  periode?: periodeType;
+  ref?: refPostType;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string | null;
+}
+
+export interface generalJournalType {
+  id: number;
+  name_account: string;
+  date: string;
+  id_ref: number;
+  information: string;
+  debit: number;
+  kredit: number;
+  ref?: refPostType;
+  id_periode: number;
+  periode?: periodeType;
   created_at?: string;
   updated_at?: string;
   deleted_at?: string | null;
