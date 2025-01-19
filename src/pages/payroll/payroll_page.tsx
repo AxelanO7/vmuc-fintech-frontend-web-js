@@ -152,21 +152,7 @@ export default function PayrollPage() {
         </div>
 
         <div className="mt-4">
-          {tableItems.length === 0 ? (
-            <Table aria-label="Periode Table">
-              <TableHeader>
-                {tableHeaderParentItems.map((item) => (
-                  <TableColumn
-                    key={item.name}
-                    className={`text-center ${item.className}`}
-                  >
-                    {item.name}
-                  </TableColumn>
-                ))}
-              </TableHeader>
-              <TableBody emptyContent="Data tidak ditemukan"></TableBody>
-            </Table>
-          ) : (
+          {tableItems &&
             tableItems.map((item, index) => (
               <div key={item.id}>
                 <Table aria-label="Periode Table">
@@ -180,7 +166,7 @@ export default function PayrollPage() {
                       </TableColumn>
                     ))}
                   </TableHeader>
-                  <TableBody>
+                  <TableBody emptyContent="Data tidak ditemukan">
                     <TableRow key={item.id} className="bg-gray-50">
                       <TableCell className="text-center">{item.id}</TableCell>
                       <TableCell className="text-center">
@@ -213,36 +199,36 @@ export default function PayrollPage() {
                     ))}
                   </TableHeader>
                   <TableBody emptyContent="Data tidak ditemukan">
-                    {item.payrolls.map((item) => (
-                      <TableRow key={item.id} className="bg-gray-50">
-                        <TableCell className="text-center">
-                          {item.employee?.name ?? "-"}
-                        </TableCell>
-                        <TableCell className="text-center">
-                          {item.employee?.position ?? "-"}
-                        </TableCell>
-                        <TableCell className="text-center">
-                          {item.salary}
-                        </TableCell>
-                        <TableCell className="text-center">
-                          {item.bonus}
-                        </TableCell>
-                        <TableCell className="text-center">
-                          {item.penalty}
-                        </TableCell>
-                        <TableCell className="text-center">
-                          {item.total}
-                        </TableCell>
-                        <TableCell className="text-center flex justify-evenly">
-                          <TrashIcon className="text-danger w-6 h-6" />
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    {item.payrolls &&
+                      item.payrolls.map((item) => (
+                        <TableRow key={item.id} className="bg-gray-50">
+                          <TableCell className="text-center">
+                            {item.employee?.name ?? "-"}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {item.employee?.position ?? "-"}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {item.salary}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {item.bonus}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {item.penalty}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {item.total}
+                          </TableCell>
+                          <TableCell className="text-center flex justify-evenly">
+                            <TrashIcon className="text-danger w-6 h-6" />
+                          </TableCell>
+                        </TableRow>
+                      ))}
                   </TableBody>
                 </Table>
               </div>
-            ))
-          )}
+            ))}
         </div>
       </div>
     </DefaultLayout>
