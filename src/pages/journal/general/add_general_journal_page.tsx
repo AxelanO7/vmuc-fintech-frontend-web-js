@@ -15,9 +15,10 @@ import {
 import DefaultLayout from "../../../layouts/default_layout";
 import { breadcrumsItem } from "../../../core/interfaces/props";
 import Breadcrumb from "../../../components/breadcrumb";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  generalJournalContentType,
+  generalJournalType,
+  periodeType,
   refPostType,
 } from "../../../core/interfaces/data";
 import {
@@ -25,42 +26,16 @@ import {
   PlusIcon,
   TrashIcon,
 } from "@heroicons/react/16/solid";
+import { ApiHelpers } from "../../../helpers/api";
+import { Urls } from "../../../helpers/url";
 
 export default function AddGeneralJournalPage() {
-  const [, setPeriode] = useState("");
-  const [, setDescription] = useState("");
+  const [period, setPeriod] = useState("");
+  const [description, setDescription] = useState("");
+  const [tableItems, setTableItems] = useState<generalJournalType[]>([]);
+  const [refPostItems, setRefPostItems] = useState<refPostType[]>([]);
 
   // ~*~ // Table // ~*~ //
-  const [tableItems, setTableItems] = useState<generalJournalContentType[]>([
-    {
-      credit: 0,
-      debit: 0,
-      information: "",
-      id: 1,
-      date: "01-01-2021",
-      ref_post: {
-        code: "001",
-        name: "test",
-        type: "test",
-        id: 1,
-      },
-    },
-  ]);
-
-  const refPostItems: refPostType[] = [
-    {
-      code: "001",
-      name: "test",
-      type: "test",
-      id: 1,
-    },
-    {
-      code: "002",
-      name: "test",
-      type: "test",
-      id: 2,
-    },
-  ];
 
   const tableHeaderItems = [
     {
@@ -109,6 +84,54 @@ export default function AddGeneralJournalPage() {
 
   // ~*~ // End of Breadcrumb // ~*~ //
 
+  // ~*~ // Functions // ~*~ //
+  const getRefPosts = async () => {
+    ApiHelpers.get({
+      url: Urls.refPost,
+      successCallback: (response) => {
+        setRefPostItems(response.data.data);
+      },
+      errorCallback: () => {},
+    });
+  };
+
+  const handleSubmit = async () => {
+    const dataPeriod: periodeType = {
+      period: period,
+      description: description,
+      generalJournal: tableItems,
+      payrolls: [],
+      adjusmentEntries: [],
+      trialBalance: [],
+    };
+    await createPeriod(dataPeriod);
+    createGeneralJournals(dataPeriod);
+  };
+
+  const createPeriod = async (data: periodeType) => {
+    ApiHelpers.post({
+      url: Urls.periodGeneral,
+      data: data,
+      successCallback: () => {},
+      errorCallback: () => {},
+    });
+  };
+
+  const createGeneralJournals = async (data: periodeType) => {
+    ApiHelpers.post({
+      url: Urls.periodGeneral,
+      data: data,
+      successCallback: () => {},
+      errorCallback: () => {},
+    });
+  };
+
+  // ~*~ // End of Functions // ~*~ //
+
+  useEffect(() => {
+    getRefPosts();
+  }, []);
+
   return (
     <DefaultLayout>
       <h1 className="text-3xl font-bold mx-6 pt-4">Jurnal Umum</h1>
@@ -124,7 +147,7 @@ export default function AddGeneralJournalPage() {
             <Input
               type="date"
               className="w-max"
-              onChange={(e) => setPeriode(e.target.value)}
+              onChange={(e) => setPeriod(e.target.value)}
             />
           </div>
           <div>
@@ -158,7 +181,7 @@ export default function AddGeneralJournalPage() {
                       <Input
                         placeholder="Pilih nama akun"
                         variant="bordered"
-                        value={item.ref_post.name}
+                        value={item.name_account}
                         className="cursor-pointer"
                         onChange={(e) =>
                           setTableItems(
@@ -260,14 +283,14 @@ export default function AddGeneralJournalPage() {
                 <TableCell className="text-center">
                   <Input
                     placeholder="Kredit"
-                    defaultValue={item.credit.toString()}
+                    defaultValue={item.kredit.toString()}
                     onChange={(e) =>
                       setTableItems(
                         tableItems.map((tableItem) =>
                           tableItem.id === item.id
                             ? {
                                 ...tableItem,
-                                credit: parseInt(e.target.value),
+                                kredit: parseInt(e.target.value),
                               }
                             : tableItem
                         )
@@ -302,7 +325,7 @@ export default function AddGeneralJournalPage() {
             setTableItems([
               ...tableItems,
               {
-                credit: 0,
+                kredit: 0,
                 debit: 0,
                 information: "",
                 id: tableItems.length + 1,
@@ -328,7 +351,7 @@ export default function AddGeneralJournalPage() {
             Rp. {tableItems.reduce((acc, item) => acc + item.debit, 0)}
           </p>
           <p className="w-1/3">
-            Rp. {tableItems.reduce((acc, item) => acc + item.credit, 0)}
+            Rp. {tableItems.reduce((acc, item) => acc + item.kredit, 0)}
           </p>
         </div>
         <div className="flex w-1/2 mt-4 pl-12 font-medium">
@@ -337,11 +360,13 @@ export default function AddGeneralJournalPage() {
           <p className="w-1/3">
             Rp.{" "}
             {tableItems.reduce((acc, item) => acc + item.debit, 0) -
-              tableItems.reduce((acc, item) => acc + item.credit, 0)}
+              tableItems.reduce((acc, item) => acc + item.kredit, 0)}
           </p>
         </div>
         <div className="w-full flex justify-end mt-4">
-          <Button color="primary">Simpan</Button>
+          <Button color="primary" onClick={handleSubmit}>
+            Simpan
+          </Button>
         </div>
       </div>
     </DefaultLayout>
