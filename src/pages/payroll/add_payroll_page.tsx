@@ -20,7 +20,11 @@ import {
   TrashIcon,
 } from "@heroicons/react/16/solid";
 import Breadcrumb from "../../components/breadcrumb";
-import { employeeType, payrollType } from "../../core/interfaces/data";
+import {
+  employeeType,
+  payrollPeriodType,
+  payrollType,
+} from "../../core/interfaces/data";
 import { breadcrumsItem } from "../../core/interfaces/props";
 import DefaultLayout from "../../layouts/default_layout";
 import { Urls } from "../../helpers/url";
@@ -31,11 +35,9 @@ export default function AddPayrollPage() {
   const [employees, setEmployees] = useState<employeeType[]>([]);
   const [description, setDescription] = useState("");
   const [period, setPeriod] = useState("");
+  const [tableItems, setTableItems] = useState<payrollType[]>([]);
 
   // ~*~ // Table // ~*~ //
-  const [tableItems, setTableItems] = useState<
-  []>([]);
-
   const tableHeaderItems = [
     {
       name: "Nama Karyawan",
@@ -97,29 +99,28 @@ export default function AddPayrollPage() {
 
   const handleSave = () => {
     tableItems.forEach((item) => {
-      item.id_payroll_periode = tableItems.indexOf(item) + 1;
+      item.id_periode = tableItems.indexOf(item) + 1;
     });
 
-    const dataParent: payrollType = {
+    const data: payrollPeriodType = {
       period: period,
       description: description,
-      payroll: tableItems.map((item) => ({
+      payrolls: tableItems.map((item) => ({
         salary: parseInt(item.salary.toString()),
         bonus: parseInt(item.bonus.toString()),
         penalty: parseInt(item.penalty.toString()),
         total: item.salary + item.bonus - item.penalty,
+        id_periode: item.id_periode || 0,
         id_employee: item.employee?.id || 0,
-        employee: item.employee,
-        id_payroll_periode: item.id_payroll_periode,
       })),
     };
 
     ApiHelpers.post({
-      url: Urls.payrollPeriodEmployee,
-      data: dataParent,
+      url: Urls.periodPayroll,
+      data: data,
       successCallback: () => {
         Swal.fire("Berhasil", "Data berhasil ditambahkan", "success");
-        window.location.href = "/payroll";
+        // window.location.href = "/payroll";
       },
       errorCallback: () => {
         Swal.fire("Gagal", "Data gagal ditambahkan", "error");
@@ -319,7 +320,7 @@ export default function AddPayrollPage() {
                 penalty: 0,
                 total: 0,
                 id_employee: 0,
-                id_payroll_periode: tableItems.length + 1,
+                id_periode: 0,
               },
             ])
           }
