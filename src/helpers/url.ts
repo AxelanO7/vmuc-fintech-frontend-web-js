@@ -9,4 +9,5 @@ export const Urls = {
   periodTrialBalance: "/periode/private/trial-balance",
   periodEmployee: "/periode/private/employee",
   periodEmployees: "/periode/private/employees",
+  periodPayroll: "/periode/private/payroll",
 };
