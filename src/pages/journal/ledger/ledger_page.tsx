@@ -19,8 +19,14 @@ import {
 import Breadcrumb from "../../../components/breadcrumb";
 import { breadcrumsItem } from "../../../core/interfaces/props";
 import DefaultLayout from "../../../layouts/default_layout";
+import { useEffect, useState } from "react";
+import { ApiHelpers } from "../../../helpers/api";
+import { Urls } from "../../../helpers/url";
+import { generalLedgerType } from "../../../core/interfaces/data";
 
 export default function LedgerPage() {
+  const [tableItems, setTableItems] = useState<generalLedgerType[]>([]);
+
   // ~*~ // Date // ~*~ //
   const dropdownItem = [
     {
@@ -95,14 +101,6 @@ export default function LedgerPage() {
     },
   ];
 
-  const tableBodyItems = [
-    {
-      no: 1,
-      name: "Laporan Bulan Januari",
-      period: "April 2024",
-    },
-  ];
-
   // ~*~ // End of Table // ~*~ //
 
   // ~*~ // Breadcrumb // ~*~ //
@@ -114,6 +112,22 @@ export default function LedgerPage() {
   ];
 
   // ~*~ // End of Breadcrumb // ~*~ //
+
+  // ~*~ // Functions // ~*~ //
+  const getGeneralLedgers = () => {
+    ApiHelpers.get({
+      url: Urls.generalLedgerEmployee,
+      successCallback: (response) => {
+        setTableItems(response.data.data);
+      },
+      errorCallback: () => {},
+    });
+  };
+  // ~*~ // End of Functions // ~*~ //
+
+  useEffect(() => {
+    getGeneralLedgers();
+  }, []);
 
   return (
     <>
@@ -164,17 +178,18 @@ export default function LedgerPage() {
                     </TableColumn>
                   ))}
                 </TableHeader>
-                <TableBody>
-                  {tableBodyItems.map((item, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{item.no}</TableCell>
-                      <TableCell>{item.name}</TableCell>
-                      <TableCell>{item.period}</TableCell>
-                      <TableCell className="flex justify-center">
-                        <DocumentArrowDownIcon className="w-5 h-5 text-primary" />
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                <TableBody emptyContent={"Tidak ada data yang tersedia"}>
+                  {tableItems &&
+                    tableItems.map((item, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{index + 1}</TableCell>
+                        <TableCell>{item.name_general_ledger}</TableCell>
+                        <TableCell>{item.date}</TableCell>
+                        <TableCell className="flex justify-center">
+                          <DocumentArrowDownIcon className="w-5 h-5 text-primary" />
+                        </TableCell>
+                      </TableRow>
+                    ))}
                 </TableBody>
               </Table>
             </div>
