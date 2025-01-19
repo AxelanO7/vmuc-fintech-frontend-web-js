@@ -104,3 +104,13 @@ export interface generalJournalType {
   updated_at?: string;
   deleted_at?: string | null;
 }
+
+export interface payrollPeriodType {
+  id?: number;
+  period: string;
+  description: string;
+  payrolls: payrollType[];
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string | null;
+}
