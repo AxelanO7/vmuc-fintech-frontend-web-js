@@ -25,6 +25,8 @@ import { Urls } from "../../../helpers/url";
 import { generalLedgerType } from "../../../core/interfaces/data";
 
 export default function LedgerPage() {
+  const [name, setName] = useState("");
+  const [date, setDate] = useState("");
   const [tableItems, setTableItems] = useState<generalLedgerType[]>([]);
 
   // ~*~ // Date // ~*~ //
@@ -123,6 +125,57 @@ export default function LedgerPage() {
       errorCallback: () => {},
     });
   };
+
+  const getMonth = (month: string) => {
+    switch (month) {
+      case "Januari":
+        return "01";
+      case "Februari":
+        return "02";
+      case "Maret":
+        return "03";
+      case "April":
+        return "04";
+      case "Mei":
+        return "05";
+      case "Juni":
+        return "06";
+      case "Juli":
+        return "07";
+      case "Agustus":
+        return "08";
+      case "September":
+        return "09";
+      case "Oktober":
+        return "10";
+      case "November":
+        return "11";
+      case "Desember":
+        return "12";
+      default:
+        return "01";
+    }
+  };
+
+  const addGeneralLedger = () => {
+    const dateNow = new Date();
+    const year = dateNow.getFullYear();
+    const month = getMonth(date);
+    const day = dateNow.getDate();
+    const finalDate = `${year}-${month}-${day}`;
+
+    ApiHelpers.post({
+      url: Urls.generalLedgerEmployee,
+      data: {
+        name_general_ledger: name,
+        date: finalDate,
+      },
+      successCallback: () => {
+        getGeneralLedgers();
+      },
+      errorCallback: () => {},
+    });
+  };
   // ~*~ // End of Functions // ~*~ //
 
   useEffect(() => {
@@ -143,29 +196,41 @@ export default function LedgerPage() {
             <div className="flex gap-8 mx-20 mt-4">
               <div>
                 <p>Nama Buku Besar</p>
-                <Input placeholder="Nama Buku Besar" />
+                <Input
+                  placeholder="Nama Buku Besar"
+                  onChange={(e) => setName(e.target.value)}
+                />
               </div>
               <div>
                 <p className="pl-4">Tanggal</p>
                 <Dropdown>
                   <DropdownTrigger>
-                    <Button
-                      variant="faded"
+                    <Input
+                      placeholder="Periode"
+                      defaultValue="Pilih Periode"
+                      value={date}
                       endContent={<ChevronDownIcon className="w-5 h-5" />}
-                    >
-                      Periode
-                    </Button>
+                    />
                   </DropdownTrigger>
                   <DropdownMenu aria-label="Static Actions">
                     {dropdownItem.map((item, index) => (
-                      <DropdownItem key={index}>{item.label}</DropdownItem>
+                      <DropdownItem
+                        key={index}
+                        onClick={() => setDate(item.label)}
+                      >
+                        {item.label}
+                      </DropdownItem>
                     ))}
                   </DropdownMenu>
                 </Dropdown>
               </div>
             </div>
 
-            <Button color="primary" className="justify-self-end flex me-20">
+            <Button
+              color="primary"
+              className="justify-self-end flex me-20"
+              onClick={addGeneralLedger}
+            >
               Simpan
             </Button>
 
