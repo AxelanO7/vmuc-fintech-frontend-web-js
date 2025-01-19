@@ -114,3 +114,12 @@ export interface payrollPeriodType {
   updated_at?: string;
   deleted_at?: string | null;
 }
+
+export interface generalLedgerType {
+  id?: number;
+  name_general_ledger: string;
+  date: string;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string | null;
+}
