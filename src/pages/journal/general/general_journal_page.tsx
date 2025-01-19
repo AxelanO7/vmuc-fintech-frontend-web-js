@@ -15,14 +15,16 @@ import {
   TableRow,
 } from "@nextui-org/react";
 import DefaultLayout from "../../../layouts/default_layout";
-import { generalJournalType } from "../../../core/interfaces/data";
+import { periodeType } from "../../../core/interfaces/data";
 import { breadcrumsItem } from "../../../core/interfaces/props";
 import Breadcrumb from "../../../components/breadcrumb";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { ApiHelpers } from "../../../helpers/api";
+import { Urls } from "../../../helpers/url";
 
 export default function GeneralJournalPage() {
-  const [tableItems, setTableItems] = useState<generalJournalType[]>([]);
-  
+  const [tableItems, setTableItems] = useState<periodeType[]>([]);
+
   // ~*~ // Table // ~*~ //
   const tableHeaderParentItems = [
     {
@@ -82,9 +84,26 @@ export default function GeneralJournalPage() {
 
   // ~*~ // End of Breadcrumb // ~*~ //
 
+  // ~*~ // Functions // ~*~ //
   const handleAdd = () => {
     window.location.replace("/" + "add-general-journal");
   };
+
+  const getGeneralJournals = () => {
+    ApiHelpers.get({
+      url: Urls.periodGeneralJournal,
+      successCallback: (response) => {
+        setTableItems(response.data.data);
+      },
+      errorCallback: () => {},
+    });
+  };
+
+  // ~*~ // End of Functions // ~*~ //
+
+  useEffect(() => {
+    getGeneralJournals();
+  }, []);
 
   return (
     <DefaultLayout>
@@ -113,76 +132,80 @@ export default function GeneralJournalPage() {
         </div>
 
         <div className="mt-4">
-          {tableItems.map((item, index) => (
-            <div key={item.id}>
-              <Table aria-label="Periode Table">
-                <TableHeader>
-                  {tableHeaderParentItems.map((item) => (
-                    <TableColumn
-                      key={item.name}
-                      className={`text-center ${item.className}`}
-                    >
-                      {item.name}
-                    </TableColumn>
-                  ))}
-                </TableHeader>
-                <TableBody>
-                  <TableRow key={item.id} className="bg-gray-50">
-                    <TableCell className="text-center">{item.id}</TableCell>
-                    <TableCell className="text-center">{item.period}</TableCell>
-                    <TableCell className="text-center">
-                      {item.description}
-                    </TableCell>
-                    <TableCell className="text-center flex justify-evenly">
-                      <DocumentArrowDownIcon className="text-primary w-6 h-6" />
-                      <TrashIcon className="text-danger w-6 h-6" />
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-              <Table
-                aria-label="Periode Table"
-                className={`mt-2 ${
-                  index === tableItems.length - 1 ? "" : "mb-8"
-                }`}
-              >
-                <TableHeader>
-                  {tableHeaderChildItems.map((item) => (
-                    <TableColumn
-                      key={item.name}
-                      className={`text-center ${item.className}`}
-                    >
-                      {item.name}
-                    </TableColumn>
-                  ))}
-                </TableHeader>
-                <TableBody>
-                  {item.contents.map((content) => (
-                    <TableRow key={content.id} className="bg-gray-50">
+          {tableItems &&
+            tableItems.map((item, index) => (
+              <div key={item.id}>
+                <Table aria-label="Periode Table">
+                  <TableHeader>
+                    {tableHeaderParentItems.map((item) => (
+                      <TableColumn
+                        key={item.name}
+                        className={`text-center ${item.className}`}
+                      >
+                        {item.name}
+                      </TableColumn>
+                    ))}
+                  </TableHeader>
+                  <TableBody emptyContent="Data tidak ditemukan">
+                    <TableRow key={item.id} className="bg-gray-50">
+                      <TableCell className="text-center">{item.id}</TableCell>
                       <TableCell className="text-center">
-                        {content.date}
+                        {item.period}
                       </TableCell>
                       <TableCell className="text-center">
-                        {content.ref_post.name}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        {content.information}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        {content.debit}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        {content.credit}
+                        {item.description}
                       </TableCell>
                       <TableCell className="text-center flex justify-evenly">
+                        <DocumentArrowDownIcon className="text-primary w-6 h-6" />
                         <TrashIcon className="text-danger w-6 h-6" />
                       </TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          ))}
+                  </TableBody>
+                </Table>
+                <Table
+                  aria-label="Periode Table"
+                  className={`mt-2 ${
+                    index === tableItems.length - 1 ? "" : "mb-8"
+                  }`}
+                >
+                  <TableHeader>
+                    {tableHeaderChildItems.map((item) => (
+                      <TableColumn
+                        key={item.name}
+                        className={`text-center ${item.className}`}
+                      >
+                        {item.name}
+                      </TableColumn>
+                    ))}
+                  </TableHeader>
+                  <TableBody emptyContent="Data tidak ditemukan">
+                    {item.generalJournal &&
+                      item.generalJournal.map((item) => (
+                        <TableRow key={item.id} className="bg-gray-50">
+                          <TableCell className="text-center">
+                            {item.date}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {item.name_account}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {item.information}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {item.debit}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {item.kredit}
+                          </TableCell>
+                          <TableCell className="text-center flex justify-evenly">
+                            <TrashIcon className="text-danger w-6 h-6" />
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </div>
+            ))}
         </div>
       </div>
     </DefaultLayout>
