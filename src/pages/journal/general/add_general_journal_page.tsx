@@ -1,6 +1,7 @@
 import {
   Button,
   Dropdown,
+  DropdownItem,
   DropdownMenu,
   DropdownSection,
   DropdownTrigger,
@@ -183,36 +184,31 @@ export default function AddGeneralJournalPage() {
                         variant="bordered"
                         value={item.name_account}
                         className="cursor-pointer"
-                        onChange={(e) =>
-                          setTableItems(
-                            tableItems.map((tableItem) =>
-                              tableItem.id === item.id
-                                ? {
-                                    ...tableItem,
-                                    ref_post: {
-                                      ...tableItem.ref_post,
-                                      name: e.target.value,
-                                    },
-                                  }
-                                : tableItem
-                            )
-                          )
-                        }
                         readOnly
                         endContent={<ChevronDownIcon className="w-5 h-5" />}
                       />
                     </DropdownTrigger>
                     <DropdownMenu>
                       {refPostItems.map((refPostItem) => (
-                        <DropdownSection key={refPostItem.id}>
-                          <Input
-                            label="Nama Akun"
-                            placeholder="Pilih nama akun"
-                            variant="bordered"
-                            value={refPostItem.name}
-                            className="cursor-pointer"
-                            readOnly
-                          />
+                        <DropdownSection key={refPostItem.name}>
+                          <DropdownItem
+                            key={refPostItem.id}
+                            onClick={() =>
+                              setTableItems(
+                                tableItems.map((tableItem) =>
+                                  tableItem.id === item.id
+                                    ? {
+                                        ...tableItem,
+                                        name_account: refPostItem.name,
+                                        id_ref: refPostItem.id || 0,
+                                      }
+                                    : tableItem
+                                )
+                              )
+                            }
+                          >
+                            {refPostItem.name}
+                          </DropdownItem>
                         </DropdownSection>
                       ))}
                     </DropdownMenu>
@@ -240,7 +236,7 @@ export default function AddGeneralJournalPage() {
                 <TableCell className="text-center">
                   <Input
                     placeholder="Ref Post"
-                    value={item.ref_post.code}
+                    value={(item.ref?.code || 0).toString()}
                     readOnly
                   />
                 </TableCell>
@@ -325,17 +321,14 @@ export default function AddGeneralJournalPage() {
             setTableItems([
               ...tableItems,
               {
-                kredit: 0,
-                debit: 0,
-                information: "",
                 id: tableItems.length + 1,
-                date: "01-01-2021",
-                ref_post: {
-                  code: "001",
-                  name: "test",
-                  type: "test",
-                  id: 1,
-                },
+                name_account: "",
+                date: "",
+                information: "",
+                debit: 0,
+                kredit: 0,
+                id_ref: 0,
+                id_periode: 0,
               },
             ])
           }
