@@ -201,6 +201,7 @@ export default function AddGeneralJournalPage() {
                                         ...tableItem,
                                         name_account: refPostItem.name,
                                         id_ref: refPostItem.id || 0,
+                                        ref: refPostItem,
                                       }
                                     : tableItem
                                 )
