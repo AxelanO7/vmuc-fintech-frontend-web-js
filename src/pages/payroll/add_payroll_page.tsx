@@ -22,8 +22,8 @@ import {
 import Breadcrumb from "../../components/breadcrumb";
 import {
   employeeType,
-  payrollPeriodType,
   payrollType,
+  periodeType,
 } from "../../core/interfaces/data";
 import { breadcrumsItem } from "../../core/interfaces/props";
 import DefaultLayout from "../../layouts/default_layout";
@@ -102,7 +102,7 @@ export default function AddPayrollPage() {
       item.id_periode = tableItems.indexOf(item) + 1;
     });
 
-    const data: payrollPeriodType = {
+    const data: periodeType = {
       period: period,
       description: description,
       payrolls: tableItems.map((item) => ({
@@ -113,6 +113,9 @@ export default function AddPayrollPage() {
         id_periode: item.id_periode || 0,
         id_employee: item.employee?.id || 0,
       })),
+      adjusmentEntries: [],
+      generalJournal: [],
+      trialBalance: [],
     };
 
     ApiHelpers.post({
