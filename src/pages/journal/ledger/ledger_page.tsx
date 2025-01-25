@@ -15,6 +15,7 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
+  useDisclosure,
 } from "@nextui-org/react";
 import Breadcrumb from "../../../components/breadcrumb";
 import { breadcrumsItem } from "../../../core/interfaces/props";
@@ -22,9 +23,11 @@ import DefaultLayout from "../../../layouts/default_layout";
 import { useEffect, useState } from "react";
 import { ApiHelpers } from "../../../helpers/api";
 import { Urls } from "../../../helpers/url";
-import { generalLedgerType } from "../../../core/interfaces/data";
+import { generalLedgerType, periodeType } from "../../../core/interfaces/data";
+import DetailPeriodDialog from "./detail_period_dialog";
 
 export default function LedgerPage() {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
   const [tableItems, setTableItems] = useState<generalLedgerType[]>([]);
@@ -115,6 +118,19 @@ export default function LedgerPage() {
 
   // ~*~ // End of Breadcrumb // ~*~ //
 
+  // ~*~ // Modal // ~*~ //
+  const renderModalComponent = () => {
+    return (
+      <DetailPeriodDialog
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onOpenChange={onOpenChange}
+      />
+    );
+  };
+
+  // ~*~ // End of Modal // ~*~ //
+
   // ~*~ // Functions // ~*~ //
   const getGeneralLedgers = () => {
     ApiHelpers.get({
@@ -176,6 +192,16 @@ export default function LedgerPage() {
       errorCallback: () => {},
     });
   };
+
+  const handleDetail = (id: number) => {
+    const finalUrl = `${Urls.generalLedgerEmployee}-report/${id}`;
+    ApiHelpers.get({
+      url: finalUrl,
+      successCallback: (response) => {},
+      errorCallback: () => {},
+    });
+  };
+
   // ~*~ // End of Functions // ~*~ //
 
   useEffect(() => {
@@ -251,7 +277,11 @@ export default function LedgerPage() {
                         <TableCell>{item.name_general_ledger}</TableCell>
                         <TableCell>{item.date}</TableCell>
                         <TableCell className="flex justify-center">
-                          <DocumentArrowDownIcon className="w-5 h-5 text-primary" />
+                          {/* <DocumentArrowDownIcon
+                            className="w-5 h-5 text-primary"
+                            onClick={() => item.id && handleDetail(item.id)}
+                          /> */}
+                          {renderModalComponent()}
                         </TableCell>
                       </TableRow>
                     ))}
