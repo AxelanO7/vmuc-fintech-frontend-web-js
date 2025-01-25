@@ -15,6 +15,7 @@ export default function DetailPeriodDialog({
   isOpen,
   onOpen,
   onOpenChange,
+  index,
   data,
 }: propsDetailPayroll) {
   const tableHeaderParentItems = [
@@ -73,6 +74,7 @@ export default function DetailPeriodDialog({
         className="text-primary w-6 h-6"
         onClick={() => {
           onOpen();
+          // remove data except the selected index
         }}
       />
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="5xl">
@@ -116,8 +118,8 @@ export default function DetailPeriodDialog({
                 ))}
               </TableHeader>
               <TableBody emptyContent="Data tidak ditemukan">
-                {data.payrolls &&
-                  data.payrolls.map((item) => (
+                {data.payroll &&
+                  data.payroll.map((item) => (
                     <TableRow key={item.id} className="bg-gray-50">
                       <TableCell className="text-center">
                         {item.employee?.name ?? "-"}
