@@ -134,7 +134,7 @@ export default function LedgerPage() {
   // ~*~ // Functions // ~*~ //
   const getGeneralLedgers = () => {
     ApiHelpers.get({
-      url: Urls.generalLedgerEmployee,
+      url: Urls.ledgerEmployee,
       successCallback: (response) => {
         setTableItems(response.data.data);
       },
@@ -181,7 +181,7 @@ export default function LedgerPage() {
     const finalDate = `${year}-${month}-${day}`;
 
     ApiHelpers.post({
-      url: Urls.generalLedgerEmployee,
+      url: Urls.ledgerEmployee,
       data: {
         name_general_ledger: name,
         date: finalDate,
@@ -194,7 +194,7 @@ export default function LedgerPage() {
   };
 
   const handleDetail = (id: number) => {
-    const finalUrl = `${Urls.generalLedgerEmployee}-report/${id}`;
+    const finalUrl = `${Urls.ledgerEmployee}-report/${id}`;
     ApiHelpers.get({
       url: finalUrl,
       successCallback: (response) => {},
