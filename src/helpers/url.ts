@@ -4,11 +4,12 @@ export const Urls = {
   employeeAccount: "/employee/private/account",
   generalLedgerEmployee: "/general-ledger/private/employee",
 
+  periodGeneral: "/periode/private/general",
   periodPayrollEmployee: "/periode/private/payroll-employee",
   periodAdjusmentEntries: "/periode/private/adjusment-entries",
   periodGeneralJournal: "/periode/private/general-journal",
   periodTrialBalance: "/periode/private/trial-balance",
-
-  periodGeneral: "/periode/private/general",
   periodPayroll: "/periode/private/payroll",
+
+  payrollEmployee: "/payroll/private/employee",
 };
