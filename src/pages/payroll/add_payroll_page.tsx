@@ -22,6 +22,7 @@ import {
 import Breadcrumb from "../../components/breadcrumb";
 import {
   employeeType,
+  generalJournalType,
   payrollType,
   periodeType,
 } from "../../core/interfaces/data";
@@ -102,6 +103,15 @@ export default function AddPayrollPage() {
       item.id_periode = tableItems.indexOf(item) + 1;
     });
 
+    const generalJournals: generalJournalType[] = tableItems.map((item) => ({
+      name_account: "Gaji Karyawan",
+      date: period,
+      information: "Gaji Karyawan",
+      debit: item.salary + item.bonus,
+      kredit: item.penalty,
+      id_periode: item.id_periode || 0,
+    }));
+
     const data: periodeType = {
       period: period,
       description: description,
@@ -114,7 +124,7 @@ export default function AddPayrollPage() {
         id_employee: item.employee?.id || 0,
       })),
       adjusment_entries: [],
-      general_journal: [],
+      general_journal: generalJournals,
       trial_balance: [],
     };
 
