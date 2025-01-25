@@ -46,7 +46,11 @@ export interface propsManipulateEmployee extends propsModal {
   onSave: () => void;
 }
 
-// export interface propsDetailLedger extends propsModal {}
+export interface propsDetailLedger extends propsModal {
+  id: number;
+  periode: string;
+  description: string;
+}
 
 export interface propsBreadcrums {
   items: breadcrumsItem[];
