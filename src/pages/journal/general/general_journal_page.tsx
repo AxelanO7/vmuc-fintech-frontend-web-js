@@ -21,6 +21,7 @@ import Breadcrumb from "../../../components/breadcrumb";
 import { useEffect, useState } from "react";
 import { ApiHelpers } from "../../../helpers/api";
 import { Urls } from "../../../helpers/url";
+import Swal from "sweetalert2";
 
 export default function GeneralJournalPage() {
   const [tableItems, setTableItems] = useState<periodeType[]>([]);
@@ -99,6 +100,17 @@ export default function GeneralJournalPage() {
     });
   };
 
+  const deleteGeneralJournal = (id: number) => {
+    ApiHelpers.delete({
+      url: Urls.journalGeneral + "/" + id,
+      successCallback: () => {
+        Swal.fire("Berhasil", "Data berhasil dihapus", "success");
+        getGeneralJournals();
+      },
+      errorCallback: () => {},
+    });
+  };
+
   // ~*~ // End of Functions // ~*~ //
 
   useEffect(() => {
@@ -157,7 +169,7 @@ export default function GeneralJournalPage() {
                       </TableCell>
                       <TableCell className="text-center flex justify-evenly">
                         <DocumentArrowDownIcon className="text-primary w-6 h-6" />
-                        <TrashIcon className="text-danger w-6 h-6" />
+                        {/* <TrashIcon className="text-danger w-6 h-6" /> */}
                       </TableCell>
                     </TableRow>
                   </TableBody>
@@ -179,8 +191,8 @@ export default function GeneralJournalPage() {
                     ))}
                   </TableHeader>
                   <TableBody emptyContent="Data tidak ditemukan">
-                    {item.generalJournal &&
-                      item.generalJournal.map((item) => (
+                    {item.general_journal &&
+                      item.general_journal.map((item) => (
                         <TableRow key={item.id} className="bg-gray-50">
                           <TableCell className="text-center">
                             {item.date}
@@ -198,7 +210,10 @@ export default function GeneralJournalPage() {
                             {item.kredit}
                           </TableCell>
                           <TableCell className="text-center flex justify-evenly">
-                            <TrashIcon className="text-danger w-6 h-6" />
+                            <TrashIcon
+                              className="text-danger w-6 h-6"
+                              onClick={() => deleteGeneralJournal(item.id || 0)}
+                            />
                           </TableCell>
                         </TableRow>
                       ))}
