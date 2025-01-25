@@ -105,7 +105,7 @@ export default function AddPayrollPage() {
     const data: periodeType = {
       period: period,
       description: description,
-      payrolls: tableItems.map((item) => ({
+      payroll: tableItems.map((item) => ({
         salary: parseInt(item.salary.toString()),
         bonus: parseInt(item.bonus.toString()),
         penalty: parseInt(item.penalty.toString()),
@@ -113,21 +113,19 @@ export default function AddPayrollPage() {
         id_periode: item.id_periode || 0,
         id_employee: item.employee?.id || 0,
       })),
-      adjusmentEntries: [],
-      generalJournal: [],
-      trialBalance: [],
+      adjusment_entries: [],
+      general_journal: [],
+      trial_balance: [],
     };
 
     ApiHelpers.post({
-      url: Urls.periodPayroll,
+      url: Urls.periodGeneral,
       data: data,
       successCallback: () => {
-        Swal.fire("Berhasil", "Data berhasil ditambahkan", "success");
-        // window.location.href = "/payroll";
+        Swal.fire("Berhasil", "Data berhasil disimpan", "success");
+        window.location.href = "/payroll";
       },
-      errorCallback: () => {
-        Swal.fire("Gagal", "Data gagal ditambahkan", "error");
-      },
+      errorCallback: () => {},
     });
   };
 
