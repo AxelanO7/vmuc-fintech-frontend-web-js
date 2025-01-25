@@ -35,10 +35,10 @@ export interface periodeType {
   id?: number;
   period: string;
   description: string;
-  payrolls: payrollType[];
-  adjusmentEntries: adjusmentEntriesType[];
-  generalJournal: generalJournalType[];
-  trialBalance: trialBalanceType[];
+  payroll: payrollType[];
+  adjusment_entries: adjusmentEntriesType[];
+  general_journal: generalJournalType[];
+  trial_balance: trialBalanceType[];
   created_at?: string;
   updated_at?: string;
   deleted_at?: string | null;
