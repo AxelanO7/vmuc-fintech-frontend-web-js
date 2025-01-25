@@ -116,25 +116,32 @@ export default function DetailPeriodDialog({
                 ))}
               </TableHeader>
               <TableBody emptyContent="Data tidak ditemukan">
-                {data.payrolls.map((item) => (
-                  <TableRow key={item.id} className="bg-gray-50">
-                    <TableCell className="text-center">
-                      {item.employee?.name ?? "-"}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      {item.employee?.position ?? "-"}
-                    </TableCell>
-                    <TableCell className="text-center">{item.salary}</TableCell>
-                    <TableCell className="text-center">{item.bonus}</TableCell>
-                    <TableCell className="text-center">
-                      {item.penalty}
-                    </TableCell>
-                    <TableCell className="text-center">{item.total}</TableCell>
-                    {/* <TableCell className="text-center flex justify-evenly">
+                {data.payrolls &&
+                  data.payrolls.map((item) => (
+                    <TableRow key={item.id} className="bg-gray-50">
+                      <TableCell className="text-center">
+                        {item.employee?.name ?? "-"}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {item.employee?.position ?? "-"}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {item.salary}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {item.bonus}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {item.penalty}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {item.total}
+                      </TableCell>
+                      {/* <TableCell className="text-center flex justify-evenly">
                       <TrashIcon className="text-danger w-6 h-6" />
                     </TableCell> */}
-                  </TableRow>
-                ))}
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
             )
