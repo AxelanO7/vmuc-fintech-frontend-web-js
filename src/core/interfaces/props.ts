@@ -13,6 +13,7 @@ export interface propsModal {
 
 export interface propsDetailPayroll extends propsModal {
   data: periodeType;
+  index: number;
 }
 
 export interface propsManipulateRefPost extends propsModal {
