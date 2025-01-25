@@ -9,15 +9,20 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
-import { propsModal } from "../../../core/interfaces/props";
+import { propsDetailLedger } from "../../../core/interfaces/props";
 import { useState } from "react";
 import { periodeType } from "../../../core/interfaces/data";
+import { Urls } from "../../../helpers/url";
+import { ApiHelpers } from "../../../helpers/api";
 
 export default function DetailPeriodDialog({
   isOpen,
   onOpen,
   onOpenChange,
-}: propsModal) {
+  id,
+  description,
+  periode,
+}: propsDetailLedger) {
   const tableHeaderParentItems = [
     {
       name: "#",
@@ -68,13 +73,25 @@ export default function DetailPeriodDialog({
     // },
   ];
 
-  const [data, setData] = useState<periodeType[]>([]);
+  const [data, setData] = useState<periodeType>();
+
+  const handleDetail = (id: number) => {
+    const finalUrl = `${Urls.journalLedger}-report/${id}`;
+    ApiHelpers.get({
+      url: finalUrl,
+      successCallback: (response) => {
+        setData(response.data.data);
+      },
+      errorCallback: () => {},
+    });
+  };
 
   return (
     <>
       <DocumentArrowDownIcon
         className="text-primary w-6 h-6"
-        onClick={() => {
+        onClick={async () => {
+          await handleDetail(id);
           onOpen();
         }}
       />
@@ -94,11 +111,13 @@ export default function DetailPeriodDialog({
                 ))}
               </TableHeader>
               <TableBody>
-                <TableRow key={data.id} className="bg-gray-50">
-                  <TableCell className="text-center">{data.id}</TableCell>
-                  <TableCell className="text-center">{data.period}</TableCell>
+                <TableRow className="bg-gray-50">
+                  <TableCell className="text-center">{data?.id || 0}</TableCell>
                   <TableCell className="text-center">
-                    {data.description}
+                    {data?.period || periode}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {data?.description || description}
                   </TableCell>
                   {/* <TableCell className="text-center flex justify-evenly">
                     {renderModalComponent({ data: item })}
@@ -119,7 +138,7 @@ export default function DetailPeriodDialog({
                 ))}
               </TableHeader>
               <TableBody emptyContent="Data tidak ditemukan">
-                {data.payrolls.map((item) => (
+                {(data?.payroll || []).map((item) => (
                   <TableRow key={item.id} className="bg-gray-50">
                     <TableCell className="text-center">
                       {item.employee?.name ?? "-"}
@@ -134,8 +153,8 @@ export default function DetailPeriodDialog({
                     </TableCell>
                     <TableCell className="text-center">{item.total}</TableCell>
                     {/* <TableCell className="text-center flex justify-evenly">
-                      <TrashIcon className="text-danger w-6 h-6" />
-                    </TableCell> */}
+                    <TrashIcon className="text-danger w-6 h-6" />
+                  </TableCell> */}
                   </TableRow>
                 ))}
               </TableBody>
