@@ -1,7 +1,4 @@
-import {
-  ChevronDownIcon,
-  DocumentArrowDownIcon,
-} from "@heroicons/react/16/solid";
+import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import {
   Button,
   Dropdown,
@@ -21,15 +18,16 @@ import Breadcrumb from "../../../components/breadcrumb";
 import { breadcrumsItem } from "../../../core/interfaces/props";
 import DefaultLayout from "../../../layouts/default_layout";
 import { useEffect, useState } from "react";
+
 import { ApiHelpers } from "../../../helpers/api";
 import { Urls } from "../../../helpers/url";
-import { generalLedgerType, periodeType } from "../../../core/interfaces/data";
+import { generalLedgerType } from "../../../core/interfaces/data";
 import DetailPeriodDialog from "./detail_period_dialog";
 
 export default function LedgerPage() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [name, setName] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState();
   const [tableItems, setTableItems] = useState<generalLedgerType[]>([]);
 
   // ~*~ // Date // ~*~ //
@@ -119,12 +117,23 @@ export default function LedgerPage() {
   // ~*~ // End of Breadcrumb // ~*~ //
 
   // ~*~ // Modal // ~*~ //
-  const renderModalComponent = () => {
+  const renderModalComponent = ({
+    id,
+    description,
+    period: periode,
+  }: {
+    id: number;
+    description: string;
+    period: string;
+  }) => {
     return (
       <DetailPeriodDialog
         isOpen={isOpen}
         onOpen={onOpen}
         onOpenChange={onOpenChange}
+        id={id}
+        periode={periode}
+        description={description}
       />
     );
   };
@@ -134,7 +143,7 @@ export default function LedgerPage() {
   // ~*~ // Functions // ~*~ //
   const getGeneralLedgers = () => {
     ApiHelpers.get({
-      url: Urls.ledgerEmployee,
+      url: Urls.journalLedger,
       successCallback: (response) => {
         setTableItems(response.data.data);
       },
@@ -181,7 +190,7 @@ export default function LedgerPage() {
     const finalDate = `${year}-${month}-${day}`;
 
     ApiHelpers.post({
-      url: Urls.ledgerEmployee,
+      url: Urls.journalLedger,
       data: {
         name_general_ledger: name,
         date: finalDate,
@@ -189,15 +198,6 @@ export default function LedgerPage() {
       successCallback: () => {
         getGeneralLedgers();
       },
-      errorCallback: () => {},
-    });
-  };
-
-  const handleDetail = (id: number) => {
-    const finalUrl = `${Urls.ledgerEmployee}-report/${id}`;
-    ApiHelpers.get({
-      url: finalUrl,
-      successCallback: (response) => {},
       errorCallback: () => {},
     });
   };
@@ -281,7 +281,11 @@ export default function LedgerPage() {
                             className="w-5 h-5 text-primary"
                             onClick={() => item.id && handleDetail(item.id)}
                           /> */}
-                          {renderModalComponent()}
+                          {renderModalComponent({
+                            id: item.id || 0,
+                            description: item.name_general_ledger,
+                            period: item.date,
+                          })}
                         </TableCell>
                       </TableRow>
                     ))}
