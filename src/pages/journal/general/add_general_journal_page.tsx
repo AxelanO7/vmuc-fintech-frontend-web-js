@@ -29,6 +29,7 @@ import {
 } from "@heroicons/react/16/solid";
 import { ApiHelpers } from "../../../helpers/api";
 import { Urls } from "../../../helpers/url";
+import Swal from "sweetalert2";
 
 export default function AddGeneralJournalPage() {
   const [period, setPeriod] = useState("");
@@ -100,33 +101,34 @@ export default function AddGeneralJournalPage() {
     const dataPeriod: periodeType = {
       period: period,
       description: description,
-      generalJournal: tableItems,
-      payrolls: [],
-      adjusmentEntries: [],
-      trialBalance: [],
+      general_journal: tableItems,
+      payroll: [],
+      adjusment_entries: [],
+      trial_balance: [],
     };
-    await createPeriod(dataPeriod);
-    createGeneralJournals(dataPeriod);
+
+    // remove id from general_journal
+    dataPeriod.general_journal = dataPeriod.general_journal.map((item) => {
+      const { id, ...rest } = item; // eslint-disable-line @typescript-eslint/no-unused-vars
+      return rest;
+    });
+
+    createPeriod(dataPeriod);
   };
 
   const createPeriod = async (data: periodeType) => {
     ApiHelpers.post({
       url: Urls.periodGeneral,
       data: data,
-      successCallback: () => {},
-      errorCallback: () => {},
+      successCallback: () => {
+        Swal.fire("Berhasil", "Data berhasil disimpan", "success");
+        window.location.href = "/general-journal";
+      },
+      errorCallback: () => {
+        Swal.fire("Gagal", "Data gagal disimpan", "error");
+      },
     });
   };
-
-  const createGeneralJournals = async (data: periodeType) => {
-    ApiHelpers.post({
-      url: Urls.periodGeneral,
-      data: data,
-      successCallback: () => {},
-      errorCallback: () => {},
-    });
-  };
-
   // ~*~ // End of Functions // ~*~ //
 
   useEffect(() => {
