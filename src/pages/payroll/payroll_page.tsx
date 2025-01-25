@@ -91,12 +91,19 @@ export default function PayrollPage() {
   // ~*~ // End of Breadcrumb // ~*~ //
 
   // ~*~ // Modal // ~*~ //
-  const renderModalComponent = ({ data }: { data: periodeType }) => {
+  const renderModalComponent = ({
+    data,
+    index,
+  }: {
+    data: periodeType;
+    index: number;
+  }) => {
     return (
       <DetailPeriodDialog
         isOpen={isOpen}
         onOpen={onOpen}
         onOpenChange={onOpenChange}
+        index={index}
         data={data}
       />
     );
@@ -110,6 +117,16 @@ export default function PayrollPage() {
       url: Urls.periodPayrollEmployee,
       successCallback(response) {
         setTableItems(response.data.data);
+      },
+      errorCallback() {},
+    });
+  };
+
+  const deletePayroll = (id: number) => {
+    ApiHelpers.delete({
+      url: Urls.payrollEmployee + `/${id}`,
+      successCallback() {
+        getPayrolls();
       },
       errorCallback() {},
     });
@@ -176,8 +193,8 @@ export default function PayrollPage() {
                         {item.description}
                       </TableCell>
                       <TableCell className="text-center flex justify-evenly">
-                        {renderModalComponent({ data: item })}
-                        <TrashIcon className="text-danger w-6 h-6" />
+                        {renderModalComponent({ data: item, index: index })}
+                        {/* <TrashIcon className="text-danger w-6 h-6" /> */}
                       </TableCell>
                     </TableRow>
                   </TableBody>
@@ -199,8 +216,8 @@ export default function PayrollPage() {
                     ))}
                   </TableHeader>
                   <TableBody emptyContent="Data tidak ditemukan">
-                    {item.payrolls &&
-                      item.payrolls.map((item) => (
+                    {item.payroll &&
+                      item.payroll.map((item) => (
                         <TableRow key={item.id} className="bg-gray-50">
                           <TableCell className="text-center">
                             {item.employee?.name ?? "-"}
@@ -221,7 +238,10 @@ export default function PayrollPage() {
                             {item.total}
                           </TableCell>
                           <TableCell className="text-center flex justify-evenly">
-                            <TrashIcon className="text-danger w-6 h-6" />
+                            <TrashIcon
+                              className="text-danger w-6 h-6"
+                              onClick={() => deletePayroll(item.id ?? 0)}
+                            />
                           </TableCell>
                         </TableRow>
                       ))}
