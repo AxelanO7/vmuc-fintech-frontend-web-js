@@ -90,10 +90,10 @@ export interface trialBalanceType {
 }
 
 export interface generalJournalType {
-  id: number;
+  id?: number;
   name_account: string;
   date: string;
-  id_ref: number;
+  id_ref?: number;
   information: string;
   debit: number;
   kredit: number;
