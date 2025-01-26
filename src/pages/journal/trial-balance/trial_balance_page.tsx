@@ -1,9 +1,4 @@
-import {
-  DocumentArrowDownIcon,
-  MagnifyingGlassIcon,
-  PlusIcon,
-  TrashIcon,
-} from "@heroicons/react/16/solid";
+import { MagnifyingGlassIcon } from "@heroicons/react/16/solid";
 import {
   Button,
   Input,
@@ -15,104 +10,24 @@ import {
   TableRow,
 } from "@nextui-org/react";
 import DefaultLayout from "../../../layouts/default_layout";
-import { generalJournalType } from "../../../core/interfaces/data";
 import { breadcrumsItem } from "../../../core/interfaces/props";
 import Breadcrumb from "../../../components/breadcrumb";
+import { useEffect, useState } from "react";
+import { trialBalanceType } from "../../../core/interfaces/data";
+import { ApiHelpers } from "../../../helpers/api";
+import { Urls } from "../../../helpers/url";
 
 export default function TrialBalancePage() {
+  const [tableItems, setTableItems] = useState<trialBalanceType[]>([]);
   // ~*~ // Table // ~*~ //
-  const tableItems: generalJournalType[] = [
+  const tableHeaderItems = [
     {
-      id: 1,
-      period: "Mei/2024",
-      description: "Jurnal Umum",
-      contents: [
-        {
-          id: 1,
-          date: "01/05/2024",
-          ref_post: {
-            id: 1,
-            name: "test",
-            code: "001",
-            type: "test",
-          },
-          information: "Pembelian Barang",
-          debit: 1000000,
-          credit: 0,
-        },
-        {
-          id: 2,
-          date: "01/05/2024",
-          ref_post: {
-            id: 1,
-            name: "test",
-            code: "001",
-            type: "test",
-          },
-          information: "Pembelian Barang",
-          debit: 0,
-          credit: 1000000,
-        },
-      ],
-    },
-    {
-      id: 2,
-      period: "Mei/2024",
-      description: "Jurnal Umum",
-      contents: [
-        {
-          id: 1,
-          date: "01/05/2024",
-          ref_post: {
-            id: 1,
-            name: "test",
-            code: "001",
-            type: "test",
-          },
-          information: "Pembelian Barang",
-          debit: 1000000,
-          credit: 0,
-        },
-        {
-          id: 2,
-          date: "01/05/2024",
-          ref_post: {
-            id: 1,
-            name: "test",
-            code: "001",
-            type: "test",
-          },
-          information: "Pembelian Barang",
-          debit: 0,
-          credit: 1000000,
-        },
-      ],
-    },
-  ];
-
-  const tableHeaderParentItems = [
-    {
-      name: "#",
+      name: "No",
       className: "w-12",
     },
     {
-      name: "Periode",
+      name: "Kode Akun",
       className: "",
-    },
-    {
-      name: "Deskripsi",
-      className: "",
-    },
-    {
-      name: "Aksi",
-      className: "w-40",
-    },
-  ];
-
-  const tableHeaderChildItems = [
-    {
-      name: "Ref Post",
-      className: "w-20",
     },
     {
       name: "Nama Akun",
@@ -126,10 +41,10 @@ export default function TrialBalancePage() {
       name: "Kredit",
       className: "",
     },
-    {
-      name: "Aksi",
-      className: "w-40",
-    },
+    // {
+    //   name: "Aksi",
+    //   className: "w-40",
+    // },
   ];
 
   // ~*~ // End of Table // ~*~ //
@@ -144,9 +59,25 @@ export default function TrialBalancePage() {
 
   // ~*~ // End of Breadcrumb // ~*~ //
 
-  const handleAdd = () => {
-    window.location.replace("/" + "add-trial-balance");
+  // ~*~ // Functions // ~*~ //
+  const getTrialBalances = () => {
+    ApiHelpers.get({
+      url: Urls.journalTrialBalance,
+      successCallback: (response) => {
+        setTableItems(response.data.data);
+      },
+      errorCallback: () => {},
+    });
   };
+
+  // const handleAdd = () => {
+  //   window.location.replace("/" + "add-trial-balance");
+  // };
+  // ~*~ // End of Functions // ~*~ //
+
+  useEffect(() => {
+    getTrialBalances();
+  }, []);
 
   return (
     <DefaultLayout>
@@ -157,15 +88,18 @@ export default function TrialBalancePage() {
       <div className="bg-gray-200 m-4 p-8">
         <h1 className="text-3xl font-medium text-gray-600">Neraca Saldo</h1>
 
-        <div className="flex justify-between mt-4">
-          <Button
+        <div
+          className="flex justify-end
+         mt-4"
+        >
+          {/* <Button
             className="w-max"
             color="primary"
             onPress={handleAdd}
             startContent={<PlusIcon className="w-5 h-5" />}
           >
             Neraca Saldo
-          </Button>
+          </Button> */}
           <div className="flex gap-2">
             <Input placeholder="Cari" type="search" />
             <Button color="primary" isIconOnly>
@@ -175,73 +109,37 @@ export default function TrialBalancePage() {
         </div>
 
         <div className="mt-4">
-          {tableItems.map((item, index) => (
-            <div key={item.id}>
-              <Table aria-label="Periode Table">
-                <TableHeader>
-                  {tableHeaderParentItems.map((item) => (
-                    <TableColumn
-                      key={item.name}
-                      className={`text-center ${item.className}`}
-                    >
-                      {item.name}
-                    </TableColumn>
-                  ))}
-                </TableHeader>
-                <TableBody>
-                  <TableRow key={item.id} className="bg-gray-50">
-                    <TableCell className="text-center">{item.id}</TableCell>
-                    <TableCell className="text-center">{item.period}</TableCell>
-                    <TableCell className="text-center">
-                      {item.description}
-                    </TableCell>
-                    <TableCell className="text-center flex justify-evenly">
-                      <DocumentArrowDownIcon className="text-primary w-6 h-6" />
-                      <TrashIcon className="text-danger w-6 h-6" />
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-              <Table
-                aria-label="Periode Table"
-                className={`mt-2 ${
-                  index === tableItems.length - 1 ? "" : "mb-8"
-                }`}
-              >
-                <TableHeader>
-                  {tableHeaderChildItems.map((item) => (
-                    <TableColumn
-                      key={item.name}
-                      className={`text-center ${item.className}`}
-                    >
-                      {item.name}
-                    </TableColumn>
-                  ))}
-                </TableHeader>
-                <TableBody>
-                  {item.contents.map((content) => (
-                    <TableRow key={content.id} className="bg-gray-50">
-                      <TableCell className="text-center">
-                        {content.ref_post.code}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        {content.ref_post.name}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        {content.debit}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        {content.credit}
-                      </TableCell>
-                      <TableCell className="text-center flex justify-evenly">
-                        <TrashIcon className="text-danger w-6 h-6" />
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          ))}
+          <Table aria-label="Periode Table">
+            <TableHeader>
+              {tableHeaderItems.map((item) => (
+                <TableColumn
+                  key={item.name}
+                  className={`text-center ${item.className}`}
+                >
+                  {item.name}
+                </TableColumn>
+              ))}
+            </TableHeader>
+            <TableBody emptyContent="Data tidak ditemukan">
+              {tableItems.map((item, index) => (
+                <TableRow key={item.id} className="bg-gray-50">
+                  <TableCell className="text-center">{index + 1}</TableCell>
+                  <TableCell className="text-center">
+                    {item.ref?.code}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {item.name_account}
+                  </TableCell>
+                  <TableCell className="text-center">{item.debit}</TableCell>
+                  <TableCell className="text-center">{item.kredit}</TableCell>
+                  {/* <TableCell className="text-center flex justify-evenly">
+                    <DocumentArrowDownIcon className="text-primary w-6 h-6" />
+                    <TrashIcon className="text-danger w-6 h-6" />
+                  </TableCell> */}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
       </div>
     </DefaultLayout>
