@@ -1,6 +1,7 @@
 import {
   Button,
   Dropdown,
+  DropdownItem,
   DropdownMenu,
   DropdownSection,
   DropdownTrigger,
@@ -15,9 +16,10 @@ import {
 import DefaultLayout from "../../../layouts/default_layout";
 import { breadcrumsItem } from "../../../core/interfaces/props";
 import Breadcrumb from "../../../components/breadcrumb";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  generalJournalContentType,
+  adjusmentEntriesType,
+  periodeType,
   refPostType,
 } from "../../../core/interfaces/data";
 import {
@@ -25,42 +27,17 @@ import {
   PlusIcon,
   TrashIcon,
 } from "@heroicons/react/16/solid";
+import Swal from "sweetalert2";
+import { ApiHelpers } from "../../../helpers/api";
+import { Urls } from "../../../helpers/url";
 
 export default function AddAdjustmentEntryPage() {
-  const [, setPeriode] = useState("");
-  const [, setDescription] = useState("");
+  const [period, setPeriod] = useState("");
+  const [description, setDescription] = useState("");
+  const [tableItems, setTableItems] = useState<adjusmentEntriesType[]>([]);
+  const [refPostItems, setRefPostItems] = useState<refPostType[]>([]);
 
   // ~*~ // Table // ~*~ //
-  const [tableItems, setTableItems] = useState<generalJournalContentType[]>([
-    {
-      credit: 0,
-      debit: 0,
-      information: "",
-      id: 1,
-      date: "01-01-2021",
-      ref_post: {
-        code: "001",
-        name: "test",
-        type: "test",
-        id: 1,
-      },
-    },
-  ]);
-
-  const refPostItems: refPostType[] = [
-    {
-      code: "001",
-      name: "test",
-      type: "test",
-      id: 1,
-    },
-    {
-      code: "002",
-      name: "test",
-      type: "test",
-      id: 2,
-    },
-  ];
 
   const tableHeaderItems = [
     {
@@ -105,6 +82,55 @@ export default function AddAdjustmentEntryPage() {
 
   // ~*~ // End of Breadcrumb // ~*~ //
 
+  // ~*~ // Functions // ~*~ //
+  const getRefPosts = async () => {
+    ApiHelpers.get({
+      url: Urls.refPost,
+      successCallback: (response) => {
+        setRefPostItems(response.data.data);
+      },
+      errorCallback: () => {},
+    });
+  };
+
+  const handleSubmit = async () => {
+    const dataPeriod: periodeType = {
+      period: period,
+      description: description,
+      general_journal: [],
+      payroll: [],
+      adjusment_entries: tableItems,
+      trial_balance: [],
+    };
+
+    // remove id from general_journal
+    dataPeriod.adjusment_entries = dataPeriod.adjusment_entries.map((item) => {
+      const { id, ...rest } = item; // eslint-disable-line @typescript-eslint/no-unused-vars
+      return rest;
+    });
+
+    createPeriod(dataPeriod);
+  };
+
+  const createPeriod = async (data: periodeType) => {
+    ApiHelpers.post({
+      url: Urls.periodGeneral,
+      data: data,
+      successCallback: () => {
+        Swal.fire("Berhasil", "Data berhasil disimpan", "success");
+        window.location.href = "/general-journal";
+      },
+      errorCallback: () => {
+        Swal.fire("Gagal", "Data gagal disimpan", "error");
+      },
+    });
+  };
+  // ~*~ // End of Functions // ~*~ //
+
+  useEffect(() => {
+    getRefPosts();
+  }, []);
+
   return (
     <DefaultLayout>
       <h1 className="text-3xl font-bold mx-6 pt-4">Jurnal Penyesuaian</h1>
@@ -122,7 +148,7 @@ export default function AddAdjustmentEntryPage() {
             <Input
               type="date"
               className="w-max"
-              onChange={(e) => setPeriode(e.target.value)}
+              onChange={(e) => setPeriod(e.target.value)}
             />
           </div>
           <div>
@@ -193,38 +219,34 @@ export default function AddAdjustmentEntryPage() {
                       <Input
                         placeholder="Pilih nama akun"
                         variant="bordered"
-                        value={item.ref_post.name}
+                        value={item.name_account}
                         className="cursor-pointer"
-                        onChange={(e) =>
-                          setTableItems(
-                            tableItems.map((tableItem) =>
-                              tableItem.id === item.id
-                                ? {
-                                    ...tableItem,
-                                    ref_post: {
-                                      ...tableItem.ref_post,
-                                      name: e.target.value,
-                                    },
-                                  }
-                                : tableItem
-                            )
-                          )
-                        }
                         readOnly
                         endContent={<ChevronDownIcon className="w-5 h-5" />}
                       />
                     </DropdownTrigger>
                     <DropdownMenu>
                       {refPostItems.map((refPostItem) => (
-                        <DropdownSection key={refPostItem.id}>
-                          <Input
-                            label="Nama Akun"
-                            placeholder="Pilih nama akun"
-                            variant="bordered"
-                            value={refPostItem.name}
-                            className="cursor-pointer"
-                            readOnly
-                          />
+                        <DropdownSection key={refPostItem.name}>
+                          <DropdownItem
+                            key={refPostItem.id}
+                            onClick={() =>
+                              setTableItems(
+                                tableItems.map((tableItem) =>
+                                  tableItem.id === item.id
+                                    ? {
+                                        ...tableItem,
+                                        name_account: refPostItem.name,
+                                        id_ref: refPostItem.id || 0,
+                                        ref: refPostItem,
+                                      }
+                                    : tableItem
+                                )
+                              )
+                            }
+                          >
+                            {refPostItem.name}
+                          </DropdownItem>
                         </DropdownSection>
                       ))}
                     </DropdownMenu>
@@ -251,14 +273,14 @@ export default function AddAdjustmentEntryPage() {
                 <TableCell className="text-center">
                   <Input
                     placeholder="Kredit"
-                    defaultValue={item.credit.toString()}
+                    defaultValue={item.kredit.toString()}
                     onChange={(e) =>
                       setTableItems(
                         tableItems.map((tableItem) =>
                           tableItem.id === item.id
                             ? {
                                 ...tableItem,
-                                credit: parseInt(e.target.value),
+                                kredit: parseInt(e.target.value),
                               }
                             : tableItem
                         )
@@ -293,17 +315,14 @@ export default function AddAdjustmentEntryPage() {
             setTableItems([
               ...tableItems,
               {
-                credit: 0,
-                debit: 0,
-                information: "",
                 id: tableItems.length + 1,
-                date: "01-01-2021",
-                ref_post: {
-                  code: "001",
-                  name: "test",
-                  type: "test",
-                  id: 1,
-                },
+                name_account: "",
+                date: "",
+                information: "",
+                debit: 0,
+                kredit: 0,
+                id_ref: 0,
+                id_periode: 0,
               },
             ])
           }
@@ -313,26 +332,10 @@ export default function AddAdjustmentEntryPage() {
       </div>
 
       <div className="bg-gray-200 mx-4 mt-4 p-4">
-        <div className="flex w-1/2 pl-12 mt-4 font-medium">
-          <p className="w-1/3">Total</p>
-          <p className="w-1/3">
-            Rp. {tableItems.reduce((acc, item) => acc + item.debit, 0)}
-          </p>
-          <p className="w-1/3">
-            Rp. {tableItems.reduce((acc, item) => acc + item.credit, 0)}
-          </p>
-        </div>
-        <div className="flex w-1/2 mt-4 pl-12 font-medium">
-          <p className="w-1/3">Selisih</p>
-          <div className="w-1/3" />
-          <p className="w-1/3">
-            Rp.{" "}
-            {tableItems.reduce((acc, item) => acc + item.debit, 0) -
-              tableItems.reduce((acc, item) => acc + item.credit, 0)}
-          </p>
-        </div>
-        <div className="w-full flex justify-end mt-4">
-          <Button color="primary">Simpan</Button>
+        <div className="w-full flex justify-end">
+          <Button color="primary" onClick={handleSubmit}>
+            Simpan
+          </Button>
         </div>
       </div>
     </DefaultLayout>
