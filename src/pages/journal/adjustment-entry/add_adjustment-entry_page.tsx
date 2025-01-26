@@ -118,7 +118,7 @@ export default function AddAdjustmentEntryPage() {
       data: data,
       successCallback: () => {
         Swal.fire("Berhasil", "Data berhasil disimpan", "success");
-        window.location.href = "/general-journal";
+        window.location.href = "/adjustment-entry";
       },
       errorCallback: () => {
         Swal.fire("Gagal", "Data gagal disimpan", "error");
