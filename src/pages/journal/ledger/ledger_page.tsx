@@ -27,7 +27,7 @@ import DetailPeriodDialog from "./detail_period_dialog";
 export default function LedgerPage() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [name, setName] = useState("");
-  const [date, setDate] = useState();
+  const [date, setDate] = useState<string>("");
   const [tableItems, setTableItems] = useState<generalLedgerType[]>([]);
 
   // ~*~ // Date // ~*~ //
@@ -185,7 +185,7 @@ export default function LedgerPage() {
   const addGeneralLedger = () => {
     const dateNow = new Date();
     const year = dateNow.getFullYear();
-    const month = getMonth(date);
+    const month = getMonth(date || "");
     const day = dateNow.getDate();
     const finalDate = `${year}-${month}-${day}`;
 
