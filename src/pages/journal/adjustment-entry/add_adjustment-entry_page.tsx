@@ -72,11 +72,11 @@ export default function AddAdjustmentEntryPage() {
   const breadcrumbItems: breadcrumsItem[] = [
     {
       label: "Jurnal Penyesuaian",
-      href: "trial-balance",
+      href: "adjustment-entry",
     },
     {
       label: "Tambah Jurnal Penyesuaian",
-      href: "add-trial-balance",
+      href: "add-adjustment-entry",
     },
   ];
 
