@@ -9,7 +9,6 @@ import GeneralJournalPage from "./pages/journal/general/general_journal_page";
 import AddGeneralJournalPage from "./pages/journal/general/add_general_journal_page";
 import LedgerPage from "./pages/journal/ledger/ledger_page";
 import TrialBalancePage from "./pages/journal/trial-balance/trial_balance_page";
-import AddTrialBalancePage from "./pages/journal/trial-balance/add_trial_balance_page";
 import AdjustmentEntryPage from "./pages/journal/adjustment-entry/adjustment_entry_page";
 import AddAdjustmentEntryPage from "./pages/journal/adjustment-entry/add_adjustment-entry_page";
 import WorkSheetPage from "./pages/journal/work-sheet/work_sheet_page";
@@ -39,7 +38,6 @@ function App() {
           <Route path="/ledger" element={<LedgerPage />} />
           {/* neraca saldo */}
           <Route path="/trial-balance" element={<TrialBalancePage />} />
-          <Route path="/add-trial-balance" element={<AddTrialBalancePage />} />
           {/* jurnal penyesuaian */}
           <Route path="/adjustment-entry" element={<AdjustmentEntryPage />} />
           <Route
