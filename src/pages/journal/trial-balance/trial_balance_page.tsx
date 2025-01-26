@@ -41,10 +41,6 @@ export default function TrialBalancePage() {
       name: "Kredit",
       className: "",
     },
-    // {
-    //   name: "Aksi",
-    //   className: "w-40",
-    // },
   ];
 
   // ~*~ // End of Table // ~*~ //
@@ -70,9 +66,6 @@ export default function TrialBalancePage() {
     });
   };
 
-  // const handleAdd = () => {
-  //   window.location.replace("/" + "add-trial-balance");
-  // };
   // ~*~ // End of Functions // ~*~ //
 
   useEffect(() => {
@@ -92,14 +85,6 @@ export default function TrialBalancePage() {
           className="flex justify-end
          mt-4"
         >
-          {/* <Button
-            className="w-max"
-            color="primary"
-            onPress={handleAdd}
-            startContent={<PlusIcon className="w-5 h-5" />}
-          >
-            Neraca Saldo
-          </Button> */}
           <div className="flex gap-2">
             <Input placeholder="Cari" type="search" />
             <Button color="primary" isIconOnly>
@@ -132,10 +117,6 @@ export default function TrialBalancePage() {
                   </TableCell>
                   <TableCell className="text-center">{item.debit}</TableCell>
                   <TableCell className="text-center">{item.kredit}</TableCell>
-                  {/* <TableCell className="text-center flex justify-evenly">
-                    <DocumentArrowDownIcon className="text-primary w-6 h-6" />
-                    <TrashIcon className="text-danger w-6 h-6" />
-                  </TableCell> */}
                 </TableRow>
               ))}
             </TableBody>
