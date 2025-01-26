@@ -193,9 +193,6 @@ export default function AdjustmentEntryPage() {
                       item.adjusment_entries.map((item) => (
                         <TableRow key={item.id} className="bg-gray-50">
                           <TableCell className="text-center">
-                            {item.date}
-                          </TableCell>
-                          <TableCell className="text-center">
                             {item.name_account}
                           </TableCell>
                           <TableCell className="text-center">
