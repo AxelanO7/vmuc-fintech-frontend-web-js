@@ -7,6 +7,7 @@ export const Urls = {
   journalGeneral: "/journal/private/general",
   journalLedger: "/journal/private/ledger",
   journalTrialBalance: "/journal/private/trial-balance",
+  journalAdjustment: "/journal/private/adjustment",
 
   periodGeneral: "/periode/private/general",
   periodPayrollEmployee: "/periode/private/payroll-employee",
