@@ -10,6 +10,8 @@ export const Urls = {
   journalAdjustment: "/journal/private/adjustment",
   journalWorkSheet: "/journal/private/work-sheet",
 
+  periodPrivate: "/periode/private",
+
   periodGeneral: "/periode/private/general",
   periodPayrollEmployee: "/periode/private/payroll-employee",
   periodAdjusmentEntries: "/periode/private/adjusment-entries",
