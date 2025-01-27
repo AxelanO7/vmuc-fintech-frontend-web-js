@@ -113,3 +113,8 @@ export interface generalLedgerType {
   updated_at?: string;
   deleted_at?: string | null;
 }
+
+export interface reportPeriodType {
+  period: periodeType;
+  trial_balance: trialBalanceType[];
+}
