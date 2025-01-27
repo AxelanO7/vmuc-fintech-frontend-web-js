@@ -95,8 +95,8 @@ export default function PeriodReportPage() {
   // ~*~ // Breadcrumb // ~*~ //
   const breadcrumbItems: breadcrumsItem[] = [
     {
-      label: "Laporan Periode",
-      href: "period-report",
+      label: "Jurnal Umum",
+      href: "general-journal",
     },
   ];
 
