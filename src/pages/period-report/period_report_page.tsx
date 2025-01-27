@@ -1,10 +1,10 @@
 import {
   DocumentArrowDownIcon,
   MagnifyingGlassIcon,
-  TrashIcon,
 } from "@heroicons/react/16/solid";
 import {
   Button,
+  DatePicker,
   Input,
   Table,
   TableBody,
@@ -15,47 +15,17 @@ import {
 } from "@nextui-org/react";
 import { breadcrumsItem } from "../../core/interfaces/props";
 import Breadcrumb from "../../components/breadcrumb";
-import { generalJournalType } from "../../core/interfaces/data";
 import DefaultLayout from "../../layouts/default_layout";
+import { useState, useEffect } from "react";
+
+import { ApiHelpers } from "../../helpers/api";
+import { Urls } from "../../helpers/url";
+import { reportPeriodType } from "../../core/interfaces/data";
 
 export default function PeriodReportPage() {
-  // ~*~ // Table // ~*~ //
-  const tableItems: generalJournalType[] = [
-    {
-      id: 1,
-      period: "Mei/2024",
-      description: "Laporan Mei",
-      contents: [
-        {
-          id: 1,
-          date: "01/05/2024",
-          ref_post: {
-            id: 1,
-            name: "test",
-            code: "001",
-            type: "test",
-          },
-          information: "Laporan Neraca Lajur Bulan Mei",
-          debit: 1000000,
-          credit: 0,
-        },
-        {
-          id: 2,
-          date: "01/05/2024",
-          ref_post: {
-            id: 1,
-            name: "test",
-            code: "001",
-            type: "test",
-          },
-          information: "Gaji Bulan Mei",
-          debit: 0,
-          credit: 1000000,
-        },
-      ],
-    },
-  ];
+  const [tableItems, setTableItems] = useState<reportPeriodType>();
 
+  // ~*~ // Table // ~*~ //
   const tableHeaderParentItems = [
     {
       name: "#",
@@ -69,10 +39,10 @@ export default function PeriodReportPage() {
       name: "Deskripsi",
       className: "",
     },
-    {
-      name: "Aksi",
-      className: "w-40",
-    },
+    // {
+    //   name: "Aksi",
+    //   className: "w-40",
+    // },
   ];
 
   const tableHeaderChildItems = [
@@ -84,10 +54,10 @@ export default function PeriodReportPage() {
       name: "Nama Laporan",
       className: "text-start",
     },
-    {
-      name: "Aksi",
-      className: "w-40",
-    },
+    // {
+    //   name: "Aksi",
+    //   className: "w-40",
+    // },
   ];
 
   // ~*~ // End of Table // ~*~ //
@@ -95,12 +65,57 @@ export default function PeriodReportPage() {
   // ~*~ // Breadcrumb // ~*~ //
   const breadcrumbItems: breadcrumsItem[] = [
     {
-      label: "Jurnal Umum",
+      label: "Laporan Periode",
       href: "general-journal",
     },
   ];
 
   // ~*~ // End of Breadcrumb // ~*~ //
+
+  // ~*~ // Functions // ~*~ //
+  // const handleAdd = () => {
+  //   window.location.replace("/" + "add-general-journal");
+  // };
+
+  // const getGeneralJournals = () => {
+  //   ApiHelpers.get({
+  //     url: Urls.periodGeneralJournal,
+  //     successCallback: (response) => {
+  //       setTableItems(response.data.data);
+  //     },
+  //     errorCallback: () => {},
+  //   });
+  // };
+
+  // const deleteGeneralJournal = (id: number) => {
+  //   ApiHelpers.delete({
+  //     url: Urls.journalGeneral + "/" + id,
+  //     successCallback: () => {
+  //       Swal.fire("Berhasil", "Data berhasil dihapus", "success");
+  //       getGeneralJournals();
+  //     },
+  //     errorCallback: () => {},
+  //   });
+  // };
+
+  const getGeneralJournals = (
+    date: string = new Date().toISOString().split("T")[0]
+  ) => {
+    const finalUrl = Urls.periodPrivate + `/get-report-trial-balance/${date}`;
+    ApiHelpers.get({
+      url: finalUrl,
+      successCallback: (response) => {
+        setTableItems(response.data.data);
+      },
+      errorCallback: () => {},
+    });
+  };
+
+  useEffect(() => {
+    getGeneralJournals();
+  }, []);
+
+  // ~*~ // End of Functions // ~*~ //
 
   return (
     <DefaultLayout>
@@ -111,7 +126,16 @@ export default function PeriodReportPage() {
       <div className="bg-gray-200 m-4 p-8">
         <h1 className="text-3xl font-medium text-gray-600">Laporan Periode</h1>
 
-        <div className="flex justify-end mt-4">
+        <div className="flex justify-between mt-4">
+          <DatePicker
+            className="w-max"
+            onChange={(date) => {
+              const dateValue = new Date(date.toString())
+                .toISOString()
+                .split("T")[0];
+              getGeneralJournals(dateValue);
+            }}
+          />
           <div className="flex gap-2">
             <Input placeholder="Cari" type="search" />
             <Button color="primary" isIconOnly>
@@ -121,65 +145,70 @@ export default function PeriodReportPage() {
         </div>
 
         <div className="mt-4">
-          {tableItems.map((item, index) => (
-            <div key={item.id}>
+          {tableItems && (
+            <div>
               <Table aria-label="Periode Table">
                 <TableHeader>
                   {tableHeaderParentItems.map((item) => (
-                    <TableColumn
-                      key={item.name}
-                      className={`text-center ${item.className}`}
-                    >
+                    <TableColumn className={`text-center ${item.className}`}>
                       {item.name}
                     </TableColumn>
                   ))}
                 </TableHeader>
-                <TableBody>
-                  <TableRow key={item.id} className="bg-gray-50">
-                    <TableCell className="text-center">{item.id}</TableCell>
-                    <TableCell className="text-center">{item.period}</TableCell>
+                <TableBody emptyContent="Data tidak ditemukan">
+                  <TableRow className="bg-gray-50">
                     <TableCell className="text-center">
-                      {item.description}
+                      {tableItems.period.id}
                     </TableCell>
-                    <TableCell className="text-center flex justify-evenly">
+                    <TableCell className="text-center">
+                      {tableItems.period.period}
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {tableItems.period.description}
+                    </TableCell>
+                    {/* <TableCell className="text-center flex justify-evenly">
                       <DocumentArrowDownIcon className="text-primary w-6 h-6" />
                       <TrashIcon className="text-danger w-6 h-6" />
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 </TableBody>
               </Table>
-              <Table
-                aria-label="Periode Table"
-                className={`mt-2 ${
-                  index === tableItems.length - 1 ? "" : "mb-8"
-                }`}
-              >
+              <Table aria-label="Periode Table" className={`mt-2`}>
                 <TableHeader>
                   {tableHeaderChildItems.map((item) => (
-                    <TableColumn
-                      key={item.name}
-                      className={`text-center ${item.className}`}
-                    >
+                    <TableColumn className={`text-center ${item.className}`}>
                       {item.name}
                     </TableColumn>
                   ))}
                 </TableHeader>
-                <TableBody>
-                  {item.contents.map((content) => (
-                    <TableRow key={content.id} className="bg-gray-50">
-                      <TableCell className="text-center">
-                        {content.id}
-                      </TableCell>
-                      <TableCell>{content.information}</TableCell>
-                      <TableCell className="text-center flex justify-evenly">
-                        <DocumentArrowDownIcon className="w-6 h-6 text-primary" />
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                <TableBody emptyContent="Data tidak ditemukan">
+                  {tableItems.trial_balance &&
+                    tableItems.trial_balance.map((item) => (
+                      <TableRow className="bg-gray-50">
+                        {/* <TableCell className="text-center">
+                            {item.date}
+                          </TableCell> */}
+                        <TableCell className="text-center">
+                          {item.name_account}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          {item.name_account}
+                        </TableCell>
+                        {/* <TableCell className="text-center">
+                            {item.debit}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {item.kredit}
+                          </TableCell> */}
+                        {/* <TableCell className="text-center flex justify-evenly">
+                          <DocumentArrowDownIcon className="w-6 h-6 text-primary" />
+                        </TableCell> */}
+                      </TableRow>
+                    ))}
                 </TableBody>
               </Table>
             </div>
-          ))}
+          )}
         </div>
       </div>
     </DefaultLayout>
