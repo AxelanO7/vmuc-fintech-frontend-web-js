@@ -1,7 +1,4 @@
-import {
-  DocumentArrowDownIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/16/solid";
+import { MagnifyingGlassIcon } from "@heroicons/react/16/solid";
 import {
   Button,
   DatePicker,
