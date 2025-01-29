@@ -139,8 +139,9 @@ export default function RefPostPage() {
   const deleteRefPost = async (id: number) => {
     ApiHelpers.delete({
       url: `${Urls.refPost}/${id}`,
-      successCallback: () => {
+      successCallback: async () => {
         Swal.fire("Berhasil", "Data berhasil dihapus", "success");
+        setTimeout(() => {}, 1000);
         getRefPosts();
         clearCurrentData();
       },
