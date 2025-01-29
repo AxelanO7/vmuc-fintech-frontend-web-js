@@ -27,7 +27,7 @@ import DetailPeriodDialog from "./detail_period_dialog";
 export default function LedgerPage() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [name, setName] = useState("");
-  const [date, setDate] = useState<string>("");
+  const [date, setDate] = useState<string>();
   const [tableItems, setTableItems] = useState<generalLedgerType[]>([]);
 
   // ~*~ // Date // ~*~ //
