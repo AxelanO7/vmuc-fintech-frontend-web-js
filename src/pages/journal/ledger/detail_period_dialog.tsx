@@ -44,27 +44,23 @@ export default function DetailPeriodDialog({
 
   const tableHeaderChildItems = [
     {
-      name: "Nama",
-      className: "w-20",
-    },
-    {
-      name: "Jabatan",
+      name: "Tanggal",
       className: "",
     },
     {
-      name: "Gaji",
+      name: "Ref Post",
       className: "",
     },
     {
-      name: "Bonus",
+      name: "Keterangan",
       className: "",
     },
     {
-      name: "Potongan",
+      name: "Debit",
       className: "",
     },
     {
-      name: "Total",
+      name: "Kredit",
       className: "",
     },
     // {
@@ -138,23 +134,21 @@ export default function DetailPeriodDialog({
                 ))}
               </TableHeader>
               <TableBody emptyContent="Data tidak ditemukan">
-                {(data?.payroll || []).map((item) => (
+                {(data?.general_journal || []).map((item) => (
                   <TableRow key={item.id} className="bg-gray-50">
+                    <TableCell className="text-center">{item.date}</TableCell>
                     <TableCell className="text-center">
-                      {item.employee?.name ?? "-"}
+                      {item.name_account}
                     </TableCell>
                     <TableCell className="text-center">
-                      {item.employee?.position ?? "-"}
+                      {item.information}
                     </TableCell>
-                    <TableCell className="text-center">{item.salary}</TableCell>
-                    <TableCell className="text-center">{item.bonus}</TableCell>
-                    <TableCell className="text-center">
-                      {item.penalty}
-                    </TableCell>
-                    <TableCell className="text-center">{item.total}</TableCell>
+                    <TableCell className="text-center">{item.debit}</TableCell>
+                    <TableCell className="text-center">{item.kredit}</TableCell>
                     {/* <TableCell className="text-center flex justify-evenly">
-                    <TrashIcon className="text-danger w-6 h-6" />
-                  </TableCell> */}
+                      {renderModalComponent({ data: item })}
+                      <TrashIcon className="text-danger w-6 h-6" />
+                    </TableCell> */}
                   </TableRow>
                 ))}
               </TableBody>
