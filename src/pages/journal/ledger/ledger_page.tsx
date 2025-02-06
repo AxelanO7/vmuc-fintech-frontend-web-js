@@ -1,4 +1,7 @@
-import { ChevronDownIcon } from "@heroicons/react/16/solid";
+import {
+  ChevronDownIcon,
+  DocumentArrowDownIcon,
+} from "@heroicons/react/16/solid";
 import {
   Button,
   Dropdown,
@@ -12,7 +15,6 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
-  useDisclosure,
 } from "@nextui-org/react";
 import Breadcrumb from "../../../components/breadcrumb";
 import { breadcrumsItem } from "../../../core/interfaces/props";
@@ -21,14 +23,14 @@ import { useEffect, useState } from "react";
 
 import { ApiHelpers } from "../../../helpers/api";
 import { Urls } from "../../../helpers/url";
-import { generalLedgerType } from "../../../core/interfaces/data";
-import DetailPeriodDialog from "./detail_period_dialog";
+import { generalLedgerType, periodeType } from "../../../core/interfaces/data";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 export default function LedgerPage() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [name, setName] = useState("");
   const [date, setDate] = useState<string>();
   const [tableItems, setTableItems] = useState<generalLedgerType[]>([]);
+  const [dataDialog, setDataDialog] = useState<periodeType>();
 
   // ~*~ // Date // ~*~ //
   const dropdownItem = [
@@ -104,6 +106,33 @@ export default function LedgerPage() {
     },
   ];
 
+  const tableHeaderChildItems = [
+    {
+      name: "Tanggal",
+      className: "",
+    },
+    {
+      name: "Ref Post",
+      className: "",
+    },
+    {
+      name: "Keterangan",
+      className: "",
+    },
+    {
+      name: "Debit",
+      className: "",
+    },
+    {
+      name: "Kredit",
+      className: "",
+    },
+    // {
+    //   name: "Aksi",
+    //   className: "w-40",
+    // },
+  ];
+
   // ~*~ // End of Table // ~*~ //
 
   // ~*~ // Breadcrumb // ~*~ //
@@ -117,26 +146,26 @@ export default function LedgerPage() {
   // ~*~ // End of Breadcrumb // ~*~ //
 
   // ~*~ // Modal // ~*~ //
-  const renderModalComponent = ({
-    id,
-    description,
-    period: periode,
-  }: {
-    id: number;
-    description: string;
-    period: string;
-  }) => {
-    return (
-      <DetailPeriodDialog
-        isOpen={isOpen}
-        onOpen={onOpen}
-        onOpenChange={onOpenChange}
-        id={id}
-        periode={periode}
-        description={description}
-      />
-    );
-  };
+  // const renderModalComponent = ({
+  //   id,
+  //   description,
+  //   period: periode,
+  // }: {
+  //   id: number;
+  //   description: string;
+  //   period: string;
+  // }) => {
+  //   return (
+  //     <DetailPeriodDialog
+  //       isOpen={isOpen}
+  //       onOpen={onOpen}
+  //       onOpenChange={onOpenChange}
+  //       id={id}
+  //       periode={periode}
+  //       description={description}
+  //     />
+  //   );
+  // };
 
   // ~*~ // End of Modal // ~*~ //
 
@@ -146,6 +175,17 @@ export default function LedgerPage() {
       url: Urls.journalLedger,
       successCallback: (response) => {
         setTableItems(response.data.data);
+      },
+      errorCallback: () => {},
+    });
+  };
+
+  const handleDetail = (id: number) => {
+    const finalUrl = `${Urls.journalLedger}-report/${id}`;
+    ApiHelpers.get({
+      url: finalUrl,
+      successCallback: (response) => {
+        setDataDialog(response.data.data);
       },
       errorCallback: () => {},
     });
@@ -281,11 +321,61 @@ export default function LedgerPage() {
                             className="w-5 h-5 text-primary"
                             onClick={() => item.id && handleDetail(item.id)}
                           /> */}
-                          {renderModalComponent({
+                          {/* {renderModalComponent({
                             id: item.id || 0,
                             description: item.name_general_ledger,
                             period: item.date,
-                          })}
+                          })} */}
+                          <Dialog>
+                            <DialogTrigger>
+                              <DocumentArrowDownIcon
+                                className="w-5 h-5 text-primary"
+                                onClick={() => item.id && handleDetail(item.id)}
+                              />
+                            </DialogTrigger>
+                            <DialogContent className="max-w-[90%]">
+                              <Table aria-label="Periode Table">
+                                <TableHeader>
+                                  {tableHeaderChildItems.map((item) => (
+                                    <TableColumn
+                                      key={item.name}
+                                      className={`text-center ${item.className}`}
+                                    >
+                                      {item.name}
+                                    </TableColumn>
+                                  ))}
+                                </TableHeader>
+                                <TableBody
+                                  emptyContent={"Tidak ada data yang tersedia"}
+                                >
+                                  {(dataDialog?.general_journal || []).map(
+                                    (item) => (
+                                      <TableRow
+                                        key={item.id}
+                                        className="bg-gray-50"
+                                      >
+                                        <TableCell className="text-center">
+                                          {item.date}
+                                        </TableCell>
+                                        <TableCell className="text-center">
+                                          {item.name_account}
+                                        </TableCell>
+                                        <TableCell className="text-center">
+                                          {item.information}
+                                        </TableCell>
+                                        <TableCell className="text-center">
+                                          {item.debit}
+                                        </TableCell>
+                                        <TableCell className="text-center">
+                                          {item.kredit}
+                                        </TableCell>
+                                      </TableRow>
+                                    )
+                                  )}
+                                </TableBody>
+                              </Table>
+                            </DialogContent>
+                          </Dialog>
                         </TableCell>
                       </TableRow>
                     ))}
