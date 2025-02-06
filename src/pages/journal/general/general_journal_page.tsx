@@ -20,7 +20,6 @@ import Breadcrumb from "../../../components/breadcrumb";
 import { useEffect, useState } from "react";
 import { ApiHelpers } from "../../../helpers/api";
 import { Urls } from "../../../helpers/url";
-import Swal from "sweetalert2";
 
 export default function GeneralJournalPage() {
   const [tableItems, setTableItems] = useState<periodeType[]>([]);
@@ -218,35 +217,7 @@ export default function GeneralJournalPage() {
                   </TableBody>
                 </Table>
               </div>
-            ))} */}
-          <Table aria-label="Periode Table">
-            <TableHeader>
-              {tableHeaderParentItems.map((item) => (
-                <TableColumn
-                  key={item.name}
-                  className={`text-center ${item.className}`}
-                >
-                  {item.name}
-                </TableColumn>
-              ))}
-            </TableHeader>
-            <TableBody emptyContent="Data tidak ditemukan">
-              {tableItems &&
-                tableItems.map((item, index) => (
-                  <TableRow key={item.id} className="bg-gray-50">
-                    <TableCell className="text-center">{index + 1}</TableCell>
-                    <TableCell className="text-center">{item.period}</TableCell>
-                    <TableCell className="text-center">
-                      {item.description}
-                    </TableCell>
-                    <TableCell className="text-center flex justify-evenly">
-                      <DocumentArrowDownIcon className="text-primary w-6 h-6" />
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-          {/* <Table aria-label="Jurnal Umum Table" className="mt-2">
+            ))} <Table aria-label="Jurnal Umum Table" className="mt-2">
             <TableHeader>
               {tableHeaderChildItems.map((item) => (
                 <TableColumn
@@ -288,6 +259,34 @@ export default function GeneralJournalPage() {
                 )}
             </TableBody>
           </Table> */}
+
+          <Table aria-label="Periode Table">
+            <TableHeader>
+              {tableHeaderParentItems.map((item) => (
+                <TableColumn
+                  key={item.name}
+                  className={`text-center ${item.className}`}
+                >
+                  {item.name}
+                </TableColumn>
+              ))}
+            </TableHeader>
+            <TableBody emptyContent="Data tidak ditemukan">
+              {tableItems &&
+                tableItems.map((item, index) => (
+                  <TableRow key={item.id} className="bg-gray-50">
+                    <TableCell className="text-center">{index + 1}</TableCell>
+                    <TableCell className="text-center">{item.period}</TableCell>
+                    <TableCell className="text-center">
+                      {item.description}
+                    </TableCell>
+                    <TableCell className="text-center flex justify-evenly">
+                      <DocumentArrowDownIcon className="text-primary w-6 h-6" />
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
         </div>
       </div>
     </DefaultLayout>
