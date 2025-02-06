@@ -13,6 +13,15 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 import DefaultLayout from "../../../layouts/default_layout";
 import { periodeType } from "../../../core/interfaces/data";
 import { breadcrumsItem } from "../../../core/interfaces/props";
@@ -281,7 +290,64 @@ export default function GeneralJournalPage() {
                       {item.description}
                     </TableCell>
                     <TableCell className="text-center flex justify-evenly">
-                      <DocumentArrowDownIcon className="text-primary w-6 h-6" />
+                      <Dialog>
+                        <DialogTrigger>
+                          <DocumentArrowDownIcon className="text-primary w-6 h-6" />
+                        </DialogTrigger>
+                        <DialogContent className="max-w-[90%]">
+                          <DialogHeader>
+                            <DialogTitle>Periode</DialogTitle>
+                            <DialogDescription>{item.period}</DialogDescription>
+                          </DialogHeader>
+                          <Table
+                            aria-label="Jurnal Umum Table"
+                            className="mt-2"
+                          >
+                            <TableHeader>
+                              <TableColumn className="text-center">
+                                Tanggal
+                              </TableColumn>
+                              <TableColumn className="text-center">
+                                Ref Post
+                              </TableColumn>
+                              <TableColumn className="text-center">
+                                Keterangan
+                              </TableColumn>
+                              <TableColumn className="text-center">
+                                Debit
+                              </TableColumn>
+                              <TableColumn className="text-center">
+                                Kredit
+                              </TableColumn>
+                            </TableHeader>
+                            <TableBody emptyContent="Data tidak ditemukan">
+                              {item.general_journal &&
+                                item.general_journal.map((journal) => (
+                                  <TableRow
+                                    key={journal.id}
+                                    className="bg-gray-50"
+                                  >
+                                    <TableCell className="text-center">
+                                      {journal.date}
+                                    </TableCell>
+                                    <TableCell className="text-center">
+                                      {journal.name_account}
+                                    </TableCell>
+                                    <TableCell className="text-center">
+                                      {journal.information}
+                                    </TableCell>
+                                    <TableCell className="text-center">
+                                      {journal.debit}
+                                    </TableCell>
+                                    <TableCell className="text-center">
+                                      {journal.kredit}
+                                    </TableCell>
+                                  </TableRow>
+                                ))}
+                            </TableBody>
+                          </Table>
+                        </DialogContent>
+                      </Dialog>
                     </TableCell>
                   </TableRow>
                 ))}
