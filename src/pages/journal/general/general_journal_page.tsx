@@ -232,9 +232,9 @@ export default function GeneralJournalPage() {
             </TableHeader>
             <TableBody emptyContent="Data tidak ditemukan">
               {tableItems &&
-                tableItems.map((item) => (
+                tableItems.map((item, index) => (
                   <TableRow key={item.id} className="bg-gray-50">
-                    <TableCell className="text-center">{item.id}</TableCell>
+                    <TableCell className="text-center">{index + 1}</TableCell>
                     <TableCell className="text-center">{item.period}</TableCell>
                     <TableCell className="text-center">
                       {item.description}
