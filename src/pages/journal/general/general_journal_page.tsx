@@ -2,7 +2,6 @@ import {
   DocumentArrowDownIcon,
   MagnifyingGlassIcon,
   PlusIcon,
-  TrashIcon,
 } from "@heroicons/react/16/solid";
 import {
   Button,
@@ -14,6 +13,15 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 import DefaultLayout from "../../../layouts/default_layout";
 import { periodeType } from "../../../core/interfaces/data";
 import { breadcrumsItem } from "../../../core/interfaces/props";
@@ -21,7 +29,6 @@ import Breadcrumb from "../../../components/breadcrumb";
 import { useEffect, useState } from "react";
 import { ApiHelpers } from "../../../helpers/api";
 import { Urls } from "../../../helpers/url";
-import Swal from "sweetalert2";
 
 export default function GeneralJournalPage() {
   const [tableItems, setTableItems] = useState<periodeType[]>([]);
@@ -46,32 +53,32 @@ export default function GeneralJournalPage() {
     },
   ];
 
-  const tableHeaderChildItems = [
-    {
-      name: "Tanggal",
-      className: "",
-    },
-    {
-      name: "Ref Post",
-      className: "",
-    },
-    {
-      name: "Keterangan",
-      className: "",
-    },
-    {
-      name: "Debit",
-      className: "",
-    },
-    {
-      name: "Kredit",
-      className: "",
-    },
-    {
-      name: "Aksi",
-      className: "w-40",
-    },
-  ];
+  // const tableHeaderChildItems = [
+  //   {
+  //     name: "Tanggal",
+  //     className: "",
+  //   },
+  //   {
+  //     name: "Ref Post",
+  //     className: "",
+  //   },
+  //   {
+  //     name: "Keterangan",
+  //     className: "",
+  //   },
+  //   {
+  //     name: "Debit",
+  //     className: "",
+  //   },
+  //   {
+  //     name: "Kredit",
+  //     className: "",
+  //   },
+  //   {
+  //     name: "Aksi",
+  //     className: "w-40",
+  //   },
+  // ];
 
   // ~*~ // End of Table // ~*~ //
 
@@ -100,16 +107,16 @@ export default function GeneralJournalPage() {
     });
   };
 
-  const deleteGeneralJournal = (id: number) => {
-    ApiHelpers.delete({
-      url: Urls.journalGeneral + "/" + id,
-      successCallback: () => {
-        Swal.fire("Berhasil", "Data berhasil dihapus", "success");
-        getGeneralJournals();
-      },
-      errorCallback: () => {},
-    });
-  };
+  // const deleteGeneralJournal = (id: number) => {
+  //   ApiHelpers.delete({
+  //     url: Urls.journalGeneral + "/" + id,
+  //     successCallback: () => {
+  //       Swal.fire("Berhasil", "Data berhasil dihapus", "success");
+  //       getGeneralJournals();
+  //     },
+  //     errorCallback: () => {},
+  //   });
+  // };
 
   // ~*~ // End of Functions // ~*~ //
 
@@ -144,7 +151,7 @@ export default function GeneralJournalPage() {
         </div>
 
         <div className="mt-4">
-          {tableItems &&
+          {/* {tableItems &&
             tableItems.map((item, index) => (
               <div key={item.id}>
                 <Table aria-label="Periode Table">
@@ -169,7 +176,6 @@ export default function GeneralJournalPage() {
                       </TableCell>
                       <TableCell className="text-center flex justify-evenly">
                         <DocumentArrowDownIcon className="text-primary w-6 h-6" />
-                        {/* <TrashIcon className="text-danger w-6 h-6" /> */}
                       </TableCell>
                     </TableRow>
                   </TableBody>
@@ -220,7 +226,133 @@ export default function GeneralJournalPage() {
                   </TableBody>
                 </Table>
               </div>
-            ))}
+            ))} <Table aria-label="Jurnal Umum Table" className="mt-2">
+            <TableHeader>
+              {tableHeaderChildItems.map((item) => (
+                <TableColumn
+                  key={item.name}
+                  className={`text-center ${item.className}`}
+                >
+                  {item.name}
+                </TableColumn>
+              ))}
+            </TableHeader>
+            <TableBody emptyContent="Data tidak ditemukan">
+              {tableItems &&
+                tableItems.flatMap((item) =>
+                  item.general_journal.map((journal) => (
+                    <TableRow key={journal.id} className="bg-gray-50">
+                      <TableCell className="text-center">
+                        {journal.date}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {journal.name_account}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {journal.information}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {journal.debit}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {journal.kredit}
+                      </TableCell>
+                      <TableCell className="text-center flex justify-evenly">
+                        <TrashIcon
+                          className="text-danger w-6 h-6"
+                          onClick={() => deleteGeneralJournal(journal.id || 0)}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+            </TableBody>
+          </Table> */}
+
+          <Table aria-label="Periode Table">
+            <TableHeader>
+              {tableHeaderParentItems.map((item) => (
+                <TableColumn
+                  key={item.name}
+                  className={`text-center ${item.className}`}
+                >
+                  {item.name}
+                </TableColumn>
+              ))}
+            </TableHeader>
+            <TableBody emptyContent="Data tidak ditemukan">
+              {tableItems &&
+                tableItems.map((item, index) => (
+                  <TableRow key={item.id} className="bg-gray-50">
+                    <TableCell className="text-center">{index + 1}</TableCell>
+                    <TableCell className="text-center">{item.period}</TableCell>
+                    <TableCell className="text-center">
+                      {item.description}
+                    </TableCell>
+                    <TableCell className="text-center flex justify-evenly">
+                      <Dialog>
+                        <DialogTrigger>
+                          <DocumentArrowDownIcon className="text-primary w-6 h-6" />
+                        </DialogTrigger>
+                        <DialogContent className="max-w-[90%]">
+                          <DialogHeader>
+                            <DialogTitle>Periode</DialogTitle>
+                            <DialogDescription>{item.period}</DialogDescription>
+                          </DialogHeader>
+                          <Table
+                            aria-label="Jurnal Umum Table"
+                            className="mt-2"
+                          >
+                            <TableHeader>
+                              <TableColumn className="text-center">
+                                Tanggal
+                              </TableColumn>
+                              <TableColumn className="text-center">
+                                Ref Post
+                              </TableColumn>
+                              <TableColumn className="text-center">
+                                Keterangan
+                              </TableColumn>
+                              <TableColumn className="text-center">
+                                Debit
+                              </TableColumn>
+                              <TableColumn className="text-center">
+                                Kredit
+                              </TableColumn>
+                            </TableHeader>
+                            <TableBody emptyContent="Data tidak ditemukan">
+                              {item.general_journal &&
+                                item.general_journal.map((journal) => (
+                                  <TableRow
+                                    key={journal.id}
+                                    className="bg-gray-50"
+                                  >
+                                    <TableCell className="text-center">
+                                      {journal.date}
+                                    </TableCell>
+                                    <TableCell className="text-center">
+                                      {journal.name_account}
+                                    </TableCell>
+                                    <TableCell className="text-center">
+                                      {journal.information}
+                                    </TableCell>
+                                    <TableCell className="text-center">
+                                      {journal.debit}
+                                    </TableCell>
+                                    <TableCell className="text-center">
+                                      {journal.kredit}
+                                    </TableCell>
+                                  </TableRow>
+                                ))}
+                            </TableBody>
+                          </Table>
+                        </DialogContent>
+                      </Dialog>
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
         </div>
       </div>
     </DefaultLayout>

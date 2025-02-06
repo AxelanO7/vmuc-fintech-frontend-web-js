@@ -58,9 +58,16 @@ const LoginPage = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center bg-default-50 w-screen min-h-screen">
-      <h1 className="text-4xl font-bold">VMUC FinTech</h1>
-      <div className="shadow-md p-4 rounded-md w-96 mt-4 flex flex-col bg-primary-200">
+    <div
+      className="flex flex-col items-center justify-center bg-default-50 w-screen min-h-screen"
+      style={{
+        backgroundImage: "url('/logo.jpeg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      {/* <h1 className="text-4xl font-bold">VMUC FinTech</h1> */}
+      <div className="shadow-md p-8 rounded-md mt-4 flex flex-col bg-primary-200 w-[400px] md:w-[500px] lg:w-[600px] xl:w-[700px] 2xl:w-[800px]">
         <h3 className="text-xl font-bold mb-4">Login</h3>
         <Input
           placeholder="Username"

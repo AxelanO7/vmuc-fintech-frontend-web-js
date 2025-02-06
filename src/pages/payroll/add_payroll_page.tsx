@@ -109,22 +109,26 @@ export default function AddPayrollPage() {
       information: "Gaji Karyawan",
       debit: item.salary + item.bonus,
       kredit: item.penalty,
+      // todo: change this to real data
+      id_ref: 1,
       id_periode: item.id_periode || 0,
+    }));
+
+    const payrollS = tableItems.map((item) => ({
+      salary: item.salary,
+      bonus: item.bonus,
+      penalty: item.penalty,
+      total: item.salary + item.bonus - item.penalty,
+      id_periode: item.id_periode || 0,
+      id_employee: item.employee?.id || 0,
     }));
 
     const data: periodeType = {
       period: period,
       description: description,
-      payroll: tableItems.map((item) => ({
-        salary: parseInt(item.salary.toString()),
-        bonus: parseInt(item.bonus.toString()),
-        penalty: parseInt(item.penalty.toString()),
-        total: item.salary + item.bonus - item.penalty,
-        id_periode: item.id_periode || 0,
-        id_employee: item.employee?.id || 0,
-      })),
-      adjusment_entries: [],
+      payroll: payrollS,
       general_journal: generalJournals,
+      adjusment_entries: [],
       trial_balance: [],
     };
 
@@ -132,10 +136,21 @@ export default function AddPayrollPage() {
       url: Urls.periodGeneral,
       data: data,
       successCallback: () => {
-        Swal.fire("Berhasil", "Data berhasil disimpan", "success");
-        window.location.href = "/payroll";
+        Swal.fire({
+          title: "Berhasil",
+          text: "Data berhasil disimpan",
+          icon: "success",
+          showCancelButton: false,
+          confirmButtonText: "OK",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = "/payroll";
+          }
+        });
       },
-      errorCallback: () => {},
+      errorCallback: () => {
+        Swal.fire("Gagal", "Data gagal disimpan", "error");
+      },
     });
   };
 

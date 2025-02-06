@@ -12,7 +12,6 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
-  useDisclosure,
 } from "@nextui-org/react";
 import { periodeType } from "../../core/interfaces/data";
 import { breadcrumsItem } from "../../core/interfaces/props";
@@ -21,33 +20,37 @@ import Breadcrumb from "../../components/breadcrumb";
 import { useEffect, useState } from "react";
 import { ApiHelpers } from "../../helpers/api";
 import { Urls } from "../../helpers/url";
-import DetailPeriodDialog from "./detail_period_dialog";
+import Swal from "sweetalert2";
 
 export default function PayrollPage() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  // const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [tableItems, setTableItems] = useState<periodeType[]>([]);
 
   // ~*~ // Table // ~*~ //
-  const tableHeaderParentItems = [
+  // const tableHeaderParentItems = [
+  //   {
+  //     name: "#",
+  //     className: "w-12",
+  //   },
+  //   {
+  //     name: "Periode",
+  //     className: "",
+  //   },
+  //   {
+  //     name: "Deskripsi",
+  //     className: "",
+  //   },
+  //   {
+  //     name: "Aksi",
+  //     className: "w-40",
+  //   },
+  // ];
+
+  const tableHeaderChildItems = [
     {
       name: "#",
       className: "w-12",
     },
-    {
-      name: "Periode",
-      className: "",
-    },
-    {
-      name: "Deskripsi",
-      className: "",
-    },
-    {
-      name: "Aksi",
-      className: "w-40",
-    },
-  ];
-
-  const tableHeaderChildItems = [
     {
       name: "Nama",
       className: "w-20",
@@ -91,23 +94,23 @@ export default function PayrollPage() {
   // ~*~ // End of Breadcrumb // ~*~ //
 
   // ~*~ // Modal // ~*~ //
-  const renderModalComponent = ({
-    data,
-    index,
-  }: {
-    data: periodeType;
-    index: number;
-  }) => {
-    return (
-      <DetailPeriodDialog
-        isOpen={isOpen}
-        onOpen={onOpen}
-        onOpenChange={onOpenChange}
-        index={index}
-        data={data}
-      />
-    );
-  };
+  // const renderModalComponent = ({
+  //   data,
+  //   index,
+  // }: {
+  //   data: periodeType;
+  //   index: number;
+  // }) => {
+  //   return (
+  //     <DetailPeriodDialog
+  //       isOpen={isOpen}
+  //       onOpen={onOpen}
+  //       onOpenChange={onOpenChange}
+  //       index={index}
+  //       data={data}
+  //     />
+  //   );
+  // };
 
   // ~*~ // End of Modal // ~*~ //
 
@@ -126,6 +129,7 @@ export default function PayrollPage() {
     ApiHelpers.delete({
       url: Urls.payrollEmployee + `/${id}`,
       successCallback() {
+        Swal.fire("Berhasil", "Data berhasil dihapus", "success");
         getPayrolls();
       },
       errorCallback() {},
@@ -169,7 +173,7 @@ export default function PayrollPage() {
         </div>
 
         <div className="mt-4">
-          {tableItems &&
+          {/* {tableItems &&
             tableItems.map((item, index) => (
               <div key={item.id}>
                 <Table aria-label="Periode Table">
@@ -194,7 +198,6 @@ export default function PayrollPage() {
                       </TableCell>
                       <TableCell className="text-center flex justify-evenly">
                         {renderModalComponent({ data: item, index: index })}
-                        {/* <TrashIcon className="text-danger w-6 h-6" /> */}
                       </TableCell>
                     </TableRow>
                   </TableBody>
@@ -248,7 +251,53 @@ export default function PayrollPage() {
                   </TableBody>
                 </Table>
               </div>
-            ))}
+            ))} */}
+          <Table aria-label="Periode Table">
+            <TableHeader>
+              {tableHeaderChildItems.map((item) => (
+                <TableColumn
+                  key={item.name}
+                  className={`text-center ${item.className}`}
+                >
+                  {item.name}
+                </TableColumn>
+              ))}
+            </TableHeader>
+            <TableBody emptyContent="Data tidak ditemukan">
+              {tableItems &&
+                tableItems.flatMap((item) =>
+                  item.payroll.map((payrollItem, index) => (
+                    <TableRow key={payrollItem.id} className="bg-gray-50">
+                      <TableCell className="text-center">{index + 1}</TableCell>
+                      <TableCell className="text-center">
+                        {payrollItem.employee?.name ?? "-"}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {payrollItem.employee?.position ?? "-"}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {payrollItem.salary}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {payrollItem.bonus}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {payrollItem.penalty}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {payrollItem.total}
+                      </TableCell>
+                      <TableCell className="text-center flex justify-evenly">
+                        <TrashIcon
+                          className="text-danger w-6 h-6"
+                          onClick={() => deletePayroll(payrollItem.id ?? 0)}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+            </TableBody>
+          </Table>
         </div>
       </div>
     </DefaultLayout>

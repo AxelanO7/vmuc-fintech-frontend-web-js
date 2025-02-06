@@ -1,17 +1,7 @@
-import {
-  CalendarDateRangeIcon,
-  ChevronDownIcon,
-  DocumentArrowDownIcon,
-  PlusIcon,
-  TrashIcon,
-} from "@heroicons/react/16/solid";
-import DefaultLayout from "../layouts/default_layout";
+import { MagnifyingGlassIcon } from "@heroicons/react/16/solid";
 import {
   Button,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
+  DatePicker,
   Input,
   Table,
   TableBody,
@@ -20,71 +10,16 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
+import { useState, useEffect } from "react";
 import Breadcrumb from "../components/breadcrumb";
+import { reportPeriodType } from "../core/interfaces/data";
 import { breadcrumsItem } from "../core/interfaces/props";
-import { dashboardType } from "../core/interfaces/data";
+import { ApiHelpers } from "../helpers/api";
+import { Urls } from "../helpers/url";
+import DefaultLayout from "../layouts/default_layout";
 
 export default function DashboardPage() {
-  // ~*~ // Date // ~*~ //
-  const dateNow = new Date().toLocaleDateString("id-ID", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-
-  const dropdownItem = [
-    {
-      key: 1,
-      label: "Januari",
-    },
-    {
-      key: 2,
-      label: "Februari",
-    },
-    {
-      key: 3,
-      label: "Maret",
-    },
-    {
-      key: 4,
-      label: "April",
-    },
-    {
-      key: 5,
-      label: "Mei",
-    },
-    {
-      key: 6,
-      label: "Juni",
-    },
-    {
-      key: 7,
-      label: "Juli",
-    },
-    {
-      key: 8,
-      label: "Agustus",
-    },
-    {
-      key: 9,
-      label: "September",
-    },
-    {
-      key: 10,
-      label: "Oktober",
-    },
-    {
-      key: 11,
-      label: "November",
-    },
-    {
-      key: 12,
-      label: "Desember",
-    },
-  ];
-
-  // ~*~ // End of Date // ~*~ //
+  const [tableItems, setTableItems] = useState<reportPeriodType>();
 
   // ~*~ // Table // ~*~ //
   const tableHeaderParentItems = [
@@ -94,53 +29,31 @@ export default function DashboardPage() {
     },
     {
       name: "Periode",
+      className: "",
     },
     {
-      name: "Aksi",
-      className: "w-40",
+      name: "Deskripsi",
+      className: "",
     },
+    // {
+    //   name: "Aksi",
+    //   className: "w-40",
+    // },
   ];
 
   const tableHeaderChildItems = [
     {
-      name: "Periode",
+      name: "No",
+      className: "w-20",
     },
     {
-      name: "Deskripsi",
+      name: "Nama Laporan",
+      className: "text-start",
     },
-    {
-      name: "Status",
-    },
-
-    {
-      name: "Aksi",
-      className: "w-40",
-    },
-  ];
-
-  const tableItems: dashboardType[] = [
-    {
-      dateContents: [
-        {
-          id: 1,
-          date: "Mei 2024",
-          contents: [
-            {
-              id: 1,
-              period: "Mei 2024",
-              description: "Jurnal Umum",
-              status: "Done",
-            },
-            {
-              id: 2,
-              period: "Mei 2024",
-              description: "Buku Besar",
-              status: "Done",
-            },
-          ],
-        },
-      ],
-    },
+    // {
+    //   name: "Aksi",
+    //   className: "w-40",
+    // },
   ];
 
   // ~*~ // End of Table // ~*~ //
@@ -149,128 +62,151 @@ export default function DashboardPage() {
   const breadcrumbItems: breadcrumsItem[] = [
     {
       label: "Dashboard",
-      href: "#",
+      href: "/",
     },
   ];
 
   // ~*~ // End of Breadcrumb // ~*~ //
 
+  // ~*~ // Functions // ~*~ //
+  // const handleAdd = () => {
+  //   window.location.replace("/" + "add-general-journal");
+  // };
+
+  // const getGeneralJournals = () => {
+  //   ApiHelpers.get({
+  //     url: Urls.periodGeneralJournal,
+  //     successCallback: (response) => {
+  //       setTableItems(response.data.data);
+  //     },
+  //     errorCallback: () => {},
+  //   });
+  // };
+
+  // const deleteGeneralJournal = (id: number) => {
+  //   ApiHelpers.delete({
+  //     url: Urls.journalGeneral + "/" + id,
+  //     successCallback: () => {
+  //       Swal.fire("Berhasil", "Data berhasil dihapus", "success");
+  //       getGeneralJournals();
+  //     },
+  //     errorCallback: () => {},
+  //   });
+  // };
+
+  const getGeneralJournals = (
+    date: string = new Date().toISOString().split("T")[0]
+  ) => {
+    const finalUrl = Urls.periodPrivate + `/get-report-trial-balance/${date}`;
+    ApiHelpers.get({
+      url: finalUrl,
+      successCallback: (response) => {
+        setTableItems(response.data.data);
+      },
+      errorCallback: () => {},
+    });
+  };
+
+  useEffect(() => {
+    getGeneralJournals();
+  }, []);
+
+  // ~*~ // End of Functions // ~*~ //
+
   return (
-    <>
-      <DefaultLayout>
-        <h1 className="text-3xl font-bold mx-6 pt-4">Dashboard</h1>
+    <DefaultLayout>
+      <h1 className="text-3xl font-bold mx-6 pt-4">Dashboard</h1>
 
-        <Breadcrumb items={breadcrumbItems} />
+      <Breadcrumb items={breadcrumbItems} />
 
-        <div className="mx-6">
-          <div className="flex items-center mt-6 bg-gray-200 p-4">
-            <CalendarDateRangeIcon className="w-10 h-10" />
-            <p className="ml-4 font-semibold text-lg">{dateNow}</p>
-          </div>
+      <div className="bg-gray-200 m-4 p-8">
+        <h1 className="text-3xl font-medium text-gray-600">Dashboard</h1>
 
-          <div className="mt-4 bg-gray-200 py-8 rounded-md shadow-md px-8">
-            <div className="flex justify-between">
-              <div className="flex space-x-4">
-                <Input type="date" />
-                <Button
-                  className="w-full"
-                  color="primary"
-                  startContent={<PlusIcon className="w-5 h-5" />}
-                >
-                  Tambah Periode
-                </Button>
-              </div>
-              <Dropdown>
-                <DropdownTrigger>
-                  <Button
-                    variant="bordered"
-                    endContent={<ChevronDownIcon className="w-5 h-5" />}
-                  >
-                    Periode
-                  </Button>
-                </DropdownTrigger>
-                <DropdownMenu aria-label="Static Actions">
-                  {dropdownItem.map((item, index) => (
-                    <DropdownItem key={index}>{item.label}</DropdownItem>
-                  ))}
-                </DropdownMenu>
-              </Dropdown>
-            </div>
-
-            <div className="mt-4">
-              {tableItems.map((item, index) => (
-                <div key={item.dateContents[0].id}>
-                  <Table aria-label="Periode Table">
-                    <TableHeader>
-                      {tableHeaderParentItems.map((item) => (
-                        <TableColumn
-                          key={item.name}
-                          className={`text-center ${item.className}`}
-                        >
-                          {item.name}
-                        </TableColumn>
-                      ))}
-                    </TableHeader>
-                    <TableBody>
-                      <TableRow
-                        key={item.dateContents[0].id}
-                        className="bg-gray-50"
-                      >
-                        <TableCell className="text-center">
-                          {item.dateContents[0].id}
-                        </TableCell>
-                        <TableCell className="text-center">
-                          {item.dateContents[0].date}
-                        </TableCell>
-                        <TableCell className="text-center flex justify-evenly">
-                          <DocumentArrowDownIcon className="text-secondary w-8 h-8" />
-                          <TrashIcon className="text-danger w-8 h-8" />
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                  <Table
-                    aria-label="Periode Table"
-                    className={`mt-2 ${
-                      index === tableItems.length - 1 ? "" : "mb-8"
-                    }`}
-                  >
-                    <TableHeader>
-                      {tableHeaderChildItems.map((item) => (
-                        <TableColumn
-                          key={item.name}
-                          className={`text-center ${item.className}`}
-                        >
-                          {item.name}
-                        </TableColumn>
-                      ))}
-                    </TableHeader>
-                    <TableBody>
-                      {item.dateContents[0].contents.map((content) => (
-                        <TableRow key={content.id} className="bg-gray-50">
-                          <TableCell className="text-center">
-                            {content.period}
-                          </TableCell>
-                          <TableCell className="text-center">
-                            {content.description}
-                          </TableCell>
-                          <TableCell className="text-center">
-                            {content.status}
-                          </TableCell>
-                          <TableCell className="text-center flex justify-evenly">
-                            <DocumentArrowDownIcon className="text-secondary w-8 h-8" />
-                            <TrashIcon className="text-danger w-8 h-8" />
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              ))}
-            </div>
+        <div className="flex justify-between mt-4">
+          <DatePicker
+            className="w-max"
+            onChange={(date) => {
+              const dateValue = new Date(date.toString())
+                .toISOString()
+                .split("T")[0];
+              getGeneralJournals(dateValue);
+            }}
+          />
+          <div className="flex gap-2">
+            <Input placeholder="Cari" type="search" />
+            <Button color="primary" isIconOnly>
+              <MagnifyingGlassIcon className="w-5 h-5" />
+            </Button>
           </div>
         </div>
-      </DefaultLayout>
-    </>
+
+        <div className="mt-4">
+          {tableItems && (
+            <div>
+              <Table aria-label="Periode Table">
+                <TableHeader>
+                  {tableHeaderParentItems.map((item) => (
+                    <TableColumn className={`text-center ${item.className}`}>
+                      {item.name}
+                    </TableColumn>
+                  ))}
+                </TableHeader>
+                <TableBody emptyContent="Data tidak ditemukan">
+                  <TableRow className="bg-gray-50">
+                    <TableCell className="text-center">
+                      {tableItems.period.id}
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {tableItems.period.period}
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {tableItems.period.description}
+                    </TableCell>
+                    {/* <TableCell className="text-center flex justify-evenly">
+                      <DocumentArrowDownIcon className="text-primary w-6 h-6" />
+                      <TrashIcon className="text-danger w-6 h-6" />
+                    </TableCell> */}
+                  </TableRow>
+                </TableBody>
+              </Table>
+              <Table aria-label="Periode Table" className={`mt-2`}>
+                <TableHeader>
+                  {tableHeaderChildItems.map((item) => (
+                    <TableColumn className={`text-center ${item.className}`}>
+                      {item.name}
+                    </TableColumn>
+                  ))}
+                </TableHeader>
+                <TableBody emptyContent="Data tidak ditemukan">
+                  {tableItems.trial_balance &&
+                    tableItems.trial_balance.map((item) => (
+                      <TableRow className="bg-gray-50">
+                        {/* <TableCell className="text-center">
+                            {item.date}
+                          </TableCell> */}
+                        <TableCell className="text-center">
+                          {item.name_account}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          {item.name_account}
+                        </TableCell>
+                        {/* <TableCell className="text-center">
+                            {item.debit}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {item.kredit}
+                          </TableCell> */}
+                        {/* <TableCell className="text-center flex justify-evenly">
+                          <DocumentArrowDownIcon className="w-6 h-6 text-primary" />
+                        </TableCell> */}
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </div>
+          )}
+        </div>
+      </div>
+    </DefaultLayout>
   );
 }
