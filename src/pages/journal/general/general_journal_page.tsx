@@ -2,7 +2,6 @@ import {
   DocumentArrowDownIcon,
   MagnifyingGlassIcon,
   PlusIcon,
-  TrashIcon,
 } from "@heroicons/react/16/solid";
 import {
   Button,
@@ -46,32 +45,32 @@ export default function GeneralJournalPage() {
     },
   ];
 
-  const tableHeaderChildItems = [
-    {
-      name: "Tanggal",
-      className: "",
-    },
-    {
-      name: "Ref Post",
-      className: "",
-    },
-    {
-      name: "Keterangan",
-      className: "",
-    },
-    {
-      name: "Debit",
-      className: "",
-    },
-    {
-      name: "Kredit",
-      className: "",
-    },
-    {
-      name: "Aksi",
-      className: "w-40",
-    },
-  ];
+  // const tableHeaderChildItems = [
+  //   {
+  //     name: "Tanggal",
+  //     className: "",
+  //   },
+  //   {
+  //     name: "Ref Post",
+  //     className: "",
+  //   },
+  //   {
+  //     name: "Keterangan",
+  //     className: "",
+  //   },
+  //   {
+  //     name: "Debit",
+  //     className: "",
+  //   },
+  //   {
+  //     name: "Kredit",
+  //     className: "",
+  //   },
+  //   {
+  //     name: "Aksi",
+  //     className: "w-40",
+  //   },
+  // ];
 
   // ~*~ // End of Table // ~*~ //
 
@@ -100,16 +99,16 @@ export default function GeneralJournalPage() {
     });
   };
 
-  const deleteGeneralJournal = (id: number) => {
-    ApiHelpers.delete({
-      url: Urls.journalGeneral + "/" + id,
-      successCallback: () => {
-        Swal.fire("Berhasil", "Data berhasil dihapus", "success");
-        getGeneralJournals();
-      },
-      errorCallback: () => {},
-    });
-  };
+  // const deleteGeneralJournal = (id: number) => {
+  //   ApiHelpers.delete({
+  //     url: Urls.journalGeneral + "/" + id,
+  //     successCallback: () => {
+  //       Swal.fire("Berhasil", "Data berhasil dihapus", "success");
+  //       getGeneralJournals();
+  //     },
+  //     errorCallback: () => {},
+  //   });
+  // };
 
   // ~*~ // End of Functions // ~*~ //
 
@@ -247,7 +246,7 @@ export default function GeneralJournalPage() {
                 ))}
             </TableBody>
           </Table>
-          <Table aria-label="Jurnal Umum Table" className="mt-2">
+          {/* <Table aria-label="Jurnal Umum Table" className="mt-2">
             <TableHeader>
               {tableHeaderChildItems.map((item) => (
                 <TableColumn
@@ -288,7 +287,7 @@ export default function GeneralJournalPage() {
                   ))
                 )}
             </TableBody>
-          </Table>
+          </Table> */}
         </div>
       </div>
     </DefaultLayout>
