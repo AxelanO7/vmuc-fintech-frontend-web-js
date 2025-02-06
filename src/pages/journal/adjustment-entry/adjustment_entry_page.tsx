@@ -22,6 +22,7 @@ import { periodeType } from "../../../core/interfaces/data";
 import Swal from "sweetalert2";
 import { ApiHelpers } from "../../../helpers/api";
 import { Urls } from "../../../helpers/url";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 export default function AdjustmentEntryPage() {
   const [tableItems, setTableItems] = useState<periodeType[]>([]);
@@ -239,7 +240,58 @@ export default function AdjustmentEntryPage() {
                       {item.description}
                     </TableCell>
                     <TableCell className="text-center flex justify-evenly">
-                      <DocumentArrowDownIcon className="text-primary w-6 h-6" />
+                      {/* <DocumentArrowDownIcon className="text-primary w-6 h-6" /> */}
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <DocumentArrowDownIcon className="text-primary w-6 h-6" />
+                        </DialogTrigger>
+                        <DialogContent className="max-w-[90%]">
+                          <Table aria-label="Periode Table">
+                            <TableHeader>
+                              {tableHeaderChildItems.map((item) => (
+                                <TableColumn
+                                  key={item.name}
+                                  className={`text-center ${item.className}`}
+                                >
+                                  {item.name}
+                                </TableColumn>
+                              ))}
+                            </TableHeader>
+                            <TableBody emptyContent="Data tidak ditemukan">
+                              {item.adjusment_entries &&
+                                item.adjusment_entries.map((item) => (
+                                  <TableRow
+                                    key={item.id}
+                                    className="bg-gray-50"
+                                  >
+                                    <TableCell className="text-center">
+                                      {item.name_account}
+                                    </TableCell>
+                                    <TableCell className="text-center">
+                                      {item.information}
+                                    </TableCell>
+                                    <TableCell className="text-center">
+                                      {item.debit}
+                                    </TableCell>
+                                    <TableCell className="text-center">
+                                      {item.kredit}
+                                    </TableCell>
+                                    <TableCell className="text-center flex justify-evenly">
+                                      <TrashIcon
+                                        className="text-danger w-6 h-6"
+                                        onClick={() =>
+                                          deleteAdjustmentEntryJournal(
+                                            item.id || 0
+                                          )
+                                        }
+                                      />
+                                    </TableCell>
+                                  </TableRow>
+                                ))}
+                            </TableBody>
+                          </Table>
+                        </DialogContent>
+                      </Dialog>
                     </TableCell>
                   </TableRow>
                 ))}
