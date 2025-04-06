@@ -45,7 +45,7 @@ export default function ManipulateEmployeeModal({
     <>
       {isEdit ? (
         <PencilIcon
-          className="text-secondary w-8 h-8"
+          className="text-black w-8 h-8"
           onClick={() => {
             setCurrentData(dataEdit!);
             setIsEdit(true);

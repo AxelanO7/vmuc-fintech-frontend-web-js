@@ -52,7 +52,7 @@ export default function ManipulateRefPostModal({
     <>
       {staticEdit ? (
         <PencilIcon
-          className="text-secondary w-8 h-8"
+          className="text-black w-8 h-8"
           onClick={() => {
             setIsEdit(true);
             setCurrentData(dataEdit!);
