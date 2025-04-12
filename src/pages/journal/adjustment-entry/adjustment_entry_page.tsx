@@ -14,14 +14,14 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
-import DefaultLayout from "../../../layouts/default_layout";
-import { breadcrumsItem } from "../../../core/interfaces/props";
-import Breadcrumb from "../../../components/breadcrumb";
+import DefaultLayout from "@/layouts/default_layout";
+import { breadcrumsItem } from "@/core/interfaces/props";
+import Breadcrumb from "@/components/breadcrumb";
 import { useEffect, useState } from "react";
-import { periodeType } from "../../../core/interfaces/data";
+import { periodeType } from "@/core/interfaces/data";
 import Swal from "sweetalert2";
-import { ApiHelpers } from "../../../helpers/api";
-import { Urls } from "../../../helpers/url";
+import { ApiHelpers } from "@/helpers/api";
+import { Urls } from "@/helpers/url";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 export default function AdjustmentEntryPage() {

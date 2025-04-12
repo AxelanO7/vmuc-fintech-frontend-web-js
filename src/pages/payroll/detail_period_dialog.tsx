@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
-import { propsDetailPayroll } from "../../core/interfaces/props";
+import { propsDetailPayroll } from "@/core/interfaces/props";
 
 export default function DetailPeriodDialog({
   isOpen,

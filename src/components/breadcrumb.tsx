@@ -1,5 +1,5 @@
 import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/react";
-import { propsBreadcrums } from "../core/interfaces/props";
+import { propsBreadcrums } from "@/core/interfaces/props";
 import { HomeIcon } from "@heroicons/react/16/solid";
 
 export default function Breadcrumb({ items }: propsBreadcrums) {

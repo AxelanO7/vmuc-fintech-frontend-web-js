@@ -9,11 +9,11 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
-import { propsDetailLedger } from "../../../core/interfaces/props";
+import { propsDetailLedger } from "@/core/interfaces/props";
 import { useState } from "react";
-import { periodeType } from "../../../core/interfaces/data";
-import { Urls } from "../../../helpers/url";
-import { ApiHelpers } from "../../../helpers/api";
+import { periodeType } from "@/core/interfaces/data";
+import { Urls } from "@/helpers/url";
+import { ApiHelpers } from "@/helpers/api";
 
 export default function DetailPeriodDialog({
   isOpen,

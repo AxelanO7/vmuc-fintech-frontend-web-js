@@ -13,22 +13,22 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
-import DefaultLayout from "../../../layouts/default_layout";
-import { breadcrumsItem } from "../../../core/interfaces/props";
-import Breadcrumb from "../../../components/breadcrumb";
+import DefaultLayout from "@/layouts/default_layout";
+import { breadcrumsItem } from "@/core/interfaces/props";
+import Breadcrumb from "@/components/breadcrumb";
 import { useEffect, useState } from "react";
 import {
   generalJournalType,
   periodeType,
   refPostType,
-} from "../../../core/interfaces/data";
+} from "@/core/interfaces/data";
 import {
   ChevronDownIcon,
   PlusIcon,
   TrashIcon,
 } from "@heroicons/react/16/solid";
-import { ApiHelpers } from "../../../helpers/api";
-import { Urls } from "../../../helpers/url";
+import { ApiHelpers } from "@/helpers/api";
+import { Urls } from "@/helpers/url";
 import Swal from "sweetalert2";
 
 export default function AddGeneralJournalPage() {

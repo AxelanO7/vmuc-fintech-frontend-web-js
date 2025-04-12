@@ -2,7 +2,7 @@ import { Button, Input } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import swal from "sweetalert2";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/16/solid";
-import { ApiHelpers } from "../../helpers/api";
+import { ApiHelpers } from "@/helpers/api";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");

@@ -1,5 +1,5 @@
 import { useRecoilValue } from "recoil";
-import { sidebarState } from "../core/interfaces/state";
+import { sidebarState } from "@/core/interfaces/state";
 import Navbar from "./navbar";
 import Sidebar from "./sidebar";
 

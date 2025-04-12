@@ -12,7 +12,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/react";
-import { propsManipulateRefPost } from "../../core/interfaces/props";
+import { propsManipulateRefPost } from "@/core/interfaces/props";
 
 export default function ManipulateRefPostModal({
   isOpen,

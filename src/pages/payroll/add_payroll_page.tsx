@@ -19,17 +19,17 @@ import {
   PlusIcon,
   TrashIcon,
 } from "@heroicons/react/16/solid";
-import Breadcrumb from "../../components/breadcrumb";
+import Breadcrumb from "@/components/breadcrumb";
 import {
   employeeType,
   generalJournalType,
   payrollType,
   periodeType,
-} from "../../core/interfaces/data";
-import { breadcrumsItem } from "../../core/interfaces/props";
-import DefaultLayout from "../../layouts/default_layout";
-import { Urls } from "../../helpers/url";
-import { ApiHelpers } from "../../helpers/api";
+} from "@/core/interfaces/data";
+import { breadcrumsItem } from "@/core/interfaces/props";
+import DefaultLayout from "@/layouts/default_layout";
+import { Urls } from "@/helpers/url";
+import { ApiHelpers } from "@/helpers/api";
 import Swal from "sweetalert2";
 
 export default function AddPayrollPage() {

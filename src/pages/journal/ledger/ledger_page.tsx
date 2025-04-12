@@ -16,14 +16,14 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
-import Breadcrumb from "../../../components/breadcrumb";
-import { breadcrumsItem } from "../../../core/interfaces/props";
-import DefaultLayout from "../../../layouts/default_layout";
+import Breadcrumb from "@/components/breadcrumb";
+import { breadcrumsItem } from "@/core/interfaces/props";
+import DefaultLayout from "@/layouts/default_layout";
 import { useEffect, useState } from "react";
 
-import { ApiHelpers } from "../../../helpers/api";
-import { Urls } from "../../../helpers/url";
-import { generalLedgerType, periodeType } from "../../../core/interfaces/data";
+import { ApiHelpers } from "@/helpers/api";
+import { Urls } from "@/helpers/url";
+import { generalLedgerType, periodeType } from "@/core/interfaces/data";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 export default function LedgerPage() {

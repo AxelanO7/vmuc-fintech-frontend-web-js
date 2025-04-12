@@ -1,5 +1,5 @@
 import { MagnifyingGlassIcon, TrashIcon } from "@heroicons/react/16/solid";
-import DefaultLayout from "../../layouts/default_layout";
+import DefaultLayout from "@/layouts/default_layout";
 import {
   Button,
   Input,
@@ -13,12 +13,12 @@ import {
 } from "@nextui-org/react";
 import ManipulateRefPostDialog from "./manipulate_ref_post_modal";
 import { useEffect, useState } from "react";
-import { refPostType } from "../../core/interfaces/data";
-import { breadcrumsItem } from "../../core/interfaces/props";
-import Breadcrumb from "../../components/breadcrumb";
-import { ApiHelpers } from "../../helpers/api";
+import { refPostType } from "@/core/interfaces/data";
+import { breadcrumsItem } from "@/core/interfaces/props";
+import Breadcrumb from "@/components/breadcrumb";
+import { ApiHelpers } from "@/helpers/api";
 import Swal from "sweetalert2";
-import { Urls } from "../../helpers/url";
+import { Urls } from "@/helpers/url";
 
 export default function RefPostPage() {
   // ~*~ // Manipulate Modal // ~*~ //

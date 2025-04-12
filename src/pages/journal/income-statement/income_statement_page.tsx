@@ -16,9 +16,9 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
-import Breadcrumb from "../../../components/breadcrumb";
-import { breadcrumsItem } from "../../../core/interfaces/props";
-import DefaultLayout from "../../../layouts/default_layout";
+import Breadcrumb from "@/components/breadcrumb";
+import { breadcrumsItem } from "@/core/interfaces/props";
+import DefaultLayout from "@/layouts/default_layout";
 
 export default function IncomeStatementPage() {
   // ~*~ // Date // ~*~ //

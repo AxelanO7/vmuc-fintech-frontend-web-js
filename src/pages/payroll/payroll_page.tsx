@@ -13,13 +13,13 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
-import { periodeType } from "../../core/interfaces/data";
-import { breadcrumsItem } from "../../core/interfaces/props";
-import DefaultLayout from "../../layouts/default_layout";
-import Breadcrumb from "../../components/breadcrumb";
+import { periodeType } from "@/core/interfaces/data";
+import { breadcrumsItem } from "@/core/interfaces/props";
+import DefaultLayout from "@/layouts/default_layout";
+import Breadcrumb from "@/components/breadcrumb";
 import { useEffect, useState } from "react";
-import { ApiHelpers } from "../../helpers/api";
-import { Urls } from "../../helpers/url";
+import { ApiHelpers } from "@/helpers/api";
+import { Urls } from "@/helpers/url";
 import Swal from "sweetalert2";
 
 export default function PayrollPage() {

@@ -9,13 +9,13 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
-import DefaultLayout from "../../../layouts/default_layout";
-import { breadcrumsItem } from "../../../core/interfaces/props";
-import Breadcrumb from "../../../components/breadcrumb";
+import DefaultLayout from "@/layouts/default_layout";
+import { breadcrumsItem } from "@/core/interfaces/props";
+import Breadcrumb from "@/components/breadcrumb";
 import { useEffect, useState } from "react";
-import { trialBalanceType } from "../../../core/interfaces/data";
-import { ApiHelpers } from "../../../helpers/api";
-import { Urls } from "../../../helpers/url";
+import { trialBalanceType } from "@/core/interfaces/data";
+import { ApiHelpers } from "@/helpers/api";
+import { Urls } from "@/helpers/url";
 
 export default function WorkSheetPage() {
   const [tableItems, setTableItems] = useState<trialBalanceType[]>([]);

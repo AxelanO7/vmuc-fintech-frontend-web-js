@@ -22,16 +22,18 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import DefaultLayout from "../../../layouts/default_layout";
-import { periodeType } from "../../../core/interfaces/data";
-import { breadcrumsItem } from "../../../core/interfaces/props";
-import Breadcrumb from "../../../components/breadcrumb";
+import DefaultLayout from "@/layouts/default_layout";
+import { generalJournalType, periodeType } from "@/core/interfaces/data";
+import { breadcrumsItem } from "@/core/interfaces/props";
+import Breadcrumb from "@/components/breadcrumb";
 import { useEffect, useState } from "react";
-import { ApiHelpers } from "../../../helpers/api";
-import { Urls } from "../../../helpers/url";
+import { ApiHelpers } from "@/helpers/api";
+import { Urls } from "@/helpers/url";
+import { Pencil, Trash } from "lucide-react";
 
 export default function GeneralJournalPage() {
   const [tableItems, setTableItems] = useState<periodeType[]>([]);
+  const [generalJournalTemp, setGeneralJournalTemp] = useState<periodeType>();
 
   // ~*~ // Table // ~*~ //
   const tableHeaderParentItems = [
@@ -117,6 +119,16 @@ export default function GeneralJournalPage() {
   //     errorCallback: () => {},
   //   });
   // };
+
+  const deleteGeneralJournal = (id: number) => {
+    ApiHelpers.delete({
+      url: Urls.journalGeneral + "/" + id,
+      successCallback: () => {
+        getGeneralJournals();
+      },
+      errorCallback: () => {},
+    });
+  };
 
   // ~*~ // End of Functions // ~*~ //
 
@@ -292,7 +304,10 @@ export default function GeneralJournalPage() {
                     <TableCell className="text-center flex justify-evenly">
                       <Dialog>
                         <DialogTrigger>
-                          <DocumentArrowDownIcon className="text-primary w-6 h-6" />
+                          <DocumentArrowDownIcon
+                            className="text-primary w-6 h-6"
+                            onClick={() => setGeneralJournalTemp(item)}
+                          />
                         </DialogTrigger>
                         <DialogContent className="max-w-[90%]">
                           <DialogHeader>
@@ -319,6 +334,9 @@ export default function GeneralJournalPage() {
                               <TableColumn className="text-center">
                                 Kredit
                               </TableColumn>
+                              <TableColumn className="w-24 text-center">
+                                Aksi
+                              </TableColumn>
                             </TableHeader>
                             <TableBody emptyContent="Data tidak ditemukan">
                               {item.general_journal &&
@@ -327,7 +345,7 @@ export default function GeneralJournalPage() {
                                     key={journal.id}
                                     className="bg-gray-50"
                                   >
-                                    <TableCell className="text-center">
+                                    {/* <TableCell className="text-center">
                                       {journal.date}
                                     </TableCell>
                                     <TableCell className="text-center">
@@ -341,6 +359,47 @@ export default function GeneralJournalPage() {
                                     </TableCell>
                                     <TableCell className="text-center">
                                       {journal.kredit}
+                                    </TableCell> */}
+                                    <Input
+                                      className="text-center"
+                                      defaultValue={journal.date}
+                                      type="date"
+                                      onChange={(e) => {
+                                        const existingJournals: generalJournalType =
+                                          journal;
+
+                                        const updatedJournals: generalJournalType =
+                                          {
+                                            ...existingJournals,
+                                            date: e.target.value,
+                                          };
+
+                                        const updatedGeneralJournalTemp: periodeType =
+                                          generalJournalTemp as periodeType;
+
+                                        const updatedGeneralJournals =
+                                          updatedGeneralJournalTemp?.general_journal.map(
+                                            (journal) =>
+                                              journal.id ===
+                                                updatedJournals.id &&
+                                              updatedJournals
+                                          );
+
+                                        setGeneralJournalTemp({
+                                          ...updatedGeneralJournalTemp,
+                                          general_journal:
+                                            updatedGeneralJournals?.filter(
+                                              (
+                                                journal
+                                              ): journal is generalJournalType =>
+                                                journal !== false
+                                            ),
+                                        });
+                                      }}
+                                    />
+                                    <TableCell className="text-center flex space-x-4">
+                                      <Pencil />
+                                      <Trash />
                                     </TableCell>
                                   </TableRow>
                                 ))}

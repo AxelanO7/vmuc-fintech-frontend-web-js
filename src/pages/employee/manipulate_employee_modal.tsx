@@ -12,10 +12,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/react";
-import {
-  actionType,
-  propsManipulateEmployee,
-} from "../../core/interfaces/props";
+import { actionType, propsManipulateEmployee } from "@/core/interfaces/props";
 
 export default function ManipulateEmployeeModal({
   isOpen,

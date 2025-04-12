@@ -1,5 +1,5 @@
 import { MagnifyingGlassIcon, TrashIcon } from "@heroicons/react/16/solid";
-import DefaultLayout from "../../layouts/default_layout";
+import DefaultLayout from "@/layouts/default_layout";
 import {
   Button,
   Input,
@@ -13,12 +13,12 @@ import {
 } from "@nextui-org/react";
 import ManipulateEmployeeDialog from "./manipulate_employee_modal";
 import { useEffect, useState } from "react";
-import { employeeType } from "../../core/interfaces/data";
-import { actionType, breadcrumsItem } from "../../core/interfaces/props";
-import Breadcrumb from "../../components/breadcrumb";
+import { employeeType } from "@/core/interfaces/data";
+import { actionType, breadcrumsItem } from "@/core/interfaces/props";
+import Breadcrumb from "@/components/breadcrumb";
 import Swal from "sweetalert2";
-import { ApiHelpers } from "../../helpers/api";
-import { Urls } from "../../helpers/url";
+import { ApiHelpers } from "@/helpers/api";
+import { Urls } from "@/helpers/url";
 
 export default function EmployeePage() {
   // ~*~ // Manipulate Modal // ~*~ //

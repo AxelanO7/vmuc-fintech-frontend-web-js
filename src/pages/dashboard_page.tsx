@@ -11,12 +11,12 @@ import {
   TableRow,
 } from "@nextui-org/react";
 import { useState, useEffect } from "react";
-import Breadcrumb from "../components/breadcrumb";
-import { reportPeriodType } from "../core/interfaces/data";
-import { breadcrumsItem } from "../core/interfaces/props";
-import { ApiHelpers } from "../helpers/api";
-import { Urls } from "../helpers/url";
-import DefaultLayout from "../layouts/default_layout";
+import Breadcrumb from "@/components/breadcrumb";
+import { reportPeriodType } from "@/core/interfaces/data";
+import { breadcrumsItem } from "@/core/interfaces/props";
+import { ApiHelpers } from "@/helpers/api";
+import { Urls } from "@/helpers/url";
+import DefaultLayout from "@/layouts/default_layout";
 
 export default function DashboardPage() {
   const [tableItems, setTableItems] = useState<reportPeriodType>();

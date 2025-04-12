@@ -4,7 +4,7 @@ import {
 } from "@heroicons/react/16/solid";
 
 import { useRecoilState } from "recoil";
-import { sidebarState } from "../core/interfaces/state";
+import { sidebarState } from "@/core/interfaces/state";
 import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/react";
 
 export default function Navbar() {

@@ -10,14 +10,14 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
-import { breadcrumsItem } from "../../core/interfaces/props";
-import Breadcrumb from "../../components/breadcrumb";
-import DefaultLayout from "../../layouts/default_layout";
+import { breadcrumsItem } from "@/core/interfaces/props";
+import Breadcrumb from "@/components/breadcrumb";
+import DefaultLayout from "@/layouts/default_layout";
 import { useState, useEffect } from "react";
 
-import { ApiHelpers } from "../../helpers/api";
-import { Urls } from "../../helpers/url";
-import { reportPeriodType } from "../../core/interfaces/data";
+import { ApiHelpers } from "@/helpers/api";
+import { Urls } from "@/helpers/url";
+import { reportPeriodType } from "@/core/interfaces/data";
 
 export default function PeriodReportPage() {
   const [tableItems, setTableItems] = useState<reportPeriodType>();
