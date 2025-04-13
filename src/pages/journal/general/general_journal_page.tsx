@@ -55,35 +55,6 @@ export default function GeneralJournalPage() {
     },
   ];
 
-  // const tableHeaderChildItems = [
-  //   {
-  //     name: "Tanggal",
-  //     className: "",
-  //   },
-  //   {
-  //     name: "Ref Post",
-  //     className: "",
-  //   },
-  //   {
-  //     name: "Keterangan",
-  //     className: "",
-  //   },
-  //   {
-  //     name: "Debit",
-  //     className: "",
-  //   },
-  //   {
-  //     name: "Kredit",
-  //     className: "",
-  //   },
-  //   {
-  //     name: "Aksi",
-  //     className: "w-40",
-  //   },
-  // ];
-
-  // ~*~ // End of Table // ~*~ //
-
   // ~*~ // Breadcrumb // ~*~ //
   const breadcrumbItems: breadcrumsItem[] = [
     {
@@ -91,8 +62,6 @@ export default function GeneralJournalPage() {
       href: "general-journal",
     },
   ];
-
-  // ~*~ // End of Breadcrumb // ~*~ //
 
   // ~*~ // Functions // ~*~ //
   const handleAdd = () => {
@@ -102,9 +71,22 @@ export default function GeneralJournalPage() {
   const getGeneralJournals = () => {
     ApiHelpers.get({
       url: Urls.periodGeneralJournal,
+
       successCallback: (response) => {
         setTableItems(response.data.data);
       },
+      errorCallback: () => {},
+    });
+  };
+
+  const handleEditGeneralJournal = () => {
+    const generalJournals: generalJournalType[] =
+      generalJournalTemp?.general_journal || [];
+
+    ApiHelpers.put({
+      url: `${Urls.journalGeneral}s`,
+      data: generalJournals,
+      successCallback: () => {},
       errorCallback: () => {},
     });
   };
@@ -113,24 +95,11 @@ export default function GeneralJournalPage() {
   //   ApiHelpers.delete({
   //     url: Urls.journalGeneral + "/" + id,
   //     successCallback: () => {
-  //       Swal.fire("Berhasil", "Data berhasil dihapus", "success");
   //       getGeneralJournals();
   //     },
   //     errorCallback: () => {},
   //   });
   // };
-
-  const deleteGeneralJournal = (id: number) => {
-    ApiHelpers.delete({
-      url: Urls.journalGeneral + "/" + id,
-      successCallback: () => {
-        getGeneralJournals();
-      },
-      errorCallback: () => {},
-    });
-  };
-
-  // ~*~ // End of Functions // ~*~ //
 
   useEffect(() => {
     getGeneralJournals();
@@ -163,124 +132,6 @@ export default function GeneralJournalPage() {
         </div>
 
         <div className="mt-4">
-          {/* {tableItems &&
-            tableItems.map((item, index) => (
-              <div key={item.id}>
-                <Table aria-label="Periode Table">
-                  <TableHeader>
-                    {tableHeaderParentItems.map((item) => (
-                      <TableColumn
-                        key={item.name}
-                        className={`text-center ${item.className}`}
-                      >
-                        {item.name}
-                      </TableColumn>
-                    ))}
-                  </TableHeader>
-                  <TableBody emptyContent="Data tidak ditemukan">
-                    <TableRow key={item.id} className="bg-gray-50">
-                      <TableCell className="text-center">{item.id}</TableCell>
-                      <TableCell className="text-center">
-                        {item.period}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        {item.description}
-                      </TableCell>
-                      <TableCell className="text-center flex justify-evenly">
-                        <DocumentArrowDownIcon className="text-primary w-6 h-6" />
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-                <Table
-                  aria-label="Periode Table"
-                  className={`mt-2 ${
-                    index === tableItems.length - 1 ? "" : "mb-8"
-                  }`}
-                >
-                  <TableHeader>
-                    {tableHeaderChildItems.map((item) => (
-                      <TableColumn
-                        key={item.name}
-                        className={`text-center ${item.className}`}
-                      >
-                        {item.name}
-                      </TableColumn>
-                    ))}
-                  </TableHeader>
-                  <TableBody emptyContent="Data tidak ditemukan">
-                    {item.general_journal &&
-                      item.general_journal.map((item) => (
-                        <TableRow key={item.id} className="bg-gray-50">
-                          <TableCell className="text-center">
-                            {item.date}
-                          </TableCell>
-                          <TableCell className="text-center">
-                            {item.name_account}
-                          </TableCell>
-                          <TableCell className="text-center">
-                            {item.information}
-                          </TableCell>
-                          <TableCell className="text-center">
-                            {item.debit}
-                          </TableCell>
-                          <TableCell className="text-center">
-                            {item.kredit}
-                          </TableCell>
-                          <TableCell className="text-center flex justify-evenly">
-                            <TrashIcon
-                              className="text-danger w-6 h-6"
-                              onClick={() => deleteGeneralJournal(item.id || 0)}
-                            />
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                  </TableBody>
-                </Table>
-              </div>
-            ))} <Table aria-label="Jurnal Umum Table" className="mt-2">
-            <TableHeader>
-              {tableHeaderChildItems.map((item) => (
-                <TableColumn
-                  key={item.name}
-                  className={`text-center ${item.className}`}
-                >
-                  {item.name}
-                </TableColumn>
-              ))}
-            </TableHeader>
-            <TableBody emptyContent="Data tidak ditemukan">
-              {tableItems &&
-                tableItems.flatMap((item) =>
-                  item.general_journal.map((journal) => (
-                    <TableRow key={journal.id} className="bg-gray-50">
-                      <TableCell className="text-center">
-                        {journal.date}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        {journal.name_account}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        {journal.information}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        {journal.debit}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        {journal.kredit}
-                      </TableCell>
-                      <TableCell className="text-center flex justify-evenly">
-                        <TrashIcon
-                          className="text-danger w-6 h-6"
-                          onClick={() => deleteGeneralJournal(journal.id || 0)}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
-            </TableBody>
-          </Table> */}
-
           <Table aria-label="Periode Table">
             <TableHeader>
               {tableHeaderParentItems.map((item) => (
@@ -345,60 +196,193 @@ export default function GeneralJournalPage() {
                                     key={journal.id}
                                     className="bg-gray-50"
                                   >
-                                    {/* <TableCell className="text-center">
-                                      {journal.date}
-                                    </TableCell>
-                                    <TableCell className="text-center">
-                                      {journal.name_account}
-                                    </TableCell>
-                                    <TableCell className="text-center">
-                                      {journal.information}
-                                    </TableCell>
-                                    <TableCell className="text-center">
-                                      {journal.debit}
-                                    </TableCell>
-                                    <TableCell className="text-center">
-                                      {journal.kredit}
-                                    </TableCell> */}
-                                    <Input
-                                      className="text-center"
-                                      defaultValue={journal.date}
-                                      type="date"
-                                      onChange={(e) => {
-                                        const existingJournals: generalJournalType =
-                                          journal;
+                                    <TableCell>
+                                      <Input
+                                        className="text-center"
+                                        defaultValue={journal.date}
+                                        type="date"
+                                        onChange={(e) => {
+                                          const existingJournals: generalJournalType =
+                                            journal;
 
-                                        const updatedJournals: generalJournalType =
-                                          {
-                                            ...existingJournals,
-                                            date: e.target.value,
-                                          };
+                                          const updatedJournals: generalJournalType =
+                                            {
+                                              ...existingJournals,
+                                              date: e.target.value,
+                                            };
 
-                                        const updatedGeneralJournalTemp: periodeType =
-                                          generalJournalTemp as periodeType;
+                                          const updatedGeneralJournalTemp: periodeType =
+                                            generalJournalTemp as periodeType;
 
-                                        const updatedGeneralJournals =
-                                          updatedGeneralJournalTemp?.general_journal.map(
-                                            (journal) =>
-                                              journal.id ===
-                                                updatedJournals.id &&
-                                              updatedJournals
-                                          );
+                                          const updatedGeneralJournals =
+                                            updatedGeneralJournalTemp?.general_journal.map(
+                                              (journal) =>
+                                                journal.id ===
+                                                  updatedJournals.id &&
+                                                updatedJournals
+                                            );
 
-                                        setGeneralJournalTemp({
-                                          ...updatedGeneralJournalTemp,
-                                          general_journal:
-                                            updatedGeneralJournals?.filter(
-                                              (
-                                                journal
-                                              ): journal is generalJournalType =>
-                                                journal !== false
-                                            ),
-                                        });
-                                      }}
-                                    />
-                                    <TableCell className="text-center flex space-x-4">
-                                      <Pencil />
+                                          setGeneralJournalTemp({
+                                            ...updatedGeneralJournalTemp,
+                                            general_journal:
+                                              updatedGeneralJournals?.filter(
+                                                (
+                                                  journal
+                                                ): journal is generalJournalType =>
+                                                  journal !== false
+                                              ),
+                                          });
+                                        }}
+                                      />
+                                    </TableCell>
+
+                                    <TableCell>
+                                      <Input
+                                        className="text-center"
+                                        defaultValue={journal.name_account}
+                                        type="text"
+                                        onChange={(e) => {
+                                          const existingJournals: generalJournalType =
+                                            journal;
+                                          const updatedJournals: generalJournalType =
+                                            {
+                                              ...existingJournals,
+                                              name_account: e.target.value,
+                                            };
+                                          const updatedGeneralJournalTemp: periodeType =
+                                            generalJournalTemp as periodeType;
+                                          const updatedGeneralJournals =
+                                            updatedGeneralJournalTemp?.general_journal.map(
+                                              (journal) =>
+                                                journal.id ===
+                                                  updatedJournals.id &&
+                                                updatedJournals
+                                            );
+                                          setGeneralJournalTemp({
+                                            ...updatedGeneralJournalTemp,
+                                            general_journal:
+                                              updatedGeneralJournals?.filter(
+                                                (
+                                                  journal
+                                                ): journal is generalJournalType =>
+                                                  journal !== false
+                                              ),
+                                          });
+                                        }}
+                                      />
+                                    </TableCell>
+
+                                    <TableCell>
+                                      <Input
+                                        className="text-center"
+                                        defaultValue={journal.information}
+                                        type="text"
+                                        onChange={(e) => {
+                                          const existingJournals: generalJournalType =
+                                            journal;
+                                          const updatedJournals: generalJournalType =
+                                            {
+                                              ...existingJournals,
+                                              information: e.target.value,
+                                            };
+                                          const updatedGeneralJournalTemp: periodeType =
+                                            generalJournalTemp as periodeType;
+                                          const updatedGeneralJournals =
+                                            updatedGeneralJournalTemp?.general_journal.map(
+                                              (journal) =>
+                                                journal.id ===
+                                                  updatedJournals.id &&
+                                                updatedJournals
+                                            );
+                                          setGeneralJournalTemp({
+                                            ...updatedGeneralJournalTemp,
+                                            general_journal:
+                                              updatedGeneralJournals?.filter(
+                                                (
+                                                  journal
+                                                ): journal is generalJournalType =>
+                                                  journal !== false
+                                              ),
+                                          });
+                                        }}
+                                      />
+                                    </TableCell>
+
+                                    <TableCell>
+                                      <Input
+                                        className="text-center"
+                                        defaultValue={journal.debit.toString()}
+                                        type="number"
+                                        onChange={(e) => {
+                                          const existingJournals: generalJournalType =
+                                            journal;
+                                          const updatedJournals: generalJournalType =
+                                            {
+                                              ...existingJournals,
+                                              debit: Number(e.target.value),
+                                            };
+                                          const updatedGeneralJournalTemp: periodeType =
+                                            generalJournalTemp as periodeType;
+                                          const updatedGeneralJournals =
+                                            updatedGeneralJournalTemp?.general_journal.map(
+                                              (journal) =>
+                                                journal.id ===
+                                                  updatedJournals.id &&
+                                                updatedJournals
+                                            );
+                                          setGeneralJournalTemp({
+                                            ...updatedGeneralJournalTemp,
+                                            general_journal:
+                                              updatedGeneralJournals?.filter(
+                                                (
+                                                  journal
+                                                ): journal is generalJournalType =>
+                                                  journal !== false
+                                              ),
+                                          });
+                                        }}
+                                      />
+                                    </TableCell>
+
+                                    <TableCell>
+                                      <Input
+                                        className="text-center"
+                                        defaultValue={journal.kredit.toString()}
+                                        type="number"
+                                        onChange={(e) => {
+                                          const existingJournals: generalJournalType =
+                                            journal;
+                                          const updatedJournals: generalJournalType =
+                                            {
+                                              ...existingJournals,
+                                              kredit: Number(e.target.value),
+                                            };
+                                          const updatedGeneralJournalTemp: periodeType =
+                                            generalJournalTemp as periodeType;
+                                          const updatedGeneralJournals =
+                                            updatedGeneralJournalTemp?.general_journal.map(
+                                              (journal) =>
+                                                journal.id ===
+                                                  updatedJournals.id &&
+                                                updatedJournals
+                                            );
+                                          setGeneralJournalTemp({
+                                            ...updatedGeneralJournalTemp,
+                                            general_journal:
+                                              updatedGeneralJournals?.filter(
+                                                (
+                                                  journal
+                                                ): journal is generalJournalType =>
+                                                  journal !== false
+                                              ),
+                                          });
+                                        }}
+                                      />
+                                    </TableCell>
+                                    <TableCell className="h-16 space-x-4 flex items-center justify-center">
+                                      <Pencil
+                                        onClick={handleEditGeneralJournal}
+                                      />
                                       <Trash />
                                     </TableCell>
                                   </TableRow>
@@ -417,3 +401,35 @@ export default function GeneralJournalPage() {
     </DefaultLayout>
   );
 }
+
+// {
+//     "id": 4,
+//     "name_account": "Gaji Karyawan",
+//     "date": "2025-02-02",
+//     "id_ref": 1,
+//     "information": "Gaji Karyawan",
+//     "debit": 6,
+//     "kredit": 1,
+//     "ref": null,
+//     "id_periode": 2,
+//     "payroll_periode": null,
+//     "created_at": "2025-02-02T17:01:20.601+08:00",
+//     "updated_at": "2025-02-02T17:01:20.601+08:00",
+//     "deleted_at": null
+// },
+
+// {
+//   "id": 4,
+//   "name_account": "Gaji Karyawan",
+//   "date": "2025-02-02",
+//   "id_ref": 1,
+//   "information": "Gaji Karyawan",
+//   "debit": 6,
+//   "kredit": 12,
+//   "ref": null,
+//   "id_periode": 2,
+//   "payroll_periode": null,
+//   "created_at": "2025-02-02T17:01:20.601+08:00",
+//   "updated_at": "2025-02-02T17:01:20.601+08:00",
+//   "deleted_at": null
+// }
