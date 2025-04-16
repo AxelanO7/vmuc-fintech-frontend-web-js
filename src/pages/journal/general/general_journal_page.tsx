@@ -30,6 +30,7 @@ import { useEffect, useState } from "react";
 import { ApiHelpers } from "@/helpers/api";
 import { Urls } from "@/helpers/url";
 import { Pencil, Trash } from "lucide-react";
+import Swal from "sweetalert2";
 
 export default function GeneralJournalPage() {
   const [tableItems, setTableItems] = useState<periodeType[]>([]);
@@ -86,7 +87,10 @@ export default function GeneralJournalPage() {
     ApiHelpers.put({
       url: `${Urls.journalGeneral}s`,
       data: generalJournals,
-      successCallback: () => {},
+      successCallback: () => {
+        Swal.fire("Berhasil", "Data berhasil diubah", "success");
+        getGeneralJournals();
+      },
       errorCallback: () => {},
     });
   };
