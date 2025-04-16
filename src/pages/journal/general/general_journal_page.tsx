@@ -95,15 +95,16 @@ export default function GeneralJournalPage() {
     });
   };
 
-  // const deleteGeneralJournal = (id: number) => {
-  //   ApiHelpers.delete({
-  //     url: Urls.journalGeneral + "/" + id,
-  //     successCallback: () => {
-  //       getGeneralJournals();
-  //     },
-  //     errorCallback: () => {},
-  //   });
-  // };
+  const handleDeleteGeneralJournal = (id: number) => {
+    ApiHelpers.delete({
+      url: Urls.journalGeneral + "/" + id,
+      successCallback: () => {
+        Swal.fire("Berhasil", "Data berhasil dihapus", "success");
+        getGeneralJournals();
+      },
+      errorCallback: () => {},
+    });
+  };
 
   useEffect(() => {
     getGeneralJournals();
@@ -387,7 +388,13 @@ export default function GeneralJournalPage() {
                                       <Pencil
                                         onClick={handleEditGeneralJournal}
                                       />
-                                      <Trash />
+                                      <Trash
+                                        onClick={() =>
+                                          handleDeleteGeneralJournal(
+                                            journal.id || 0
+                                          )
+                                        }
+                                      />
                                     </TableCell>
                                   </TableRow>
                                 ))}
@@ -405,35 +412,3 @@ export default function GeneralJournalPage() {
     </DefaultLayout>
   );
 }
-
-// {
-//     "id": 4,
-//     "name_account": "Gaji Karyawan",
-//     "date": "2025-02-02",
-//     "id_ref": 1,
-//     "information": "Gaji Karyawan",
-//     "debit": 6,
-//     "kredit": 1,
-//     "ref": null,
-//     "id_periode": 2,
-//     "payroll_periode": null,
-//     "created_at": "2025-02-02T17:01:20.601+08:00",
-//     "updated_at": "2025-02-02T17:01:20.601+08:00",
-//     "deleted_at": null
-// },
-
-// {
-//   "id": 4,
-//   "name_account": "Gaji Karyawan",
-//   "date": "2025-02-02",
-//   "id_ref": 1,
-//   "information": "Gaji Karyawan",
-//   "debit": 6,
-//   "kredit": 12,
-//   "ref": null,
-//   "id_periode": 2,
-//   "payroll_periode": null,
-//   "created_at": "2025-02-02T17:01:20.601+08:00",
-//   "updated_at": "2025-02-02T17:01:20.601+08:00",
-//   "deleted_at": null
-// }
