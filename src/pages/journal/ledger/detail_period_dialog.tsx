@@ -87,7 +87,7 @@ export default function DetailPeriodDialog({
       <DocumentArrowDownIcon
         className="text-primary w-6 h-6"
         onClick={async () => {
-          await handleDetail(id);
+          handleDetail(id);
           onOpen();
         }}
       />

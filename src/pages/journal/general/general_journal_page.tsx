@@ -88,8 +88,15 @@ export default function GeneralJournalPage() {
       url: `${Urls.journalGeneral}s`,
       data: generalJournals,
       successCallback: () => {
-        Swal.fire("Berhasil", "Data berhasil diubah", "success");
-        getGeneralJournals();
+        Swal.fire({
+          title: "Berhasil",
+          text: "Data berhasil diubah",
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false,
+        }).then(() => {
+          getGeneralJournals();
+        });
       },
       errorCallback: () => {},
     });
@@ -99,8 +106,15 @@ export default function GeneralJournalPage() {
     ApiHelpers.delete({
       url: Urls.journalGeneral + "/" + id,
       successCallback: () => {
-        Swal.fire("Berhasil", "Data berhasil dihapus", "success");
-        getGeneralJournals();
+        Swal.fire({
+          title: "Berhasil",
+          text: "Data berhasil dihapus",
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false,
+        }).then(() => {
+          getGeneralJournals();
+        });
       },
       errorCallback: () => {},
     });
