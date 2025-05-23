@@ -205,6 +205,13 @@ export default function DashboardPage() {
               </Table>
             </div>
           )}
+          {!tableItems && (
+            <div className="flex justify-center items-center h-64">
+              <h1 className="text-2xl font-medium text-gray-600">
+                Tidak ada data
+              </h1>
+            </div>
+          )}
         </div>
       </div>
     </DefaultLayout>
